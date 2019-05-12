@@ -1,0 +1,36 @@
+{
+  "name": "nerdrage",
+  "version": "1.2.0-101",
+  "author": "b3none and AlexPhair",
+  "contributors": [
+    {
+      "name": "B3none",
+      "github": "https://github.com/b3none"
+    },
+    {
+      "name": "AlexPhair",
+      "github": "https://github.com/alexphair"
+    }
+  ],
+  "description": "nerdRage discord bot.",
+  "main": "src/index.js",
+  "scripts": {
+    "gulp": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b3none/nerdrage.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/b3none/nerdrage/issues"
+  },
+  "homepage": "https://github.com/b3none/nerdrage#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1"
+  }
+}

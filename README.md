@@ -1,1 +1,2 @@
-# league-bot
+# nerdRage
+nerdRage discord bot.
