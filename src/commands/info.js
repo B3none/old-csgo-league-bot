@@ -1,4 +1,4 @@
-const config = require('/config/config');
+const config = require('../../config/config');
 const path = require('path');
 const guildHelper = require('../helpers/guild');
 
@@ -71,7 +71,7 @@ module.exports = {
                     name: client.user.username,
                     icon_url: client.user.avatarURL
                 },
-                color: config.colour,
+                color: Number(config.colour),
                 description: `Server information:`,
                 fields: fields
             }

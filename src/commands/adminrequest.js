@@ -1,4 +1,4 @@
-const config = require('/config/config');
+const config = require('../../config/config');
 const path = require('path');
 
 const moderatorRoleId = '498516884744830977';
@@ -17,7 +17,7 @@ module.exports = {
                         name: client.user.username,
                         icon_url: client.user.avatarURL
                     },
-                    color: config.colour,
+                    color: Number(config.colour),
                     description: 'Please add a message body.'
                 }
             });
