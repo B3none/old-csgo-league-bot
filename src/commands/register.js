@@ -7,6 +7,15 @@ module.exports = {
   disabled: false,
   description: 'Allows a user to link their steam account with discord.',
   command: (client, message) => {
+    let author = message.author;
+
+    message.channel.send({
+      embed: {
+        color: Number(config.colour),
+        description: `<@${author.id}> Please follow the instructions sent directly to you in order to complete the registration process.`
+      }
+    });
+
     message.author.send({
       embed: {
         author: {
@@ -14,8 +23,7 @@ module.exports = {
           icon_url: client.user.avatarURL
         },
         color: Number(config.colour),
-        title: 'Register discord',
-        description: module.exports.description,
+        description: `Please follow the following url in order to link your discord to our system.`,
       }
     });
   }
