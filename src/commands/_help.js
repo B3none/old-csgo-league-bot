@@ -1,4 +1,4 @@
-const config = require("../../config.json");
+const config = require('../../config');
 const permissions = require('../helpers/permissions');
 
 const normalizedPath = require('path').join(__dirname, '/');
@@ -15,7 +15,7 @@ module.exports = {
     aliases: ['help', 'hlep'],
     permissions: [],
     disabled: false,
-    description: "Prints a list of all available commands and their description.",
+    description: 'Prints a list of all available commands and their description.',
     command: (client, message) => {
         message.delete().catch(O_o => {});
 
@@ -45,7 +45,7 @@ module.exports = {
                     name: client.user.username,
                     icon_url: client.user.avatarURL
                 },
-                color: 0xff8c00,
+                color: Number(config.colour),
                 title: 'Help command',
                 description: module.exports.description,
                 fields: fields
