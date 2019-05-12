@@ -12,7 +12,8 @@
       "github": "https://github.com/alexphair"
     }
   ],
-  "description": "nerdRage discord bot.",
+  "description": "League discord bot",
+  "private": true,
   "main": "src/index.js",
   "scripts": {
     "gulp": "gulp"
