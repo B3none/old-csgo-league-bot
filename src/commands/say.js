@@ -1,3 +1,4 @@
+const config = require('/config/config');
 const path = require('path');
 
 module.exports = {
@@ -62,7 +63,7 @@ module.exports = {
                     name: client.user.username,
                     icon_url: client.user.avatarURL
                 },
-                color: 0xff8c00,
+                color: config.colour,
                 description: finalMessage
             }
         });

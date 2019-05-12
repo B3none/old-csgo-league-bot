@@ -1,3 +1,4 @@
+const config = require('/config/config');
 const path = require('path');
 
 const version = require('../../package.json').version;
@@ -14,7 +15,7 @@ module.exports = {
                     name: client.user.username,
                     icon_url: client.user.avatarURL
                 },
-                color: 0xff8c00,
+                color: config.colour,
                 description: `I am currently on version \`${version}\``
             }
         });

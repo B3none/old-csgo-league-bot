@@ -1,3 +1,4 @@
+const config = require('/config/config');
 const path = require('path');
 
 const authors = require('../../package.json').contributors;
@@ -23,7 +24,7 @@ module.exports = {
                     name: client.user.username,
                     icon_url: client.user.avatarURL
                 },
-                color: 0xff8c00,
+                color: config.colour,
                 description: 'My creators are:',
                 fields: fields
             }
