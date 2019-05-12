@@ -23,7 +23,7 @@ module.exports = {
           name: `${client.user.username} Authenticator`
         },
         color: Number(config.colour),
-        description: `Please follow the following url in order to link your discord to our system.`,
+        description: `Please follow the following url in order to link your discord to our system. Please ensure you're logged in to our website with steam first.`,
         fields: [
           {
             name: 'Steam login URL:',
