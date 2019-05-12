@@ -2,18 +2,17 @@ const config = require('../../config');
 const path = require('path');
 const axios = require('axios');
 
-const http = new axios();
-
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'login', 'link'],
   permissions: [],
   disabled: false,
   description: 'Allows a user to link their steam account with discord.',
   command: (client, message) => {
-    http.get(`https://league.redlinecs.net/discord/generate/${author.id}`)
+    let author = message.author;
+
+    axios.get(`http://localhost:5000/discord/generate/${author.id}`)
       .then(response => {
         let { code } = response.data;
-        let author = message.author;
 
         message.channel.send({
           embed: {
@@ -33,7 +32,7 @@ module.exports = {
             fields: [
               {
                 name: 'Steam login URL:',
-                value: 'https://league.redlinecs.net/discord/' + author.id + code
+                value: `http://localhost:5000/discord/${author.id}/${code}`
               }
             ]
           }
