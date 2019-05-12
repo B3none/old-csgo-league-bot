@@ -6,7 +6,7 @@ module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'arq'],
     permissions: [],
     disabled: false,
-    description: "A command to let a moderator know that you require help.",
+    description: 'A command to let a moderator know that you require help.',
     command: (client, message, args) => {
         if (!args.join(' ').length) {
             message.delete().catch(O_o => {});
