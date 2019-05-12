@@ -20,7 +20,7 @@ module.exports = {
       embed: {
         author: {
           icon_url: client.user.avatarURL,
-          name: `${client.user.username} authentication`
+          name: `${client.user.username} Authenticator`
         },
         color: Number(config.colour),
         description: `Please follow the following url in order to link your discord to our system.`,
