@@ -1,7 +1,7 @@
 {
   "name": "nerdrage",
   "version": "1.2.0-101",
-  "author": "b3none and AlexPhair",
+  "author": "B3none",
   "contributors": [
     {
       "name": "B3none",
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/b3none/nerdrage#readme",
   "dependencies": {
-    "discord.js": "^11.4.2"
+    "discord.js": "^11.5.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
