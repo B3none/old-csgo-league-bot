@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
-const config = require('../config/config.json');
+const config = require('../config.json');
 
 const guildHelper = require('./helpers/guild');
 const messageHelper = require('./helpers/message');

@@ -1,4 +1,4 @@
-const config = require("../../config/config.json");
+const config = require("../../config.json");
 const permissions = require('../helpers/permissions');
 
 const normalizedPath = require('path').join(__dirname, '/');
