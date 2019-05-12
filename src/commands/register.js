@@ -19,11 +19,17 @@ module.exports = {
     message.author.send({
       embed: {
         author: {
-          name: client.user.username,
-          icon_url: client.user.avatarURL
+          icon_url: client.user.avatarURL,
+          name: `${client.user.username} authentication`
         },
         color: Number(config.colour),
         description: `Please follow the following url in order to link your discord to our system.`,
+        fields: [
+          {
+            name: 'Steam login URL:',
+            value: 'https://league.redlinecs.net'
+          }
+        ]
       }
     });
   }
