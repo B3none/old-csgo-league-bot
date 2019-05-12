@@ -6,7 +6,7 @@ module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'authors'],
     permissions: [],
     disabled: false,
-    description: "Displays the authors of the discord bot.",
+    description: 'Displays the authors of the discord bot.',
     command: (client, message) => {
         let fields = [];
 
@@ -24,7 +24,7 @@ module.exports = {
                     icon_url: client.user.avatarURL
                 },
                 color: 0xff8c00,
-                description: `My creators are:`,
+                description: 'My creators are:',
                 fields: fields
             }
         });
