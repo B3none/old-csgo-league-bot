@@ -32,7 +32,7 @@ module.exports = {
             fields: [
               {
                 name: 'Steam login URL:',
-                value: `http://localhost:5000/discord/${author.id}/${code}`
+                value: `http://league.redlinecs.net/discord/${author.id}/${code}`
               }
             ]
           }
