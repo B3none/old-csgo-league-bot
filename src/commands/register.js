@@ -10,7 +10,7 @@ module.exports = {
   command: (client, message) => {
     let author = message.author;
 
-    axios.get(`http://localhost:5000/discord/generate/${author.id}`)
+    axios.get(`https://league.redlinecs.net/discord/generate/${author.id}`)
       .then(response => {
         let { code } = response.data;
 
