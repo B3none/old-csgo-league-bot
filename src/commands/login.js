@@ -12,7 +12,7 @@ module.exports = {
 
     axios.get(`https://league.redlinecs.net/discord/generate/${author.id}`)
       .then(response => {
-        let { code } = response.data;
+        let { code,error } = response.data;
 
         if (code !== null) {
           message.channel.send({
@@ -42,7 +42,7 @@ module.exports = {
           message.channel.send({
             embed: {
               color: Number(config.colour),
-              description: `<@${author.id}> It looks like you're already linked on our system. If you're really stuck then please message one of my **!authors**`
+              description: `<@${author.id}> ${error} If you're really stuck then please message one of the **!authors**`
             }
           });
         }
