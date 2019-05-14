@@ -1,3 +1,4 @@
+const config = require('../../config');
 const normalizedPath = require('path').join(__dirname, '/../commands');
 
 let commands = [];
@@ -40,7 +41,7 @@ module.exports = {
                                 name: client.user.username,
                                 icon_url: client.user.avatarURL
                             },
-                            color: 0xff8c00,
+                            color: Number(config.colour),
                             description: `You do not have permission to use the ${command} command.`
                         }
                     });
