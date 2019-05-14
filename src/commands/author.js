@@ -1,6 +1,5 @@
 const config = require('../../config');
 const path = require('path');
-
 const authors = require('../../package.json').contributors;
 
 module.exports = {
