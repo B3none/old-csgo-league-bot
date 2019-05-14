@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios');
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'login', 'link'],
+  aliases: [path.basename(__filename).split('.')[0], 'register', 'link'],
   permissions: [],
   disabled: false,
   description: 'Allows a user to link their steam account with discord.',
