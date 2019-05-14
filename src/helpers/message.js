@@ -18,7 +18,7 @@ module.exports = {
                         name: client.user.username,
                         icon_url: client.user.avatarURL
                     },
-                    color: 0xff8c00,
+                    color: Number(config.colour),
                     description: `Sorry! I don't respond to messages like this! Please go back into our Discord server and type \`!help\` to see the commands that I use!`
                 }
             });
