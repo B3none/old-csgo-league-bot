@@ -5,7 +5,7 @@ const axios = require('axios');
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'unregister', 'unlink', 'unlogin'],
   permissions: [],
-  disabled: false,
+  disabled: true,
   description: 'Allows a user to link their steam account with discord.',
   command: (client, message) => {
     let author = message.author;
