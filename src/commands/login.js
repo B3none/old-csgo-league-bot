@@ -29,7 +29,7 @@ module.exports = {
                 name: `${client.user.username} Authenticator`
               },
               color: Number(config.colour),
-              description: `Please follow the following url in order to link your discord to our system. Please ensure you're logged in to our website with steam first. This link will last no more than 15 minutes.`,
+              description: `Please follow the URL below to link your Discord account to your Redline League profile. Ensure you're logged into the website with prior to linking. This link will expire in 15 minutes.`,
               fields: [
                 {
                   name: 'Steam login URL:',
