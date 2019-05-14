@@ -25,7 +25,7 @@ module.exports = {
                     icon_url: client.user.avatarURL
                 },
                 color: Number(config.colour),
-                description: 'My creators are:',
+                description: `My creator${fields.length === 1 ? ' is' : 's are'}:`,
                 fields: fields
             }
         });
