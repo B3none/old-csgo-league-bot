@@ -34,18 +34,18 @@ module.exports = {
             if (!v.disabled && v.aliases.indexOf(command) >= 0) {
                 if (permissions.hasPermission(v, message)) {
                     return v.command(client, message, args);
-                } else {
-                    return message.author.send({
-                        embed: {
-                            author: {
-                                name: client.user.username,
-                                icon_url: client.user.avatarURL
-                            },
-                            color: Number(config.colour),
-                            description: `You do not have permission to use the ${command} command.`
-                        }
-                    });
                 }
+
+                return message.author.send({
+                    embed: {
+                        author: {
+                            name: client.user.username,
+                            icon_url: client.user.avatarURL
+                        },
+                        color: Number(config.colour),
+                        description: `You do not have permission to use the ${command} command.`
+                    }
+                });
             }
         });
     }
