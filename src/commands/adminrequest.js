@@ -6,7 +6,7 @@ const moderatorRoleId = '498516884744830977';
 module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'arq'],
     permissions: [],
-    disabled: false,
+    disabled: true,
     description: 'A command to let a moderator know that you require help.',
     command: (client, message, args) => {
         if (!args.join(' ').length) {
