@@ -23,6 +23,7 @@ module.exports = {
                 }
             });
         }
+
         if (message.author.bot || message.content.indexOf(prefix) !== 0) {
             return;
         }
