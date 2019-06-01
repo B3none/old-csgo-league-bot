@@ -10,7 +10,7 @@ module.exports = {
   command: (client, message) => {
     let author = message.author;
 
-    axios.get(`${config.web}/discord/generate/${author.id}`)
+    axios.get(`${config.url}/discord/generate/${author.id}`)
       .then(response => {
         let { code,error } = response.data;
 
@@ -33,7 +33,7 @@ module.exports = {
               fields: [
                 {
                   name: 'Steam login URL:',
-                  value: `${config.web}/discord/${author.id}/${code}`
+                  value: `${config.url}/discord/${author.id}/${code}`
                 }
               ]
             }

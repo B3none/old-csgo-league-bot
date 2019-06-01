@@ -2,5 +2,5 @@
   "token": "",
   "colour": "0xffffff",
   "prefix": "!",
-  "web": "http://localhost:5000"
+  "url": "http://localhost:5000"
 }
