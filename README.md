@@ -23,7 +23,13 @@ If you appreciate the project then please take the time to star our repository.
 
 
 ## Installation
+
+### Setup
 1. `git clone https://github.com/csgo-league/csgo-league-bot`
 2. `npm i`
 3. `npm i -g gulp`
-4. `gulp`
+4. Edit config.json
+
+
+### Launch
+1. `gulp`
