@@ -10,7 +10,7 @@ module.exports = {
   command: (client, message) => {
     let author = message.author;
 
-    axios.get(`https://league.redlinecs.net/discord/${author.id}`)
+    axios.get(`${config.url}/discord/${author.id}`)
       .then(response => {
         let { code } = response.data;
 
@@ -33,7 +33,7 @@ module.exports = {
               fields: [
                 {
                   name: 'Steam login URL:',
-                  value: `https://league.redlinecs.net/discord/${author.id}/${code}`
+                  value: `${config.url}/discord/${author.id}/${code}`
                 }
               ]
             }

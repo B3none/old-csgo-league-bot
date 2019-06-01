@@ -1,5 +1,6 @@
 {
   "token": "",
   "colour": "0xffffff",
-  "prefix": "!"
+  "prefix": "!",
+  "url": "http://localhost:5000"
 }
