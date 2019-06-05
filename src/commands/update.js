@@ -3,16 +3,16 @@ const path = require('path');
 const axios = require('axios');
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'unregister', 'unlink', 'unlogin'],
+  aliases: [path.basename(__filename).split('.')[0]],
   permissions: [],
-  disabled: true,
-  description: 'Allows a user to link their steam account with discord.',
+  disabled: false,
+  description: 'Allows a user to update their Discord name on the league service.',
   command: (client, message) => {
     let author = message.author;
 
-    axios.get(`${config.url}/discord/${author.id}`)
+    axios.get(`${config.url}/discord/generate/${author.id}`)
       .then(response => {
-        let { code } = response.data;
+        let { code,error } = response.data;
 
         if (code !== null) {
           message.channel.send({
@@ -29,7 +29,7 @@ module.exports = {
                 name: `${client.user.username} Authenticator`
               },
               color: Number(config.colour),
-              description: `Please follow the following url in order to link your discord to our system. Please ensure you're logged in to our website with steam first. This link will last no more than 15 minutes.`,
+              description: `Please follow the URL below to link your Discord account to your League profile. Ensure you're logged into the website with prior to linking. This link will expire in 15 minutes.`,
               fields: [
                 {
                   name: 'Steam login URL:',
@@ -42,7 +42,7 @@ module.exports = {
           message.channel.send({
             embed: {
               color: Number(config.colour),
-              description: `<@${author.id}> It looks like you're already linked on our system. If you're really stuck then please message one of my **!authors**`
+              description: `<@${author.id}> ${error} If you're really stuck then please message one of the **!authors**`
             }
           });
         }
