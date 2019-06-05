@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../app/config');
 const normalizedPath = require('path').join(__dirname, '/../commands');
 
 let commands = [];

@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../app/config');
 const path = require('path');
 const authors = require('../../package.json').contributors;
 

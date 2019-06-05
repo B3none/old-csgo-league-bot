@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../app/config');
 const path = require('path');
 const version = require('../../package.json').version;
 
