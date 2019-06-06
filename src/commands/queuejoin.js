@@ -43,7 +43,7 @@ module.exports = {
                 icon_url: client.user.avatarURL
               },
               color: Number(config.colour),
-              description: `<@${message.author.id}> just joined the \`!queue\` (${queue.length} player${queue.length ? 's' : ''})`
+              description: `<@${message.author.id}> just joined the \`!queue\` (${queue.length} player${queue.length === 1 ? 's' : ''})`
             }
           });
         });

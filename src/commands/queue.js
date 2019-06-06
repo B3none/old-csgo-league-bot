@@ -25,7 +25,7 @@ module.exports = {
           icon_url: client.user.avatarURL
         },
         color: Number(config.colour),
-        description: `There is currently ${queue.length} player${queue.length ? 's' : ''} in the queue. We've sent you more data in a private message.`
+        description: `There ${queue.length === 1 ? 'is' : 'are'} currently ${queue.length} player${queue.length === 1 ? 's' : ''} in the queue. We've sent you more data in a private message.`
       }
     });
 
