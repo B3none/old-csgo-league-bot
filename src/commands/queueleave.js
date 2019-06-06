@@ -44,7 +44,7 @@ module.exports = {
                   icon_url: client.user.avatarURL
                 },
                 color: Number(config.colour),
-                description: `<@${message.author.id}> just left the \`!queue\` (${response.queue.length} players)`
+                description: `<@${message.author.id}> just left the \`!queue\` (${response.queue.length} player${response.queue.length ? 's' : ''})`
               }
             });
           }
