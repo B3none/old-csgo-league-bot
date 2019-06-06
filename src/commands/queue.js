@@ -1,6 +1,6 @@
 const config = require('../../app/config');
 const path = require('path');
-const authors = require('../../package.json').contributors;
+const queueHelper = require('../helpers/queue');
 
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'q'],
@@ -8,12 +8,13 @@ module.exports = {
   disabled: false,
   description: 'View who is in the queue',
   command: (client, message) => {
+    let queue = queueHelper.get();
     let fields = [];
 
-    authors.map(author => {
+    queue.map(id => {
       fields.push({
-        name: author.name,
-        value: author.github
+        name: '',
+        value: `<@${id}>`
       });
     });
 
@@ -24,7 +25,18 @@ module.exports = {
           icon_url: client.user.avatarURL
         },
         color: Number(config.colour),
-        description: `My creator${fields.length === 1 ? ' is' : 's are'}:`,
+        description: `There is currently ${queue.length} player${queue.length ? 's' : ''} in the queue. We've sent you more data in a private message.`
+      }
+    });
+
+    message.author.send({
+      embed: {
+        author: {
+          name: client.user.username,
+          icon_url: client.user.avatarURL
+        },
+        color: Number(config.colour),
+        description: `The queue currently consists of:`,
         fields: fields
       }
     });
