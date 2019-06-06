@@ -11,9 +11,9 @@ module.exports = {
     let queue = queueHelper.get();
     let fields = [];
 
-    queue.map(id => {
+    queue.map((index, id) => {
       fields.push({
-        name: '',
+        name: `#${index}`,
         value: `<@${id}>`
       });
     });
