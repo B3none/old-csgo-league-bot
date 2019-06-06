@@ -12,7 +12,7 @@ const instance = axios.create({
 });
 
 module.exports = {
-    aliases: [path.basename(__filename).split('.')[0], 'qj', 'jq', 'joinqueue'],
+    aliases: [path.basename(__filename).split('.')[0], 'ql', 'lq', 'leavequeue'],
     permissions: [],
     disabled: false,
     description: 'Allows a player to join the matchmaking queue',
@@ -34,18 +34,20 @@ module.exports = {
             return;
           }
 
-          const queue = queueHelper.add(message.author.id);
+          response = queueHelper.remove(message.author.id);
 
-          message.channel.send({
-            embed: {
-              author: {
-                name: client.user.username,
-                icon_url: client.user.avatarURL
-              },
-              color: Number(config.colour),
-              description: `<@${message.author.id}> just joined the \`!queue\` (${queue.length} players)`
-            }
-          });
+          if (response.didRemove) {
+            message.channel.send({
+              embed: {
+                author: {
+                  name: client.user.username,
+                  icon_url: client.user.avatarURL
+                },
+                color: Number(config.colour),
+                description: `<@${message.author.id}> just left the \`!queue\` (${response.queue.length} players)`
+              }
+            });
+          }
         });
     }
 };

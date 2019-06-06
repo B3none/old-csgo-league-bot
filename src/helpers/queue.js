@@ -17,12 +17,17 @@ module.exports = {
   remove: discordId => {
     const queueData = cache.get('queue');
     const index = queueData.indexOf(discordId);
+    let didRemove = false;
 
     if (index > -1) {
       delete queueData[index];
+      didRemove = true;
     }
 
     cache.set('queue', queueData);
-    return queueData;
+    return {
+      queue: queueData,
+      didRemove
+    };
   }
 };
