@@ -25,7 +25,8 @@
   "homepage": "https://github.com/b3none/nerdrage#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "discord.js": "^11.5.0"
+    "discord.js": "^11.5.0",
+    "node-file-cache": "^1.0.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
