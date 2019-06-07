@@ -18,7 +18,7 @@ module.exports = {
   command: (client, message) => {
     let author = message.author;
 
-    instance.get(`${config.url}/discord/generate/${author.id}`)
+    instance.get(`/discord/generate/${author.id}`)
       .then(response => {
         let { code,error } = response.data;
 
