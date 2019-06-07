@@ -2,6 +2,14 @@ const config = require('../../app/config');
 const path = require('path');
 const axios = require('axios');
 
+const instance = axios.create({
+  baseURL: config.url,
+  timeout: 1000,
+  headers: {
+    'authentication': config.api_key
+  }
+});
+
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'register', 'link'],
   permissions: [],
@@ -10,7 +18,7 @@ module.exports = {
   command: (client, message) => {
     let author = message.author;
 
-    axios.get(`${config.url}/discord/generate/${author.id}`)
+    instance.get(`${config.url}/discord/generate/${author.id}`)
       .then(response => {
         let { code,error } = response.data;
 
