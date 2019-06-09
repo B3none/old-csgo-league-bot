@@ -4,7 +4,6 @@ const axios = require('axios');
 
 const instance = axios.create({
   baseURL: config.url,
-  timeout: 1000,
   headers: {
     'authentication': config.api_key
   }
@@ -22,7 +21,7 @@ module.exports = {
       .then(response => {
         let { code,error } = response.data;
 
-        if (code !== null) {
+        if (!!code) {
           message.channel.send({
             embed: {
               color: Number(config.colour),

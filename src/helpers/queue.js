@@ -1,5 +1,5 @@
 const cache = require('node-file-cache').create({
-  file: '/../../app/data/queue.json',
+  file: `${process.cwd()}/app/data/queue.json`,
   life: 240
 });
 
