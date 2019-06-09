@@ -11,7 +11,7 @@ module.exports = {
     let author = message.author;
 
     axios.post(`/discord/update/${author.id}`, {
-      name: author.username
+      discord_name: author.username
     })
       .then(response => {
         let { success,error } = response.data;
@@ -43,6 +43,19 @@ module.exports = {
           embed: {
             color: Number(config.colour),
             description: `<@${author.id}> You've successfully updated your name on our system.`
+          }
+        });
+      })
+      .catch(o_O => {
+        message.author.send({
+          embed: {
+            author: {
+              icon_url: client.user.avatarURL,
+              name: `${client.user.username} Authenticator`
+            },
+            color: Number(config.colour),
+            description: `There was an error updating your name :(`,
+            fields: []
           }
         });
       })
