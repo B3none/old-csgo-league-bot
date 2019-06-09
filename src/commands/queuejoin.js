@@ -13,7 +13,7 @@ module.exports = {
         .then(response => {
           console.log(response);
 
-          const { success,linked } = response.data;
+          const { linked } = response.data;
 
           if (!linked) {
             message.channel.send({
