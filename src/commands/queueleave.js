@@ -14,7 +14,6 @@ const instance = axios.create({
 module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'ql', 'lq', 'leavequeue'],
     permissions: [],
-    disabled: false,
     description: 'Allows a player to join the matchmaking queue',
     command: (client, message) => {
       const response = queueHelper.remove(message.author.id);

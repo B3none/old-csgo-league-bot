@@ -6,7 +6,6 @@ const axios = axiosHelper.get();
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'register', 'link'],
   permissions: [],
-  disabled: false,
   description: 'Allows a user to link their discord account with the league service.',
   command: (client, message) => {
     let author = message.author;

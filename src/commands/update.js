@@ -6,7 +6,6 @@ const axios = axiosHelper.get();
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0]],
   permissions: [],
-  disabled: true,
   description: 'Allows a user to update their Discord name on the league service.',
   command: (client, message) => {
     let author = message.author;

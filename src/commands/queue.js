@@ -5,7 +5,6 @@ const queueHelper = require('../helpers/queue');
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'q'],
   permissions: [],
-  disabled: false,
   description: 'View who is in the queue',
   command: (client, message) => {
     let queue = queueHelper.get();

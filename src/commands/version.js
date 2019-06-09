@@ -5,7 +5,6 @@ const version = require('../../package.json').version;
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'versoin'],
   permissions: [],
-  disabled: false,
   description: 'Displays the current version of the bot.',
   command: (client, message) => {
     message.channel.send({

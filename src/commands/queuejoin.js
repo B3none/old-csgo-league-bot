@@ -7,7 +7,6 @@ const axios = axiosHelper.get();
 module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'qj', 'jq', 'joinqueue'],
     permissions: [],
-    disabled: false,
     description: 'Allows a player to join the matchmaking queue',
     command: (client, message) => {
       axios.get('/discord/check/' + message.author.id)

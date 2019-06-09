@@ -14,11 +14,9 @@ require('fs').readdirSync(normalizedPath).map(file => {
 module.exports = {
   aliases: ['help', 'hlep'],
   permissions: [],
-  disabled: false,
   description: 'Prints a list of all available commands and their description.',
   command: (client, message) => {
-    message.delete().catch(O_o => {
-    });
+    message.delete().catch(O_o => {});
 
     let fields = [];
     commands.map(command => {

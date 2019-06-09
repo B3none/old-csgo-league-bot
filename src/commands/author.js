@@ -5,7 +5,6 @@ const authors = require('../../package.json').contributors;
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'authors'],
   permissions: [],
-  disabled: false,
   description: 'Displays the authors of the discord bot.',
   command: (client, message) => {
     let fields = [];
