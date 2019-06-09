@@ -5,14 +5,12 @@ const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 
 module.exports = {
-    aliases: [path.basename(__filename).split('.')[0], 'qj', 'jq', 'joinqueue'],
+    aliases: [path.basename(__filename).split('.')[0], 'qj', 'jq', 'joinqueue', 'qjoin'],
     permissions: [],
     description: 'Allows a player to join the matchmaking queue',
     command: (client, message) => {
       axios.get('/discord/check/' + message.author.id)
         .then(response => {
-          console.log(response);
-
           const { linked } = response.data;
 
           if (!linked) {

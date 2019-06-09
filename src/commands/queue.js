@@ -7,37 +7,42 @@ module.exports = {
   permissions: [],
   description: 'View who is in the queue',
   command: (client, message) => {
-    let queue = queueHelper.get();
-    let fields = [];
+    let queue = queueHelper.get()
+      .then(players => {
+        console.log(players);
 
-    queue.map((index, id) => {
-      fields.push({
-        name: `#${index}`,
-        value: `<@${id}>`
-      });
-    });
+        let fields = [];
 
-    message.channel.send({
-      embed: {
-        author: {
-          name: client.user.username,
-          icon_url: client.user.avatarURL
-        },
-        color: Number(config.colour),
-        description: `There ${queue.length === 1 ? 'is' : 'are'} currently ${queue.length} player${queue.length === 1 ? 's' : ''} in the queue. We've sent you more data in a private message.`
-      }
-    });
+        players.map((id, index) => {
+          fields.push({
+            name: `Player #${index + 1}`,//`#${index}`,
+            value: `<@${id}>`
+          });
+        });
 
-    message.author.send({
-      embed: {
-        author: {
-          name: client.user.username,
-          icon_url: client.user.avatarURL
-        },
-        color: Number(config.colour),
-        description: `The queue currently consists of:`,
-        fields: fields
-      }
-    });
+        message.channel.send({
+          embed: {
+            author: {
+              name: client.user.username,
+              icon_url: client.user.avatarURL
+            },
+            color: Number(config.colour),
+            description: `There ${players.length === 1 ? 'is' : 'are'} currently ${players.length} player${players.length === 1 ? 's' : ''} in the queue. We've sent you more data in a private message.`
+          }
+        });
+
+        message.author.send({
+          embed: {
+            author: {
+              name: client.user.username,
+              icon_url: client.user.avatarURL
+            },
+            color: Number(config.colour),
+            description: `The queue currently consists of:`,
+            fields: fields
+          }
+        });
+      })
+      .catch(() => {});
   }
 };
