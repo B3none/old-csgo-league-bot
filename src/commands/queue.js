@@ -7,7 +7,7 @@ module.exports = {
   permissions: [],
   description: 'View who is in the queue',
   command: (client, message) => {
-    let queue = queueHelper.get()
+    queueHelper.get()
       .then(players => {
         console.log(players);
 
