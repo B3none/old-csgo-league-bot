@@ -1,14 +1,7 @@
 const config = require('../../app/config');
 const path = require('path');
-const axios = require('axios');
-
-const instance = axios.create({
-  baseURL: config.url,
-  timeout: 1000,
-  headers: {
-    'authentication': config.api_key
-  }
-});
+const axiosHelper = require('../helpers/axios');
+const axios = axiosHelper.get();
 
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0]],
@@ -18,7 +11,7 @@ module.exports = {
   command: (client, message) => {
     let author = message.author;
 
-    instance.post(`/discord/update/${author.id}`, {
+    axios.post(`/discord/update/${author.id}`, {
       name: author.username
     })
       .then(response => {

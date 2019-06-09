@@ -17,37 +17,19 @@ module.exports = {
     disabled: false,
     description: 'Allows a player to join the matchmaking queue',
     command: (client, message) => {
-      instance.get('/discord/check/' + message.author.id)
-        .then(response => {
-          if (!response.linked) {
-            message.channel.send({
-              embed: {
-                author: {
-                  name: client.user.username,
-                  icon_url: client.user.avatarURL
-                },
-                color: Number(config.colour),
-                description: `<@${message.author.id}> Please \`!login\` and try again.`
-              }
-            });
+      const response = queueHelper.remove(message.author.id);
 
-            return;
-          }
-
-          response = queueHelper.remove(message.author.id);
-
-          if (response.didRemove) {
-            message.channel.send({
-              embed: {
-                author: {
-                  name: client.user.username,
-                  icon_url: client.user.avatarURL
-                },
-                color: Number(config.colour),
-                description: `<@${message.author.id}> just left the \`!queue\` (${response.queue.length} player${response.queue.length === 1 ? 's' : ''})`
-              }
-            });
+      if (response.didRemove) {
+        message.channel.send({
+          embed: {
+            author: {
+              name: client.user.username,
+              icon_url: client.user.avatarURL
+            },
+            color: Number(config.colour),
+            description: `<@${message.author.id}> just left the \`!queue\` (${response.queue.length} player${response.queue.length === 1 ? 's' : ''})`
           }
         });
+      }
     }
 };

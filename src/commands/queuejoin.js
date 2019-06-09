@@ -1,15 +1,8 @@
 const config = require('../../app/config');
 const path = require('path');
 const queueHelper = require('../helpers/queue');
-const axios = require('axios');
-
-const instance = axios.create({
-  baseURL: config.url,
-  timeout: 1000,
-  headers: {
-    'authentication': config.api_key
-  }
-});
+const axiosHelper = require('../helpers/axios');
+const axios = axiosHelper.get();
 
 module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'qj', 'jq', 'joinqueue'],
@@ -17,7 +10,7 @@ module.exports = {
     disabled: false,
     description: 'Allows a player to join the matchmaking queue',
     command: (client, message) => {
-      instance.get('/discord/check/' + message.author.id)
+      axios.get('/discord/check/' + message.author.id)
         .then(response => {
           if (!response.linked) {
             message.channel.send({
