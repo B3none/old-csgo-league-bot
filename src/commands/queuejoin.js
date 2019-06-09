@@ -11,7 +11,11 @@ module.exports = {
     command: (client, message) => {
       axios.get('/discord/check/' + message.author.id)
         .then(response => {
-          if (!response.linked) {
+          console.log(response);
+
+          const { success,linked } = response.data;
+
+          if (!linked) {
             message.channel.send({
               embed: {
                 author: {

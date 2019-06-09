@@ -5,17 +5,17 @@ const cache = require('node-file-cache').create({
 
 module.exports = {
   get: async () => {
-    return cache.get('queue');
+    return cache.get('queue') || [];
   },
   add: discordId => {
-    const queueData = cache.get('queue');
+    const queueData = cache.get('queue') || [];
     queueData.push(discordId);
 
     cache.set('queue', queueData);
     return queueData;
   },
   remove: discordId => {
-    const queueData = cache.get('queue');
+    const queueData = cache.get('queue') || [];
     const index = queueData.indexOf(discordId);
     let didRemove = false;
 
