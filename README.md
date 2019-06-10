@@ -1,6 +1,8 @@
 # League bot
 League discord bot
 
+**THIS IS STILL A WORK IN PROGRESS -- IT IS NOT REQUIRED**
+
 # Author
 [B3none](https://github.com/b3none/) - Developer and Maintainer
 
