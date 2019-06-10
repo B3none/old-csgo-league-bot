@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/b3none/nerdrage#readme",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "discord.js": "^11.5.0",
     "node-file-cache": "^1.0.2"
   },
