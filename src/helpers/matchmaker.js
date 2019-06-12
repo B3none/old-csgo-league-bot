@@ -1,6 +1,6 @@
 let config = require('../../app/config.json');
 let queue = require('../helpers/queue.js');
-let game = require('./startGame');
+let game = require('./game');
 let fs = require('fs');
 module.exports = {
     setupQueueingChannel: (client) => { 
@@ -8,13 +8,17 @@ module.exports = {
         client.guilds.map((guild) => {
             if(!guild.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase())){  
                 guild.createChannel(config.queuechanneltext, { type: 'text' }) 
-                .then(console.log("Created a channel for the queue"))
+                .then(() => {
+                    let channelid = client.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase()).id;
+                    console.log(channelid);
+                    fs.writeFile(`${process.cwd()}/app/data/textchannels.json`, JSON.stringify({queueChannelID: channelid}), (err) => {if(err)throw(err)});
+                })
                 .catch(console.error); 
             }
 
             if(!guild.channels.find(x => x.name === config.queuechannelvoice.toString().toLowerCase())){  
                 guild.createChannel(config.queuechannelvoice, { type: 'voice' }) 
-                .then(() => {
+                .then(() => { 
                     let channelid = client.channels.find(x => x.name === config.queuechannelvoice.toString().toLowerCase()).id;
                     fs.writeFile(`${process.cwd()}/app/data/voicechannels.json`, JSON.stringify({queueChannelID: channelid}), (err) => {if(err)throw(err)});
                 })
@@ -45,10 +49,10 @@ module.exports = {
         .then(players => {
             if(players.length === config.playerInAMatch){
                 console.log("Reached enough players to start a game, sending confirmation requests.");
+                game.initialize(players);
                 game.sendAwaitConfirmation(client, players);
             }
         });
-        
     },
     
 };

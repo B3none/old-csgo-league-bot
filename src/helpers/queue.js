@@ -63,6 +63,6 @@ module.exports = {
   },
   reset: () =>  {
     cache.clear();
-  }
+  },
   
 };

@@ -1,7 +1,7 @@
 const config = require('../../app/config');
 const path = require('path');
 const queueHelper = require('../helpers/queue');
-
+const game = require('../helpers/game');
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'r'],
   permissions: [],
@@ -36,15 +36,8 @@ module.exports = {
                     
                 });
                 queueHelper.setConfirmed(player.id, true);
+                game.changePlayerReadyStatus(player.id, true, client)
                 //ADD THEM INTO AN ARRAY WITH ALL THE CONFIRMED PLAYERS........................
-
-
-
-
-
-
-
-                ///ASDUHADHUAUHD
 
             }else if(message.author.id == player.id && player.confirmable === false){
                 message.channel.send({
