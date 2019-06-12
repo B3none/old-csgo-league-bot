@@ -9,8 +9,6 @@ module.exports = {
   command: (client, message) => {
     queueHelper.get()
       .then(players => {
-        console.log(players);
-
         let fields = [];
 
         players.map((id, index) => {

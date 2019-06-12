@@ -1,5 +1,6 @@
 let config = require('../../app/config.json');
 let queue = require('../helpers/queue.js');
+let game = require('./startGame');
 let fs = require('fs');
 module.exports = {
     setupQueueingChannel: (client) => { 
@@ -33,15 +34,21 @@ module.exports = {
             .catch(console.error);
         })
     },
-    channelUpdate: (oldMember, newMember) => {
+    channelUpdate: (oldMember, newMember, client) => {
         let newUserChannel = newMember.voiceChannel
         let oldUserChannel = oldMember.voiceChannel
-        if(oldUserChannel === undefined && newUserChannel !== undefined) {
-            // User Joins a voice channel so add him to the queue.
-            queue.add(newUserChannel.id);
-         } else if(newUserChannel === undefined){
-           // User leaves a voice channel so remove him from queue.
-           queue.remove(oldUserChannel.id);
-         }
-    }
+        if(oldUserChannel === undefined && newUserChannel !== undefined) queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.name});
+        else if(newUserChannel === undefined) queue.remove(oldUserChannel.id);
+
+        //CHECK IF THERE ARE 10 peoples inside a voice channel
+        queue.get()
+        .then(players => {
+            if(players.length === config.playerInAMatch){
+                console.log("Reached enough players to start a game, sending confirmation requests.");
+                game.sendAwaitConfirmation(client, players);
+            }
+        });
+        
+    },
+    
 };

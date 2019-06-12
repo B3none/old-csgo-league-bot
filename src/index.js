@@ -16,6 +16,6 @@ client.on('ready', () => {
 });
 
 client.on('message', message => messageHelper.message(client, config.prefix, message));
-client.on('voiceStateUpdate', (oldMember, newMember) => matchMaker.channelUpdate(oldMember, newMember));
+client.on('voiceStateUpdate', (oldMember, newMember) => matchMaker.channelUpdate(oldMember, newMember, client));
 
 client.login(config.token);
