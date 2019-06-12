@@ -20,14 +20,16 @@ module.exports = {
     let didRemove = false;
 
     if (index > -1) {
-      delete queueData[index];
+      queueData.splice(index, 1);
       didRemove = true;
     }
-
     cache.set('queue', queueData);
     return {
       queue: queueData,
       didRemove
     };
+  },
+  reset: () =>  {
+    cache.clear();
   }
 };
