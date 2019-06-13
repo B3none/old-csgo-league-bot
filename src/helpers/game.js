@@ -108,7 +108,7 @@ module.exports = {
                 icon_url: client.user.avatarURL
               },
               color: Number(config.colour),
-              description: `\`All players have confirmed. You will now be sent to team channels.!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
+              description: `\`All players has confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
             }
           });
           //SEND THEM TO DIFFERENT CHANNELS.
