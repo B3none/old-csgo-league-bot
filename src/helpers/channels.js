@@ -41,5 +41,27 @@ module.exports = {
 
         });
         console.log("All channels has been setup.");
+    },
+    switchToTeamChannels: (client, team1, team2) => {
+        //GET THE CCHANELS.
+        fs.readFile(`${process.cwd()}/app/data/teamchannels.json`, 'utf-8', (err, data) => {
+            if(err) throw err;
+            data = JSON.parse(data);
+            if(data.team1){
+                let team1channel = data.team1;
+                team1.map((player, index) => {
+                    client.fetchUser(player.id).setVoiceChannel("Team 1");
+                });
+                console.log(team1channel);
+            }
+            if(data.team2){
+                let team2channel = data.team2;
+                
+                team2.map((player, index) => { 
+                    client.fetchUser(player.id).setVoiceChannel(client.channels.get(team2channel));
+                });
+            }
+
+        })
     }
 }

@@ -30,7 +30,7 @@ module.exports = {
             //GET THE PLAYERS ELO FROM THE DATABASE.
             axios.get(`/player/discord/${newMember.id}`)
               .then(function (response) {
-                queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.username, steam: response.data.steam, elo: response.data.elo});
+                queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.tag, steam: response.data.steam, elo: response.data.elo});
                 //CHECK IF THERE ARE 10 peoples inside a voice channel
                 queue.get()
                 .then(players => {
