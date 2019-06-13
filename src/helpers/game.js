@@ -30,6 +30,10 @@ module.exports = {
       let team1 = [];
       let team2 = [];
       
+      players = [{elo: 23}, {elo: 42}, {elo: 32}, {elo: 22}];
+      let lowestEloPlayer = {elo: 99999};
+
+
       let json = {
         "matchid": Math.floor(Math.random(0, 1)* 100),
         hasStarted: false,
@@ -37,17 +41,30 @@ module.exports = {
         team1: team1,
         team2: team2
       }
-      
-      for(let i = 0; i < players.length; i += 2){
-        team1.push(players[i]);
+      for(let i = 0; i < players.length; i++){
+        players.map((player, index) => {
+          if(player.elo < lowestEloPlayer.elo){
+            lowestEloPlayer = player;
+            console.log("LOWEST ELO PLAYER IS NEW");
+          }
+          if(index === players.length - 1){
+            if(team1.length <= team2.length){
+              team1.push(lowestEloPlayer);
+            }else {
+              team2.push(lowestEloPlayer);
+            }
+            console.log(lowestEloPlayer);
+            lowestEloPlayer = {elo: 99999};
+          }
+        });
+        
       }
-      for(let i = 1; i < players.length; i += 2){
-        team2.push(players[i]);
-      }
+      json.team1 = team1;
+      json.team2 = team2;
 
       //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOW THE ROAD YES I KNOW.
-      const matchData = json
-  
+      const matchData = json;
+      console.log(matchData);
       cache.set('match', matchData);
     },
 

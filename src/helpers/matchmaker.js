@@ -1,31 +1,15 @@
 let config = require('../../app/config.json');
-let queue = require('../helpers/queue.js');
+let queue = require('./queue.js');
+let channels = require('./channels');
 let game = require('./game');
 let fs = require('fs');
+const axiosHelper = require('./axios');
+const axios = axiosHelper.get();
+
 module.exports = {
     setupQueueingChannel: (client) => { 
         //SETUP TEXT CHANNEL & voice channel
-        client.guilds.map((guild) => {
-            if(!guild.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase())){  
-                guild.createChannel(config.queuechanneltext, { type: 'text' }) 
-                .then(() => {
-                    let channelid = client.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase()).id;
-                    console.log(channelid);
-                    fs.writeFile(`${process.cwd()}/app/data/textchannels.json`, JSON.stringify({queueChannelID: channelid}), (err) => {if(err)throw(err)});
-                })
-                .catch(console.error); 
-            }
-
-            if(!guild.channels.find(x => x.name === config.queuechannelvoice.toString().toLowerCase())){  
-                guild.createChannel(config.queuechannelvoice, { type: 'voice' }) 
-                .then(() => { 
-                    let channelid = client.channels.find(x => x.name === config.queuechannelvoice.toString().toLowerCase()).id;
-                    fs.writeFile(`${process.cwd()}/app/data/voicechannels.json`, JSON.stringify({queueChannelID: channelid}), (err) => {if(err)throw(err)});
-                })
-                .catch(console.error);  
-            }
-
-        });
+        channels.checkChannels(client);
         //RESET QUEUE
         queue.reset();
     },
@@ -41,18 +25,31 @@ module.exports = {
     channelUpdate: (oldMember, newMember, client) => {
         let newUserChannel = newMember.voiceChannel
         let oldUserChannel = oldMember.voiceChannel
-        if(oldUserChannel === undefined && newUserChannel !== undefined) queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.name});
+
+        if(oldUserChannel === undefined && newUserChannel !== undefined && newMember.id !== client.user.id){
+            //GET THE PLAYERS ELO FROM THE DATABASE.
+            axios.get(`/player/discord/${newMember.id}`)
+              .then(function (response) {
+                queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.username, steam: response.data.steam, elo: response.data.elo});
+                //CHECK IF THERE ARE 10 peoples inside a voice channel
+                queue.get()
+                .then(players => {
+                    console.log(players);
+                    if(players.length === config.playerInAMatch){
+                        console.log('Reached enough players to start a game, sending confirmation requests.');
+                        game.initialize(players);
+                        game.sendAwaitConfirmation(client, players);
+                    }
+                });  
+            })
+              .catch(function (error) {
+                console.log('Something went wrong: ', error);
+            })
+        }
         else if(newUserChannel === undefined) queue.remove(oldUserChannel.id);
 
-        //CHECK IF THERE ARE 10 peoples inside a voice channel
-        queue.get()
-        .then(players => {
-            if(players.length === config.playerInAMatch){
-                console.log("Reached enough players to start a game, sending confirmation requests.");
-                game.initialize(players);
-                game.sendAwaitConfirmation(client, players);
-            }
-        });
+
+
     },
     
 };
