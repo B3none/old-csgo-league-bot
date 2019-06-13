@@ -6,6 +6,8 @@ League discord bot
 # Author
 [B3none](https://github.com/b3none/) - Developer and Maintainer
 
+[ThunbergOlle](https://github.com/ThunbergOlle) - Developer and Maintainer
+
 ## Watch for releases
 
 So as to keep the latest version of the plugin I recommend watching the repository
