@@ -1,4 +1,5 @@
 const fs = require('fs');
+const game = require('./game');
 let config = require('../../app/config.json');
 module.exports = {
     checkChannels: (client) => {
@@ -50,18 +51,23 @@ module.exports = {
             if(data.team1){
                 let team1channel = data.team1;
                 team1.map((player, index) => {
-                    client.fetchUser(player.id).setVoiceChannel("Team 1");
+                    client.fetchUser(player.id).then((res) => {
+                        res.lastMessage.member.setVoiceChannel(client.channels.get(team1channel));
+                    });
+                    //client.fetchUser(player.id).lastMessage.member.setVoiceChannel("Team 1");
                 });
-                console.log(team1channel);
             }
+            
             if(data.team2){
                 let team2channel = data.team2;
-                
                 team2.map((player, index) => { 
-                    client.fetchUser(player.id).setVoiceChannel(client.channels.get(team2channel));
+                    client.fetchUser(player.id).then((res) => {
+                        res.lastMessage.member.setVoiceChannel(client.channels.get(team2channel));
+                    });
                 });
             }
 
-        })
+        });
+        game.finalizeGameData(client, {teams: {team1: team1, team2: team2}});
     }
 }

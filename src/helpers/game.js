@@ -1,6 +1,5 @@
 const queue = require('./queue.js');
 const config = require('../../app/config');
-const channels = require('./channels');
 const fs = require('fs');
 
 const cache = require('node-file-cache').create({
@@ -8,6 +7,11 @@ const cache = require('node-file-cache').create({
   life: 240
 });
 module.exports = {
+    finalizeGameData: (client, matchData) => {
+      //RESET THE QUEUE
+      queue.reset();
+      //SEND REQUEST TO ENDPOINT.
+    },
     sendAwaitConfirmation: (client) => {
         queue.get()
         .then(players => {
@@ -112,5 +116,6 @@ module.exports = {
         })
         
       }
-    }
+  }
 }
+const channels = require('./channels');
