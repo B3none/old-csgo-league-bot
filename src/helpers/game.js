@@ -7,7 +7,7 @@ const cache = require('node-file-cache').create({
   life: 240
 });
 module.exports = {
-    finalizeGameData: (client, matchData) => {
+    finalizeGameData: (client, teams) => {
       //RESET THE QUEUE
       queue.reset();
       //SEND REQUEST TO ENDPOINT.

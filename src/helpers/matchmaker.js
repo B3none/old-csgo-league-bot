@@ -3,6 +3,7 @@ let queue = require('./queue.js');
 let channels = require('./channels');
 let game = require('./game');
 let fs = require('fs');
+let voicechannels = require('../../app/data/voicechannels.json');
 const axiosHelper = require('./axios');
 const axios = axiosHelper.get();
 
@@ -26,7 +27,7 @@ module.exports = {
         let newUserChannel = newMember.voiceChannel
         let oldUserChannel = oldMember.voiceChannel
 
-        if(oldUserChannel === undefined && newUserChannel !== undefined && newMember.id !== client.user.id){
+        if(newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voicechannels.queueChannelID){
             //GET THE PLAYERS ELO FROM THE DATABASE.
             axios.get(`/player/discord/${newMember.id}`)
               .then(function (response) {
@@ -46,10 +47,7 @@ module.exports = {
                 console.log('Something went wrong: ', error);
             })
         }
-        else if(newUserChannel === undefined) queue.remove(oldUserChannel.id);
-
-
-
+        else if(newUserChannel === undefined) queue.remove(oldMember.id);
     },
     
 };
