@@ -10,9 +10,9 @@ League discord bot
 **THIS IS STILL A WORK IN PROGRESS -- IT IS NOT REQUIRED**
 
 # Author
-[B3none](https://github.com/b3none/) - Developer and Maintainer
+[B3none](https://github.com/b3none/) - Developer / Maintainer
 
-[ThunbergOlle](https://github.com/ThunbergOlle) - Developer and Maintainer
+[ThunbergOlle](https://github.com/ThunbergOlle) - Developer / Maintainer
 
 ## Watch for releases
 
