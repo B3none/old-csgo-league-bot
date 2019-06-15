@@ -47,7 +47,11 @@ module.exports = {
                 console.log('Something went wrong: ', error);
             })
         }
-        else if(newUserChannel === undefined) queue.remove(oldMember.id);
+        else if(newUserChannel){
+            if(newUserChannel.id !== voicechannels.queueChannelID) queue.remove(oldMember.id);
+        }else if(newUserChannel === undefined){
+            queue.remove(oldMember.id);
+        }
     },
     
 };
