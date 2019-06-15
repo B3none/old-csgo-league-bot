@@ -15,7 +15,7 @@ module.exports = {
     queue.reset();
   },
   joinedQueuingChannel: (client) => {
-    fs.readFile(`${process.cwd()}/app/data/voicechannels.json`, 'utf-8',(err, data) => {
+    fs.readFile(`${process.cwd()}/app/data/voicechannels.json`, 'utf-8', (err, data) => {
       if(err) {
         throw err;
       }

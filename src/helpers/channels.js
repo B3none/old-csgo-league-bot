@@ -2,9 +2,9 @@ const fs = require('fs');
 const game = require('./game');
 let config = require('../../app/config.json');
 module.exports = {
-  checkChannels: (client) => {
-    console.log("Checking if all required channels exists.");
-    client.guilds.map((guild) => {
+  checkChannels: client => {
+    console.log('Checking if all required channels exist.');
+    client.guilds.map(guild => {
       if (!guild.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase())) {
         guild.createChannel(config.queuechanneltext, { type: 'text' })
           .then(() => {
