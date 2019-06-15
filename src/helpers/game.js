@@ -67,8 +67,7 @@ module.exports = {
     json.team2 = team2;
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOW THE ROAD YES I KNOW.
-    const matchData = json;
-    cache.set("match0", matchData);
+    cache.set("match0", json);
     queueTimer.startReadyTimer(config.confirmmatchTimerMS, "match0");
   },
   changePlayerReadyStatus: (playerid, ready, client) => {
