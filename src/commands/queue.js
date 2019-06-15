@@ -13,7 +13,7 @@ module.exports = {
 
         players.map((id, index) => {
           fields.push({
-            name: `Player #${index + 1}`,//`#${index}`,
+            name: `Player #${index + 1}`,
             value: `<@${id}>`
           });
         });
