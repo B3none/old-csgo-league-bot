@@ -41,7 +41,7 @@ module.exports = {
     let lowestEloPlayer = {elo: 99999};
 
     let json = {
-      matchid: Math.floor(Math.random(0, 1)* 100),
+      matchid: Math.floor(Math.random(0, 1) * 100),
       hasStarted: false,
       allPlayersConfirmed: false,
       team1: team1,
