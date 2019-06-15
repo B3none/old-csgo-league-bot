@@ -21,13 +21,15 @@ module.exports = {
     let didRemove = false;
 
     queueData.map((item, index) => {
-      if(item.id === discordId){
+      if (item.id === discordId) {
         queueData.splice(index, 1);
         didRemove = true;
       }
-    })
+    });
+
     console.log(queueData);
     cache.set('queue', queueData);
+
     return {
       queue: queueData,
       didRemove
@@ -36,12 +38,14 @@ module.exports = {
   setConfirmable: (player, confirmable) => {
     const queueData = cache.get('queue') || [];
 
-    queueData.map((item, index) => {
-      if(item.id === player){
+    queueData.map(item => {
+      if (item.id === player) {
         item.confirmable = confirmable;
       }
-    })
+    });
+
     cache.set('queue', queueData);
+
     return {
       queue: queueData,
     };
@@ -49,11 +53,12 @@ module.exports = {
   setConfirmed: (player, confirmed) => {
     const queueData = cache.get('queue') || [];
 
-    queueData.map((item, index) => {
-      if(item.id === player){
+    queueData.map(item => {
+      if (item.id === player) {
         item.confirmed = confirmed;
       }
-    })
+    });
+
     cache.set('queue', queueData);
     console.log(queueData);
 
@@ -64,5 +69,4 @@ module.exports = {
   reset: () =>  {
     cache.clear();
   },
-  
 };
