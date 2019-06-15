@@ -1,5 +1,6 @@
 const queue = require('./queue.js');
 const config = require('../../app/config');
+const queueTimer = require('./queueTimer');
 const fs = require('fs');
 
 const cache = require('node-file-cache').create({
@@ -39,7 +40,7 @@ module.exports = {
       let lowestEloPlayer = {elo: 99999};
 
       let json = {
-        "matchid": Math.floor(Math.random(0, 1)* 100),
+        matchid: Math.floor(Math.random(0, 1)* 100),
         hasStarted: false,
         allPlayersConfirmed: false,
         team1: team1,
@@ -64,11 +65,12 @@ module.exports = {
 
       //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOW THE ROAD YES I KNOW.
       const matchData = json;
-      cache.set('match', matchData);
+      cache.set("match0", matchData);
+      queueTimer.startReadyTimer(config.confirmmatchTimerMS, "match0");
     },
 
     changePlayerReadyStatus: (playerid, ready, client) => {
-      const matchData = cache.get('match') || [];
+      const matchData = cache.get("match0") || [];
       
       let hasAllPlayerConfirmed = true;
       matchData.team1.map((item, index) => {
@@ -84,7 +86,7 @@ module.exports = {
         if(item.confirmed === false) hasAllPlayerConfirmed = false; 
       });
       matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
-      cache.set('match', matchData);
+      cache.set("match0", matchData);
       if(matchData.allPlayersConfirmed){
         console.log("All players has confirmed.");
         
