@@ -10,60 +10,60 @@ module.exports = {
     queueHelper.get()
       .then(players => {
         players.map((player, index) => {
-            if(message.author.id == player.id && player.confirmable === true){
-                if(player.confirmed === true){
-                    message.channel.send({
-                        embed: {
-                          author: {
-                            name: client.user.username,
-                            icon_url: client.user.avatarURL
-                          },
-                          color: Number(config.colour),
-                          description: `You have already confirmed this match!`
-                        }
-                    });
-                    return; 
+          if (message.author.id == player.id && player.confirmable === true) {
+            if (player.confirmed === true) {
+              message.channel.send({
+                embed: {
+                  author: {
+                    name: client.user.username,
+                    icon_url: client.user.avatarURL
+                  },
+                  color: Number(config.colour),
+                  description: `You have already confirmed this match!`
                 }
-                message.channel.send({
-                    embed: {
-                      author: {
-                        name: client.user.username,
-                        icon_url: client.user.avatarURL
-                      },
-                      color: Number(config.colour),
-                      description: `Player: ${player.id} confirmed his match!`
-                    }
-                    
-                });
-                queueHelper.setConfirmed(player.id, true);
-                game.changePlayerReadyStatus(player.id, true, client)
-                //ADD THEM INTO AN ARRAY WITH ALL THE CONFIRMED PLAYERS........................
+              });
 
-            }else if(message.author.id == player.id && player.confirmable === false){
-                message.channel.send({
-                    embed: {
-                      author: {
-                        name: client.user.username,
-                        icon_url: client.user.avatarURL
-                      },
-                      color: Number(config.colour),
-                      description: `We haven't found a match for you yet!`
-                    }
-                });
-            }else if(index === players.length || players.length === 0){
-                message.channel.send({
-                    embed: {
-                      author: {
-                        name: client.user.username,
-                        icon_url: client.user.avatarURL
-                      },
-                      color: Number(config.colour),
-                      description: `You have not been registered in the queue, please join the queueing channel in order to get registered.`
-                    }
-                }); 
+              return;
             }
-        });
 
+            message.channel.send({
+              embed: {
+                author: {
+                  name: client.user.username,
+                  icon_url: client.user.avatarURL
+                },
+                color: Number(config.colour),
+                description: `Player: ${player.id} confirmed his match!`
+              }
+            });
+            queueHelper.setConfirmed(player.id, true);
+            game.changePlayerReadyStatus(player.id, true, client)
+            //ADD THEM INTO AN ARRAY WITH ALL THE CONFIRMED PLAYERS........................
+
+          } else if (message.author.id == player.id && player.confirmable === false) {
+            message.channel.send({
+              embed: {
+                author: {
+                  name: client.user.username,
+                  icon_url: client.user.avatarURL
+                },
+                color: Number(config.colour),
+                description: `We haven't found a match for you yet!`
+              }
+            });
+          } else if (index === players.length || players.length === 0) {
+            message.channel.send({
+              embed: {
+                author: {
+                  name: client.user.username,
+                  icon_url: client.user.avatarURL
+                },
+                color: Number(config.colour),
+                description: `You have not been registered in the queue, please join the queueing channel in order to get registered.`
+              }
+            });
+          }
+        });
       })
       .catch(() => {});
   }
