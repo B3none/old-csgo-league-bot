@@ -15,6 +15,7 @@ module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'ql', 'lq', 'leavequeue'],
     permissions: [],
     description: 'Allows a player to join the matchmaking queue',
+    disabled: true,
     command: (client, message) => {
       const response = queueHelper.remove(message.author.id);
 

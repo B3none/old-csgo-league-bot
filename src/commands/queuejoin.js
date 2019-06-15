@@ -8,6 +8,7 @@ module.exports = {
     aliases: [path.basename(__filename).split('.')[0], 'qj', 'jq', 'joinqueue', 'qjoin'],
     permissions: [],
     description: 'Allows a player to join the matchmaking queue',
+    disabled: true,
     command: (client, message) => {
       axios.get('/discord/check/' + message.author.id)
         .then(response => {

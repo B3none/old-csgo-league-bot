@@ -7,27 +7,62 @@ module.exports = {
   get: async () => {
     return cache.get('queue') || [];
   },
-  add: discordId => {
+  add: player => {
     const queueData = cache.get('queue') || [];
-    queueData.push(discordId);
+    queueData.push(player);
 
     cache.set('queue', queueData);
+    console.log(queueData);
+
     return queueData;
   },
   remove: discordId => {
     const queueData = cache.get('queue') || [];
-    const index = queueData.indexOf(discordId);
     let didRemove = false;
 
-    if (index > -1) {
-      delete queueData[index];
-      didRemove = true;
-    }
-
+    queueData.map((item, index) => {
+      if(item.id === discordId){
+        queueData.splice(index, 1);
+        didRemove = true;
+      }
+    })
+    console.log(queueData);
     cache.set('queue', queueData);
     return {
       queue: queueData,
       didRemove
     };
-  }
+  },
+  setConfirmable: (player, confirmable) => {
+    const queueData = cache.get('queue') || [];
+
+    queueData.map((item, index) => {
+      if(item.id === player){
+        item.confirmable = confirmable;
+      }
+    })
+    cache.set('queue', queueData);
+    return {
+      queue: queueData,
+    };
+  },
+  setConfirmed: (player, confirmed) => {
+    const queueData = cache.get('queue') || [];
+
+    queueData.map((item, index) => {
+      if(item.id === player){
+        item.confirmed = confirmed;
+      }
+    })
+    cache.set('queue', queueData);
+    console.log(queueData);
+
+    return {
+      queue: queueData,
+    };
+  },
+  reset: () =>  {
+    cache.clear();
+  },
+  
 };

@@ -3,5 +3,6 @@
   "colour": "0xffffff",
   "prefix": "!",
   "url": "http://localhost:5000",
-  "api_key": ""
+  "api_key": "",
+  "queuechannel":"queue"
 }
