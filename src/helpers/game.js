@@ -54,7 +54,7 @@ module.exports = {
               icon_url: client.user.avatarURL
             },
             color: Number(config.colour),
-            description: `Please confirm the match inside by typing \`${config.prefix}ready\` inside the confirm-match text channel.`
+            description: `Please confirm the match inside by typing \`${config.prefix}ready\` in #${config.queue_text_channel} text channel. You have ${(config.match_confirmation_timer / 1000)} seconds.`
           }
         })
       });
