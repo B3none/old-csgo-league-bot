@@ -1,7 +1,6 @@
 let config = require('../../app/config.json');
 let queue = require('./queue.js');
 let channels = require('./channels');
-let game = require('./game');
 let voiceChannels = require('../../app/data/voice_channels.json');
 const axiosHelper = require('./axios');
 const axios = axiosHelper.get();
@@ -30,7 +29,8 @@ module.exports = {
               console.log(players);
               if (players.length === config.players_per_match) {
                 console.log('Reached enough players to start a game, sending confirmation requests.');
-                console.log(game);
+                const game = require('./game');
+
                 game.initialize(players, client);
                 game.sendAwaitConfirmation(client, players);
               }
@@ -85,7 +85,8 @@ module.exports = {
                   console.log(players);
                   if (players.length === config.players_per_match) {
                     console.log('Reached enough players to start a game, sending confirmation requests.');
-                    console.log(game);
+                    const game = require('./game');
+
                     game.initialize(players, client);
                     game.sendAwaitConfirmation(client, players);
                   }
