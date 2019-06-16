@@ -26,7 +26,12 @@ module.exports = {
                 channels.toAfkChannel(client, player.id);
               }
             });
-
+            match.val.team2.map(player => {
+              if (!player.confirmed) {
+                absentPlayersString += `\n${player.name}`;
+                channels.toAfkChannel(client, player.id);
+              }
+            });
             client.channels.get(textChannels.queueChannelId.toString()).send({
               embed: {
                 author: {
