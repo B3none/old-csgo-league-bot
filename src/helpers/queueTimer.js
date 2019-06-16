@@ -1,5 +1,4 @@
 const textChannels = require('../../app/data/text_channels.json');
-const matches = require('../../app/data/matches.json');
 const config = require('../../app/config.json');
 const matchmaker = require('./matchmaker.js');
 const channels = require('./channels.js');
@@ -11,7 +10,9 @@ const cache = require('node-file-cache').create({
 module.exports = {
   startReadyTimer: (ms, matchIn, client) => {
     setTimeout(() => {
-      let matchesData = matches.index;
+      
+      let matchesData = require('../../app/data/matches.json');
+      matchesData = matchesData[0].val;
       matchesData.map(match => {
 
         if (match.key === matchIn) {
