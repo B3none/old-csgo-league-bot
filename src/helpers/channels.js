@@ -50,8 +50,6 @@ module.exports = {
               fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
             })
             .catch(console.error);
-        } else {
-          fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({afkChannelID: afkVoiceChannel.id}), error);
         }
       }
 
@@ -111,6 +109,7 @@ module.exports = {
     });
   }, 
   toAfkChannel: (client, playerId) => {
+    console.log(playerId);
     client.guilds.map(guild => {
       guild.fetchMember(playerId)
       .then((member) => {
