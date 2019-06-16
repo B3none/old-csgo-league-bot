@@ -40,7 +40,8 @@ module.exports = {
       }
 
       if (config.afk_channel !== '') {
-        if (!guild.channels.find(x => x.name === config.afk_channel.toString())) {
+        let afkVoiceChannel = guild.channels.find(x => x.name === config.afk_channel.toString());
+        if (!afkVoiceChannel) {
           guild.createChannel(config.afk_channel, {
             type: 'voice'
           })
@@ -49,6 +50,8 @@ module.exports = {
               fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
             })
             .catch(console.error);
+        } else {
+          fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({afkChannelID: afkVoiceChannel.id}), error);
         }
       }
 
