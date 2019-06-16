@@ -2,6 +2,8 @@ const config = require('../../app/config');
 const path = require('path');
 const queueHelper = require('../helpers/queue');
 const game = require('../helpers/game');
+const axiosHelper = require('../helpers/axios');
+const axios = axiosHelper.get();
 
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'r'],
