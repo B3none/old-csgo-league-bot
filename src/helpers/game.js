@@ -26,18 +26,12 @@ const cache = require('node-file-cache').create({
 
 module.exports = {
   finalizeGameData: (client, teams) => {
-    console.log('inside finalise game data');
-
     //RESET THE QUEUE
     queue.reset();
 
     //SEND REQUEST TO ENDPOINT.
-    console.log('call servers endpoint');
     axios.get(`/servers`)
       .then(response => {
-        console.log("got response");
-        console.log(response.data);
-
         const serverStatus = response.data[0];
         const { server } = serverStatus;
         const [ip, port] = server.split(':');
@@ -55,38 +49,23 @@ module.exports = {
           players.push(player.id);
         });
 
-        console.log('would be sending...');
-        console.log({
+        axios.post(`/match/start`, {
           ip,
           port,
           team_one,
           team_two
-        });
-
-        players.map(playerId => {
-          client.fetchUser(playerId)
-            .then(user => {
-              user.sendMessage(`Please connect to the server:\n\`connect ${ip}:${port}\``);
-            });
         })
+          .then(response => {
+            // const {match_id} = data;
 
-        // axios.post(`/match/start`, {
-        //   ip,
-        //   port,
-        //   team_one,
-        //   team_two
-        // })
-        //   .then(response => {
-        //     // const {match_id} = data;
-        //
-        //     players.map(playerId => {
-        //       let user = client.fetchUser(playerId);
-        //
-        //       user.message(`Please connect to the server:`);
-        //       user.message(`\`connect ${ip}:${port}\``);
-        //     })
-        //   })
-        //   .catch(error);
+            players.map(playerId => {
+              client.fetchUser(playerId)
+                .then(user => {
+                  user.sendMessage(`Please connect to the server:\n\`connect ${ip}:${port}\``);
+                });
+            });
+          })
+          .catch(error);
       });
   },
   sendAwaitConfirmation: (client) => {
