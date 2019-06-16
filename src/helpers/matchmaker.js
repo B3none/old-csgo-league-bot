@@ -18,12 +18,11 @@ module.exports = {
 
     if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voiceChannels.queueChannelId) {
       //GET THE PLAYERS ELO FROM THE API.
-      console.log('that other one');
-
       axios.get(`/player/discord/${newMember.id}`)
         .then((response) => {
           queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.username, steam: response.data.steam, elo: response.data.elo});
-          //CHECK IF THERE ARE 10 peoples inside a voice channel
+
+          //CHECK IF THERE ARE 10 people inside a voice channel
           queue.get()
             .then(players => {
               console.log(players);

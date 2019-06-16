@@ -11,10 +11,12 @@ const cache = require('node-file-cache').create({
 module.exports = {
   startReadyTimer: (ms, matchIn, client) => {
     setTimeout(() => {
-      let matchData = matches.index;
-      matchData.map(match => {
+      let matchesData = matches.index;
+      matchesData.map(match => {
+        console.log(match);
+
         if (match.key === matchIn) {
-          if (!match.val.allPlayersConfirmed) {
+          if (!(match.val && match.val.allPlayersConfirmed)) {
             console.log('All players haven\'t accepted.');
             let absentPlayersString = ``;
 
