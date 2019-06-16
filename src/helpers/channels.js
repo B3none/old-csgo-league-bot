@@ -2,6 +2,7 @@ const fs = require('fs');
 const game = require('./game');
 const error = require('./error');
 const config = require('../../app/config.json');
+const afkChannel = require('../../app/data/afk_channel.json');
 const teamChannels = require('../../app/data/team_channels');
 
 module.exports = {
@@ -30,15 +31,24 @@ module.exports = {
             .then(channel => {
               fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: channel.id}), error);
             })
-            .catch(console.error);
+            .catch(console.error); 
         } else {
           fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
         }
       }
-
+      if (config.afkchannel !== '' && !guild.channels.find(x => x.name === config.afkchannel.toString())) {
+        guild.createChannel(config.afkchannel, {
+          type: 'voice'
+        })
+          .then(() => {
+            let channelId = client.channels.find(x => x.name === config.afkchannel.toString());
+            fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
+          })
+          .catch(console.error);
+      }
       let team1 = guild.channels.find(x => x.name === 'Team 1');
       let team2 = guild.channels.find(x => x.name === 'Team 2');
-      if (!team1 && !team2) {
+      if (!team1 && !team2) { 
         console.log('Creating and setting up channels for each team.');
 
         guild.createChannel('Team 1', {
@@ -89,6 +99,15 @@ module.exports = {
         team1: team1,
         team2: team2
       }
+    });
+  }, 
+  toAfkChannel: (client, playerid) => {
+    client.guilds.map(guild => {
+      guild.fetchMember(playerid)
+      .then((member) => {
+        member.setVoiceChannel(client.channels.get(afkChannel.afkChannelID))
+      })
+      .catch(console.error);
     });
   }
 };

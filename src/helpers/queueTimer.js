@@ -19,11 +19,13 @@ module.exports = {
             if (!match.val.allPlayersConfirmed) {
               console.log("All players haven't accepted.");
               let playersWhoHaventAcceptedString = ``;
+              let playersWhoHaventAccepted = [];
               console.log(match.val);
       
               match.val.team1.map((player) => {
                 if(!player.confirmed){
-                  playersWhoHaventAcceptedString += `\n${player.name}`
+                  playersWhoHaventAcceptedString += `\n${player.name}`;
+                  require('./channels.js').toAfkChannel(client, player.id);
                 }
               })
       
@@ -38,8 +40,7 @@ module.exports = {
                 }
               });
               cache.set(matchIn, undefined);
-              const matchmaker = require('./matchmaker.js');
-              matchmaker.reloadQueue(client);
+              require('./matchmaker.js').reloadQueue(client);
             }  
           }
 
