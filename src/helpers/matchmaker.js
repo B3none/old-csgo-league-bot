@@ -63,7 +63,10 @@ module.exports = {
             .then(response => {
               const { steam, elo, discord_name } = response.data;
 
+              console.log('checking user names');
+              console.log(`${discord_name} == ${member.user.username}`);
               if (discord_name !== member.user.username) {
+                console.log('updating discord name of: ' + member.user.username);
                 axios.post(`/discord/update/${member.id}`, {
                   discord_name: member.user.username
                 });

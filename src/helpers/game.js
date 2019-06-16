@@ -33,39 +33,43 @@ module.exports = {
     axios.get(`/servers`)
       .then(response => {
         const serverStatus = response.data[0];
-        const { server } = serverStatus;
-        const [ip, port] = server.split(':');
+        if (serverStatus) {
+          const {server} = serverStatus;
+          const [ip, port] = server.split(':');
 
-        let players = [];
-        let team_one = [];
-        teams.team1.map(player => {
-          team_one[player.steam] = player.name;
-          players.push(player.id);
-        });
+          let players = [];
+          let team_one = [];
+          teams.team1.map(player => {
+            team_one[player.steam] = player.name;
+            players.push(player.id);
+          });
 
-        let team_two = [];
-        teams.team2.map(player => {
-          team_two[player.steam] = player.name;
-          players.push(player.id);
-        });
+          let team_two = [];
+          teams.team2.map(player => {
+            team_two[player.steam] = player.name;
+            players.push(player.id);
+          });
 
-        axios.post(`/match/start`, {
-          ip,
-          port,
-          team_one,
-          team_two
-        })
-          .then(response => {
-            // const {match_id} = data;
-
-            players.map(playerId => {
-              client.fetchUser(playerId)
-                .then(user => {
-                  user.send(`Please connect to the server:\n\`connect ${ip}:${port}\``);
-                });
-            });
+          axios.post(`/match/start`, {
+            ip,
+            port,
+            team_one,
+            team_two
           })
-          .catch(error);
+            .then(response => {
+              // const {match_id} = data;
+
+              players.map(playerId => {
+                client.fetchUser(playerId)
+                  .then(user => {
+                    user.send(`Please connect to the server:\n\`connect ${ip}:${port}\``);
+                  });
+              });
+            })
+            .catch(error);
+        } else {
+          console.log('Oh snap! There isn\'t an empty server to join!');
+        }
       });
   },
   sendAwaitConfirmation: (client) => {
