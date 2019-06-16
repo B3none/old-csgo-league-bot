@@ -46,4 +46,35 @@ module.exports = {
       queue.remove(oldMember.id);
     }
   },
+  reloadQueue: (client) => {
+    //Loop through all players that is in the voice channel.
+    queue.reset();
+    if(voiceChannels.queueChannelId){
+      let vcMembers = client.channels.get(voiceChannels.queueChannelId).members
+      if(vcMembers){
+        vcMembers.map((member, index) => {
+          axios.get(`/player/discord/${member.id}`)
+          .then((response) => {
+            queue.add({id: member.id, confirmed: false, confirmable: false, name: member.user.tag, steam: response.data.steam, elo: response.data.elo});
+            //CHECK IF THERE ARE 10 peoples inside a voice channel
+            queue.get()
+              .then(players => {
+                console.log(players);
+                if (players.length === config.playerInAMatch) {
+                  console.log('Reached enough players to start a game, sending confirmation requests.');
+                  game.initialize(players, client);
+                  game.sendAwaitConfirmation(client, players);
+                }
+              });
+          })
+          .catch(error => {
+            console.log('Something went wrong: ', error);
+          })
+        }) 
+      }
+      console.log(); 
+      
+    }else {console.log(`Voice queueing channel doesn't exist.`)}
+    
+  },
 };
