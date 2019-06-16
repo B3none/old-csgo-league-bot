@@ -92,7 +92,7 @@ module.exports = {
     json.team1 = team1;
     json.team2 = team2;
 
-    //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOW THE ROAD YES I KNOW.
+    //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
     cache.set("match0", json);
     queueTimer.startReadyTimer(config.match_confirmation_timer, "match0", client);
   },
@@ -129,13 +129,13 @@ module.exports = {
       let team2Message = '';
       for (let index in matchData.team1) {
         if (matchData.team1[index]) {
-          team1Message += `@${matchData.team1[index].name} with elo: ${matchData.team1[index].elo}\n`;
+          team1Message += `@<${matchData.team1[index].id}> with elo: ${matchData.team1[index].elo}\n`;
         }
       }
 
       for (let index in matchData.team2) {
         if (matchData.team2[index]) {
-          team2Message += `@${matchData.team2[index].name} with elo: ${matchData.team2[index].elo}\n`;
+          team2Message += `@<${matchData.team2[index].id}> with elo: ${matchData.team2[index].elo}\n`;
         }
       }
 

@@ -2,7 +2,6 @@ let config = require('../../app/config.json');
 let queue = require('./queue.js');
 let channels = require('./channels');
 let game = require('./game');
-let fs = require('fs');
 let voiceChannels = require('../../app/data/voice_channels.json');
 const axiosHelper = require('./axios');
 const axios = axiosHelper.get();
@@ -20,6 +19,8 @@ module.exports = {
 
     if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voiceChannels.queueChannelId) {
       //GET THE PLAYERS ELO FROM THE DATABASE.
+      console.log('that other one');
+
       axios.get(`/player/discord/${newMember.id}`)
         .then((response) => {
           queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.tag, steam: response.data.steam, elo: response.data.elo});
@@ -29,13 +30,15 @@ module.exports = {
               console.log(players);
               if (players.length === config.players_per_match) {
                 console.log('Reached enough players to start a game, sending confirmation requests.');
+                console.log(game);
                 game.initialize(players, client);
                 game.sendAwaitConfirmation(client, players);
               }
             });
         })
         .catch(error => {
-          console.log('Something went wrong: ', error);
+          console.log(error.response.data);
+          console.log('died (matchmaker 1)');
         })
     } else if (newUserChannel) {
       if (newUserChannel.id !== voiceChannels.queueChannelId) {
@@ -46,12 +49,14 @@ module.exports = {
     }
   },
   reloadQueue: (client) => {
-    //Loop through all players that is in the voice channel.
+    //Loop through all players that are in the voice channel.
     queue.reset();
+
     if (voiceChannels.queueChannelId) {
       let vcMembers = client.channels.get(voiceChannels.queueChannelId).members;
       if (vcMembers) {
         vcMembers.map(member => {
+          console.log('this one');
           axios.get(`/player/discord/${member.id}`)
             .then(response => {
               const { steam, elo } = response.data;
@@ -71,13 +76,15 @@ module.exports = {
                   console.log(players);
                   if (players.length === config.players_per_match) {
                     console.log('Reached enough players to start a game, sending confirmation requests.');
+                    console.log(game);
                     game.initialize(players, client);
                     game.sendAwaitConfirmation(client, players);
                   }
                 });
             })
             .catch(error => {
-              console.error('Something went wrong: ', error);
+              console.log(error.response.data);
+              console.error('died (matchmaker 2)');
             })
         })
       }
