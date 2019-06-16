@@ -1,5 +1,4 @@
 const fs = require('fs');
-const game = require('./game');
 const error = require('./error');
 const config = require('../../app/config.json');
 const afkChannel = require('../../app/data/afk_channel.json');
@@ -101,11 +100,11 @@ module.exports = {
       });
     }
 
+    console.log('call finalise game data');
+    const game = require('./game');
     game.finalizeGameData(client, {
-      teams: {
-        team1: team1,
-        team2: team2
-      }
+      team1: team1,
+      team2: team2
     });
   }, 
   toAfkChannel: (client, playerId) => {
