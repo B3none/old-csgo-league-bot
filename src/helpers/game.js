@@ -123,21 +123,16 @@ module.exports = {
     matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
     cache.set("match0", matchData);
     if (matchData.allPlayersConfirmed) {
-      console.log("All players has confirmed.");
+      console.log("All players have confirmed.");
 
       let team1Message = '';
       let team2Message = '';
-      for (let index in matchData.team1) {
-        if (matchData.team1[index]) {
-          team1Message += `@<${matchData.team1[index].id}> with elo: ${matchData.team1[index].elo}\n`;
-        }
-      }
-
-      for (let index in matchData.team2) {
-        if (matchData.team2[index]) {
-          team2Message += `@<${matchData.team2[index].id}> with elo: ${matchData.team2[index].elo}\n`;
-        }
-      }
+      matchData.team1.map(player => {
+        team1Message += `@<${player.id}> with ${player.elo} elo\n`;
+      });
+      matchData.team2.map(player => {
+        team2Message += `@<${player.id}> with ${player.elo} elo\n`;
+      });
 
       client.channels.get(textChannels.queueChannelId.toString()).send({
         embed: {
@@ -146,7 +141,7 @@ module.exports = {
             icon_url: client.user.avatarURL
           },
           color: Number(config.colour),
-          description: `\`All players has confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
+          description: `\`All players have confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
         }
       });
       //SEND THEM TO DIFFERENT CHANNELS.
