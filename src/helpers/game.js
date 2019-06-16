@@ -10,6 +10,19 @@ const cache = require('node-file-cache').create({
   file: `${process.cwd()}/app/data/matches.json`,
   life: 240
 });
+
+// const generateMatchId = length => {
+//   let result = '';
+//   const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//   const charactersLength = characters.length;
+//
+//   for (let i = 0; i < length; i++) {
+//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+//
+//   return result;
+// };
+
 module.exports = {
   finalizeGameData: (client, teams) => {
     //RESET THE QUEUE
@@ -39,6 +52,7 @@ module.exports = {
         //     const {match_id} = data;
         //
         //     // match_id
+        //     cache.set("match_0", matchData);
         //   });
       });
   },
@@ -93,8 +107,11 @@ module.exports = {
     json.team2 = team2;
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
-    cache.set("match0", json);
-    queueTimer.startReadyTimer(config.match_confirmation_timer, "match0", client);
+    // const matchId = generateMatchId(10);
+    cache.set(/*matchId*/"match0", json);
+    queueTimer.startReadyTimer(config.match_confirmation_timer, /*matchId*/"match0", client);
+
+    // return matchId;
   },
   changePlayerReadyStatus: (playerid, ready, client) => {
     const matchData = cache.get("match0") || [];
@@ -105,20 +122,22 @@ module.exports = {
         item.confirmed = ready;
       }
 
-      if (item.confirmed === false) {
+      if (!item.confirmed) {
         hasAllPlayerConfirmed = false;
       }
     });
 
-    matchData.team2.map(item => {
-      if (item.id === playerid) {
-        item.confirmed = ready;
-      }
+    if (hasAllPlayerConfirmed) {
+      matchData.team2.map(item => {
+        if (item.id === playerid) {
+          item.confirmed = ready;
+        }
 
-      if (item.confirmed === false) {
-        hasAllPlayerConfirmed = false;
-      }
-    });
+        if (!item.confirmed) {
+          hasAllPlayerConfirmed = false;
+        }
+      });
+    }
 
     matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
     cache.set("match0", matchData);
@@ -126,10 +145,11 @@ module.exports = {
       console.log("All players have confirmed.");
 
       let team1Message = '';
-      let team2Message = '';
       matchData.team1.map(player => {
         team1Message += `@<${player.id}> with ${player.elo} elo\n`;
       });
+
+      let team2Message = '';
       matchData.team2.map(player => {
         team2Message += `@<${player.id}> with ${player.elo} elo\n`;
       });
@@ -144,6 +164,7 @@ module.exports = {
           description: `\`All players have confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
         }
       });
+
       //SEND THEM TO DIFFERENT CHANNELS.
       channels.switchToTeamChannels(client, matchData.team1, matchData.team2);
     }
