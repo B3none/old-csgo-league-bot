@@ -1,8 +1,8 @@
 const queue = require('./queue.js');
 const channels = require('./channels');
 const config = require('../../app/config');
+const textChannels = require('../../app/data/textchannels');
 const queueTimer = require('./queueTimer');
-const fs = require('fs');
 
 const cache = require('node-file-cache').create({
   file: `${process.cwd()}/app/data/matches.json`,
@@ -19,7 +19,7 @@ module.exports = {
     .then(players => {
       players.map(player => {
         queue.setConfirmable(player.id, true);
-        client.users.find(x => x.id == player.id).send({
+        client.users.find(x => x.id === player.id).send({
           embed: {
             author: {
               name: client.user.username,
@@ -41,7 +41,7 @@ module.exports = {
     let lowestEloPlayer = {elo: 99999};
 
     let json = {
-      matchid: Math.floor(Math.random(0, 1) * 100),
+      matchid: Math.floor(Math.random() * 100),
       hasStarted: false,
       allPlayersConfirmed: false,
       team1: team1,
@@ -100,38 +100,32 @@ module.exports = {
     if (matchData.allPlayersConfirmed) {
       console.log("All players has confirmed.");
 
-      fs.readFile(`${process.cwd()}/app/data/textchannels.json`, 'utf-8', (err, data) => {
-        if (err) {
-          throw err;
+      let team1Message = '';
+      let team2Message = '';
+      for (let index in matchData.team1) {
+        if (matchData.team1[index]) {
+          team1Message += `@${matchData.team1[index].name} with elo: ${matchData.team1[index].elo}\n`;
         }
+      }
 
-        let team1Message = '';
-        let team2Message = '';
-        for (let index in matchData.team1) {
-          if (matchData.team1[index]) {
-            team1Message += `@${matchData.team1[index].name} with elo: ${matchData.team1[index].elo}\n`;
-          }
+      for (let index in matchData.team2) {
+        if (matchData.team2[index]) {
+          team2Message += `@${matchData.team2[index].name} with elo: ${matchData.team2[index].elo}\n`;
         }
+      }
 
-        for (let index in matchData.team2) {
-          if (matchData.team2[index]) {
-            team2Message += `@${matchData.team2[index].name} with elo: ${matchData.team2[index].elo}\n`;
-          }
+      client.channels.get(textChannels.queueChannelId.toString()).send({
+        embed: {
+          author: {
+            name: client.user.username,
+            icon_url: client.user.avatarURL
+          },
+          color: Number(config.colour),
+          description: `\`All players has confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
         }
-
-        client.channels.get(JSON.parse(data).queueChannelID.toString()).send({
-          embed: {
-            author: {
-              name: client.user.username,
-              icon_url: client.user.avatarURL
-            },
-            color: Number(config.colour),
-            description: `\`All players has confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
-          }
-        });
-        //SEND THEM TO DIFFERENT CHANNELS.
-        channels.switchToTeamChannels(client, matchData.team1, matchData.team2);
-      })
+      });
+      //SEND THEM TO DIFFERENT CHANNELS.
+      channels.switchToTeamChannels(client, matchData.team1, matchData.team2);
     }
   }
 };

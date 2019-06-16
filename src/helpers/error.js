@@ -1,3 +1,9 @@
 module.exports = error => {
-  throw error;
+  if (error) {
+    if (error.stack) {
+      console.log(error.stack);
+    }
+
+    throw error;
+  }
 };

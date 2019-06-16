@@ -11,26 +11,20 @@ module.exports = {
   setupQueueingChannel: (client) => {
     //SETUP TEXT CHANNEL & voice channel
     channels.checkChannels(client);
+
     //RESET QUEUE
     queue.reset();
   },
   joinedQueuingChannel: (client) => {
-    fs.readFile(`${process.cwd()}/app/data/voicechannels.json`, 'utf-8', (err, data) => {
-      if(err) {
-        throw err;
-      }
-
-      let channelToJoin = client.channels.get(JSON.parse(data).queueChannelID.toString());
-      channelToJoin.join()
-        .then(connection => console.log('Bot connected to the queuing voice channel!'))
-        .catch(console.error);
-    })
+    let channelToJoin = client.channels.get(voicechannels.queueChannelId.toString());
+    channelToJoin.join()
+      .then(connection => console.log('Bot connected to the queuing voice channel!'))
   },
   channelUpdate: (oldMember, newMember, client) => {
     let newUserChannel = newMember.voiceChannel;
     let oldUserChannel = oldMember.voiceChannel;
 
-    if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voicechannels.queueChannelID) {
+    if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voicechannels.queueChannelId) {
       //GET THE PLAYERS ELO FROM THE DATABASE.
       axios.get(`/player/discord/${newMember.id}`)
         .then((response) => {
@@ -50,12 +44,11 @@ module.exports = {
           console.log('Something went wrong: ', error);
         })
     } else if (newUserChannel) {
-      if (newUserChannel.id !== voicechannels.queueChannelID) {
+      if (newUserChannel.id !== voicechannels.queueChannelId) {
         queue.remove(oldMember.id);
       }
     } else if (newUserChannel === undefined) {
       queue.remove(oldMember.id);
     }
   },
-
 };
