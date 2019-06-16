@@ -9,15 +9,6 @@ module.exports = {
   command: (client, message) => {
     queueHelper.get()
       .then(players => {
-        let fields = [];
-
-        players.map((id, index) => {
-          fields.push({
-            name: `Player #${index + 1}`,
-            value: `<@${id}>`
-          });
-        });
-
         message.channel.send({
           embed: {
             author: {
@@ -29,6 +20,15 @@ module.exports = {
           }
         });
 
+        let queueText = `The queue currently consists of: \n`;
+
+        players.map((player, index) => {
+          queueText += `<@${player.id}>`;
+          if (index + 1 < players.length) {
+            queueText += ', ';
+          }
+        });
+
         message.author.send({
           embed: {
             author: {
@@ -36,8 +36,7 @@ module.exports = {
               icon_url: client.user.avatarURL
             },
             color: Number(config.colour),
-            description: `The queue currently consists of:`,
-            fields: fields
+            description: queueText
           }
         });
       })
