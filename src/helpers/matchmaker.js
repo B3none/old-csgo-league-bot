@@ -17,7 +17,6 @@ module.exports = {
   },
   channelUpdate: (oldMember, newMember, client) => {
     let newUserChannel = newMember.voiceChannel;
-    let oldUserChannel = oldMember.voiceChannel;
 
     if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voiceChannels.queueChannelId) {
       //GET THE PLAYERS ELO FROM THE DATABASE.

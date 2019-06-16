@@ -101,9 +101,9 @@ module.exports = {
       }
     });
   }, 
-  toAfkChannel: (client, playerid) => {
+  toAfkChannel: (client, playerId) => {
     client.guilds.map(guild => {
-      guild.fetchMember(playerid)
+      guild.fetchMember(playerId)
       .then((member) => {
         member.setVoiceChannel(client.channels.get(afkChannel.afkChannelID))
       })
