@@ -12,7 +12,8 @@ module.exports = {
     setTimeout(() => {
       let matchesData = require('../../app/data/matches.json') || {};
 
-      if (matchesData && matchesData.val) {
+      if (matchesData && matchesData.index) {
+        matchesData = matchesData.index;
         matchesData.map(match => {
           if (match && match.key === matchIn) {
             if (!(match.val && match.val.allPlayersConfirmed)) {
