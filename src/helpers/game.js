@@ -64,9 +64,10 @@ module.exports = {
         });
 
         players.map(playerId => {
-          let user = client.fetchUser(playerId);
-
-          user.sendMessage(`Please connect to the server:\n\`connect ${ip}:${port}\``);
+          client.fetchUser(playerId)
+            .then(user => {
+              user.sendMessage(`Please connect to the server:\n\`connect ${ip}:${port}\``);
+            });
         })
 
         // axios.post(`/match/start`, {
