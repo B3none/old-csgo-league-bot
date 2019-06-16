@@ -72,7 +72,7 @@ module.exports = {
         }
       });
   },
-  sendAwaitConfirmation: (client) => {
+  sendAwaitConfirmation: client => {
     queue.get()
     .then(players => {
       players.map(player => {
