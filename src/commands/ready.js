@@ -2,6 +2,7 @@ const config = require('../../app/config');
 const path = require('path');
 const queueHelper = require('../helpers/queue');
 const game = require('../helpers/game');
+
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'r'],
   permissions: [],
@@ -10,8 +11,8 @@ module.exports = {
     queueHelper.get()
       .then(players => {
         players.map((player, index) => {
-          if (message.author.id == player.id && player.confirmable === true) {
-            if (player.confirmed === true) {
+          if (message.author.id === player.id && player.confirmable) {
+            if (player.confirmed) {
               message.channel.send({
                 embed: {
                   author: {
@@ -36,11 +37,12 @@ module.exports = {
                 description: `Player: ${player.name} confirmed his match!`
               }
             });
+
             queueHelper.setConfirmed(player.id, true);
             game.changePlayerReadyStatus(player.id, true, client)
-            //ADD THEM INTO AN ARRAY WITH ALL THE CONFIRMED PLAYERS........................
 
-          } else if (message.author.id == player.id && player.confirmable === false) {
+            //ADD THEM INTO AN ARRAY WITH ALL THE CONFIRMED PLAYERS........................
+          } else if (message.author.id === player.id && player.confirmable === false) {
             message.channel.send({
               embed: {
                 author: {
