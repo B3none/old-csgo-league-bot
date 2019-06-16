@@ -2,7 +2,7 @@ const fs = require('fs');
 const game = require('./game');
 const error = require('./error');
 const config = require('../../app/config.json');
-const teamChannels = require('../../app/data/teamchannels');
+const teamChannels = require('../../app/data/team_channels');
 
 module.exports = {
   checkChannels: client => {
@@ -16,7 +16,7 @@ module.exports = {
           .then(() => {
             let channelId = client.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase()).id;
             console.log(channelId);
-            fs.writeFile(`${process.cwd()}/app/data/textchannels.json`, JSON.stringify({queueChannelId: channelId}), error);
+            fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: channelId}), error);
           })
           .catch(console.error);
       }
@@ -28,11 +28,11 @@ module.exports = {
             type: 'voice'
           })
             .then(channel => {
-              fs.writeFile(`${process.cwd()}/app/data/voicechannels.json`, JSON.stringify({queueChannelId: channel.id}), error);
+              fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: channel.id}), error);
             })
             .catch(console.error);
         } else {
-          fs.writeFile(`${process.cwd()}/app/data/voicechannels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
+          fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
         }
       }
 
@@ -52,12 +52,12 @@ module.exports = {
               .then(() => {
                 team2 = client.channels.find(x => x.name === 'Team 2');
 
-                fs.writeFile(`${process.cwd()}/app/data/teamchannels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
+                fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
               })
           })
           .catch(console.error);
       } else if (team1 && team2) {
-        fs.writeFile(`${process.cwd()}/app/data/teamchannels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
+        fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
       }
     });
 

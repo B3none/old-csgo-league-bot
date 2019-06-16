@@ -1,7 +1,7 @@
 const queue = require('./queue.js');
 const channels = require('./channels');
 const config = require('../../app/config');
-const textChannels = require('../../app/data/textchannels');
+const textChannels = require('../../app/data/text_channels');
 const queueTimer = require('./queueTimer');
 
 const cache = require('node-file-cache').create({
