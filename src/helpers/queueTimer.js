@@ -20,7 +20,7 @@ module.exports = {
             console.log('All players haven\'t accepted.');
             let absentPlayersString = ``;
 
-            match.val.team1.map((player) => {
+            match.val.team1.map(player => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;
                 channels.toAfkChannel(client, player.id);

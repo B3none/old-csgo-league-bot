@@ -6,7 +6,7 @@ const axiosHelper = require('./axios');
 const axios = axiosHelper.get();
 
 module.exports = {
-  setupQueueingChannel: (client) => {
+  setupQueueingChannel: client => {
     //SETUP TEXT CHANNEL & voice channel
     channels.checkChannels(client);
 
@@ -46,7 +46,7 @@ module.exports = {
       queue.remove(oldMember.id);
     }
   },
-  reloadQueue: (client) => {
+  reloadQueue: client => {
     //Loop through all players that are in the voice channel.
     queue.reset();
 
