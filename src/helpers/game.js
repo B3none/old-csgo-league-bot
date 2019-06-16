@@ -32,17 +32,15 @@ module.exports = {
       });
     });
   },
-  initialize: (players) => {
+  initialize: (players, client) => {
     //GET THE ELO. AND SETUP TEAMS.
     let team1 = [];
     let team2 = [];
 
-    //players = [{elo: 23}, {elo: 42}, {elo: 32}, {elo: 22}];
-    let lowestEloPlayer = {elo: 99999};
-
     let json = {
       matchid: Math.floor(Math.random() * 100),
       hasStarted: false,
+      hasEnded: false,
       allPlayersConfirmed: false,
       team1: team1,
       team2: team2
@@ -68,7 +66,7 @@ module.exports = {
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOW THE ROAD YES I KNOW.
     cache.set("match0", json);
-    queueTimer.startReadyTimer(config.confirmmatchTimerMS, "match0");
+    queueTimer.startReadyTimer(config.confirmmatchTimerMS, "match0", client);
   },
   changePlayerReadyStatus: (playerid, ready, client) => {
     const matchData = cache.get("match0") || [];
@@ -96,7 +94,6 @@ module.exports = {
 
     matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
     cache.set("match0", matchData);
-
     if (matchData.allPlayersConfirmed) {
       console.log("All players has confirmed.");
 

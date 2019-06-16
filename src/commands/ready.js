@@ -33,7 +33,7 @@ module.exports = {
                   icon_url: client.user.avatarURL
                 },
                 color: Number(config.colour),
-                description: `Player: ${player.id} confirmed his match!`
+                description: `Player: ${player.name} confirmed his match!`
               }
             });
             queueHelper.setConfirmed(player.id, true);

@@ -30,7 +30,7 @@ module.exports = {
               console.log(players);
               if (players.length === config.playerInAMatch) {
                 console.log('Reached enough players to start a game, sending confirmation requests.');
-                game.initialize(players);
+                game.initialize(players, client);
                 game.sendAwaitConfirmation(client, players);
               }
             });

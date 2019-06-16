@@ -39,8 +39,7 @@ If you appreciate the project then please take the time to star our repository.
 2. `npm i`
 3. `npm i -g gulp`
 4. Edit config.json
-5. Downlaod and extract FFMPEG (`https://ffmpeg.zeranoe.com/builds/`)
-6. Add ffmpeg as a system variable
+5. Run the bot, when it has created a text and a voice channel, restart it.
 
 
 ### Launch
