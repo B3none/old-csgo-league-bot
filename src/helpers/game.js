@@ -26,9 +26,6 @@ const cache = require('node-file-cache').create({
 
 module.exports = {
   finalizeGameData: (client, teams) => {
-    console.log('Teams inside finalize');
-    console.log(teams);
-
     //RESET THE QUEUE
     queue.reset();
 
@@ -61,8 +58,6 @@ module.exports = {
           })
             .then(response => {
               // const {match_id} = data;
-
-              console.log(response);
 
               players.map(playerId => {
                 client.fetchUser(playerId)

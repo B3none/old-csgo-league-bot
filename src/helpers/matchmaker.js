@@ -21,7 +21,6 @@ const reloadQueue = client => {
             const { steam, elo, discord_name } = response.data;
 
             if (discord_name !== member.user.username) {
-              console.log('updating discord name of: ' + member.user.username);
               axios.post(`/discord/update/${member.id}`, {
                 discord_name: member.user.username
               });
