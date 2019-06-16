@@ -17,7 +17,7 @@ module.exports = {
     let newUserChannel = newMember.voiceChannel;
 
     if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voiceChannels.queueChannelId) {
-      //GET THE PLAYERS ELO FROM THE DATABASE.
+      //GET THE PLAYERS ELO FROM THE API.
       console.log('that other one');
 
       axios.get(`/player/discord/${newMember.id}`)
@@ -37,8 +37,7 @@ module.exports = {
             });
         })
         .catch(error => {
-          console.log(error.response.data);
-          console.log('died (matchmaker 1)');
+          console.log((error.response && error.response.data) || error);
         })
     } else if (newUserChannel) {
       if (newUserChannel.id !== voiceChannels.queueChannelId) {
@@ -94,7 +93,6 @@ module.exports = {
             })
             .catch(error => {
               console.log((error.response && error.response.data) || error);
-              console.error('died (matchmaker 2)');
             })
         })
       }
