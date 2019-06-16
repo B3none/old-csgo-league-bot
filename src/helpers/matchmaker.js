@@ -15,11 +15,6 @@ module.exports = {
     //RESET QUEUE
     queue.reset();
   },
-  // joinedQueuingChannel: (client) => {
-  //   let channelToJoin = client.channels.get(voiceChannels.queueChannelId.toString());
-  //   channelToJoin.join()
-  //     .then(connection => console.log('Bot connected to the queuing voice channel!'))
-  // },
   channelUpdate: (oldMember, newMember, client) => {
     let newUserChannel = newMember.voiceChannel;
     let oldUserChannel = oldMember.voiceChannel;

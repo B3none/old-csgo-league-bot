@@ -11,7 +11,6 @@ const matchMaker = require('./helpers/matchmaker.js');
 client.on('ready', () => {
     console.log(`The League Discord Bot has been started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
     matchMaker.setupQueueingChannel(client);
-    // matchMaker.joinedQueuingChannel(client); -- Not sure why the bot needs to be in the channel
     client.user.setActivity(require('../package.json').version);
 });
 
