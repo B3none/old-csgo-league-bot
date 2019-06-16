@@ -19,19 +19,27 @@ module.exports = {
     axios.get(`/servers`)
       .then(response => {
         const { server } = response.data;
-        [ip, port] = server.split(':');
+        const [ip, port] = server.split(':');
 
-        axios.post(`/match/start`, {
+        console.log('would be sending...');
+        console.log({
           ip: ip,
           port: port,
           team_one: teams.team1,
           team_two: teams.team2
-        })
-          .then(response => {
-            const { match_id } = data;
+        });
 
-            // match_id
-          });
+        // axios.post(`/match/start`, {
+        //   ip: ip,
+        //   port: port,
+        //   team_one: teams.team1,
+        //   team_two: teams.team2
+        // })
+        //   .then(response => {
+        //     const {match_id} = data;
+        //
+        //     // match_id
+        //   });
       });
   },
   sendAwaitConfirmation: (client) => {
@@ -46,7 +54,7 @@ module.exports = {
               icon_url: client.user.avatarURL
             },
             color: Number(config.colour),
-            description: `Please confirm the match inside by typing ${config.prefix}ready inside the confirm-match text channel.`
+            description: `Please confirm the match inside by typing \`${config.prefix}ready\` inside the confirm-match text channel.`
           }
         })
       });
