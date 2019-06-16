@@ -71,7 +71,7 @@ module.exports = {
     //RESET QUEUE
     queue.reset();
 
-    matchMaker.reloadQueue(client);
+    reloadQueue(client);
   },
   channelUpdate: (oldMember, newMember, client) => {
     let newUserChannel = newMember.voiceChannel;
