@@ -26,6 +26,7 @@ module.exports = {
 
           return;
         }
+
         queueHelper.get()
           .then(players => {
             players.map((player, index) => {
