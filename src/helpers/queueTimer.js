@@ -3,7 +3,7 @@ const config = require('../../app/config.json');
 const fs = require('fs');
 const cache = require('node-file-cache').create({
   file: `${process.cwd()}/app/data/matches.json`,
-  life: 240,
+  life: 1,
 });
 
 module.exports = {
@@ -40,7 +40,10 @@ module.exports = {
                 }
               });
               cache.set(matchIn, undefined);
-              require('./matchmaker.js').reloadQueue(client);
+              setTimeout(() => {
+                require('./matchmaker.js').reloadQueue(client);
+
+              }, 2000)
             }  
           }
 
