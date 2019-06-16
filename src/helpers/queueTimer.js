@@ -13,13 +13,11 @@ module.exports = {
     setTimeout(() => {
       let matchesData = matches.index;
       matchesData.map(match => {
-        console.log(match);
 
         if (match.key === matchIn) {
           if (!(match.val && match.val.allPlayersConfirmed)) {
             console.log('All players haven\'t accepted.');
             let absentPlayersString = ``;
-
             match.val.team1.map(player => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;

@@ -27,7 +27,6 @@ module.exports = {
       }
     });
 
-    console.log(queueData);
     cache.set('queue', queueData);
 
     return {
