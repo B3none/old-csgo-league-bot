@@ -10,20 +10,23 @@ module.exports = {
     console.log('Checking if all required channels exist.');
 
     client.guilds.map(guild => {
-      if (config.queue_text_channel !== '' && !guild.channels.find(x => x.name === config.queue_text_channel.toString().toLowerCase())) {
-        guild.createChannel(config.queue_text_channel, {
-          type: 'text'
-        })
-          .then(() => {
-            let channelId = client.channels.find(x => x.name === config.queue_text_channel.toString().toLowerCase()).id;
-            console.log(channelId);
-            fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: channelId}), error);
+      if (config.queue_text_channel !== '') {
+        let queuingTextChannel = guild.channels.find(x => x.name === config.queue_text_channel.toString().toLowerCase() && x.type === 'text');
+        if (!queuingTextChannel) {
+          guild.createChannel(config.queue_text_channel, {
+            type: 'text'
           })
-          .catch(console.error);
+            .then(newChannel => {
+              fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: newChannel.id}), error);
+            })
+            .catch(error);
+        } else {
+          fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: queuingTextChannel.id}), error);
+        }
       }
 
       if (config.queue_voice_channel !== '') {
-        let queuingVoiceChannel = guild.channels.find(x => x.name === config.queue_voice_channel.toString().toLowerCase());
+        let queuingVoiceChannel = guild.channels.find(x => x.name === config.queue_voice_channel.toString().toLowerCase() && x.type === 'voice');
         if (!queuingVoiceChannel) {
           guild.createChannel(config.queue_voice_channel, {
             type: 'voice'
@@ -36,16 +39,20 @@ module.exports = {
           fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
         }
       }
-      if (config.afk_channel !== '' && !guild.channels.find(x => x.name === config.afk_channel.toString())) {
-        guild.createChannel(config.afk_channel, {
-          type: 'voice'
-        })
-          .then(() => {
-            let channelId = client.channels.find(x => x.name === config.afk_channel.toString());
-            fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
+
+      if (config.afk_channel !== '') {
+        if (!guild.channels.find(x => x.name === config.afk_channel.toString())) {
+          guild.createChannel(config.afk_channel, {
+            type: 'voice'
           })
-          .catch(console.error);
+            .then(() => {
+              let channelId = client.channels.find(x => x.name === config.afk_channel.toString());
+              fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
+            })
+            .catch(console.error);
+        }
       }
+
       let team1 = guild.channels.find(x => x.name === 'Team 1');
       let team2 = guild.channels.find(x => x.name === 'Team 2');
       if (!team1 && !team2) { 

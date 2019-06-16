@@ -53,13 +53,22 @@ module.exports = {
     queue.reset();
 
     if (voiceChannels.queueChannelId) {
-      let vcMembers = client.channels.get(voiceChannels.queueChannelId).members;
-      if (vcMembers) {
-        vcMembers.map(member => {
-          console.log('this one');
+      let queueChannel = client.channels.find(channel => channel.id === voiceChannels.queueChannelId);
+      let queueMembers = queueChannel.members.filter(member => member.voiceChannelID == voiceChannels.queueChannelId);
+
+      if (queueMembers) {
+        console.log(queueMembers);
+
+        queueMembers.map(member => {
           axios.get(`/player/discord/${member.id}`)
             .then(response => {
-              const { steam, elo } = response.data;
+              const { steam, elo, discord_name } = response.data;
+
+              if (discord_name !== member.user.username) {
+                axios.post(`/discord/update/${member.id}`, {
+                  discord_name: member.user.username
+                });
+              }
 
               queue.add({
                 id: member.id,
@@ -83,7 +92,7 @@ module.exports = {
                 });
             })
             .catch(error => {
-              console.log(error.response.data);
+              console.log((error.response && error.response.data) || error);
               console.error('died (matchmaker 2)');
             })
         })
