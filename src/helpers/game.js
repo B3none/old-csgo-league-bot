@@ -3,6 +3,8 @@ const channels = require('./channels');
 const config = require('../../app/config');
 const textChannels = require('../../app/data/text_channels');
 const queueTimer = require('./queueTimer');
+const axiosHelper = require('./axios');
+const axios = axiosHelper.get();
 
 const cache = require('node-file-cache').create({
   file: `${process.cwd()}/app/data/matches.json`,
@@ -12,7 +14,25 @@ module.exports = {
   finalizeGameData: (client, teams) => {
     //RESET THE QUEUE
     queue.reset();
+
     //SEND REQUEST TO ENDPOINT.
+    axios.get(`/servers`)
+      .then(response => {
+        const { server } = response.data;
+        [ip, port] = server.split(':');
+
+        axios.post(`/match/start`, {
+          ip: ip,
+          port: port,
+          team_one: teams.team1,
+          team_two: teams.team2
+        })
+          .then(response => {
+            const { match_id } = data;
+
+            // match_id
+          });
+      });
   },
   sendAwaitConfirmation: (client) => {
     queue.get()
