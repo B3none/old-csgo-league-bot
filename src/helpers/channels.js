@@ -10,22 +10,22 @@ module.exports = {
     console.log('Checking if all required channels exist.');
 
     client.guilds.map(guild => {
-      if (config.queuechanneltext !== '' && !guild.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase())) {
-        guild.createChannel(config.queuechanneltext, {
+      if (config.queue_text_channel !== '' && !guild.channels.find(x => x.name === config.queue_text_channel.toString().toLowerCase())) {
+        guild.createChannel(config.queue_text_channel, {
           type: 'text'
         })
           .then(() => {
-            let channelId = client.channels.find(x => x.name === config.queuechanneltext.toString().toLowerCase()).id;
+            let channelId = client.channels.find(x => x.name === config.queue_text_channel.toString().toLowerCase()).id;
             console.log(channelId);
             fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: channelId}), error);
           })
           .catch(console.error);
       }
 
-      if (config.queuechannelvoice !== '') {
-        let queuingVoiceChannel = guild.channels.find(x => x.name === config.queuechannelvoice.toString().toLowerCase());
+      if (config.queue_voice_channel !== '') {
+        let queuingVoiceChannel = guild.channels.find(x => x.name === config.queue_voice_channel.toString().toLowerCase());
         if (!queuingVoiceChannel) {
-          guild.createChannel(config.queuechannelvoice, {
+          guild.createChannel(config.queue_voice_channel, {
             type: 'voice'
           })
             .then(channel => {
@@ -36,12 +36,12 @@ module.exports = {
           fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
         }
       }
-      if (config.afkchannel !== '' && !guild.channels.find(x => x.name === config.afkchannel.toString())) {
-        guild.createChannel(config.afkchannel, {
+      if (config.afk_channel !== '' && !guild.channels.find(x => x.name === config.afk_channel.toString())) {
+        guild.createChannel(config.afk_channel, {
           type: 'voice'
         })
           .then(() => {
-            let channelId = client.channels.find(x => x.name === config.afkchannel.toString());
+            let channelId = client.channels.find(x => x.name === config.afk_channel.toString());
             fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
           })
           .catch(console.error);

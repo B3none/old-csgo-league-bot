@@ -27,7 +27,7 @@ module.exports = {
           queue.get()
             .then(players => {
               console.log(players);
-              if (players.length === config.playerInAMatch) {
+              if (players.length === config.players_per_match) {
                 console.log('Reached enough players to start a game, sending confirmation requests.');
                 game.initialize(players, client);
                 game.sendAwaitConfirmation(client, players);
@@ -69,7 +69,7 @@ module.exports = {
               queue.get()
                 .then(players => {
                   console.log(players);
-                  if (players.length === config.playerInAMatch) {
+                  if (players.length === config.players_per_match) {
                     console.log('Reached enough players to start a game, sending confirmation requests.');
                     game.initialize(players, client);
                     game.sendAwaitConfirmation(client, players);
