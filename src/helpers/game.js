@@ -61,7 +61,7 @@ module.exports = {
             players.map(playerId => {
               client.fetchUser(playerId)
                 .then(user => {
-                  user.sendMessage(`Please connect to the server:\n\`connect ${ip}:${port}\``);
+                  user.send(`Please connect to the server:\n\`connect ${ip}:${port}\``);
                 });
             });
           })

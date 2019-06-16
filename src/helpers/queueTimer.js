@@ -20,8 +20,6 @@ module.exports = {
             console.log('All players haven\'t accepted.');
             let absentPlayersString = ``;
 
-            console.log(match.val);
-
             match.val.team1.map((player) => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;
