@@ -52,6 +52,7 @@ module.exports = {
 
     if (voiceChannels.queueChannelId) {
       let queueChannel = client.channels.find(channel => channel.id === voiceChannels.queueChannelId);
+      if(!queueChannel) return;
       let queueMembers = queueChannel.members.filter(member => member.voiceChannelID == voiceChannels.queueChannelId);
 
       if (queueMembers) {
