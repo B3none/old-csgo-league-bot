@@ -22,7 +22,7 @@ module.exports = {
 
       axios.get(`/player/discord/${newMember.id}`)
         .then((response) => {
-          queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.tag, steam: response.data.steam, elo: response.data.elo});
+          queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.username, steam: response.data.steam, elo: response.data.elo});
           //CHECK IF THERE ARE 10 peoples inside a voice channel
           queue.get()
             .then(players => {
@@ -74,7 +74,7 @@ module.exports = {
                 id: member.id,
                 confirmed: false,
                 confirmable: false,
-                name: member.user.tag,
+                name: member.user.username,
                 steam,
                 elo
               });
