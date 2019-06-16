@@ -10,46 +10,48 @@ const cache = require('node-file-cache').create({
 module.exports = {
   startReadyTimer: (ms, matchIn, client) => {
     setTimeout(() => {
-      let matchesData = require('../../app/data/matches.json') || [];
+      let matchesData = require('../../app/data/matches.json') || {};
 
-      matchesData.map(match => {
-        if (match && match.key === matchIn) {
-          if (!(match.val && match.val.allPlayersConfirmed)) {
-            console.log('All players haven\'t accepted.');
-            let absentPlayersString = ``;
-            match.val.team1.map(player => {
-              if (!player.confirmed) {
-                absentPlayersString += `\n${player.name}`;
-                channels.toAfkChannel(client, player.id);
-              }
-            });
+      if (matchesData && matchesData.val) {
+        matchesData.map(match => {
+          if (match && match.key === matchIn) {
+            if (!(match.val && match.val.allPlayersConfirmed)) {
+              console.log('All players haven\'t accepted.');
+              let absentPlayersString = ``;
+              match.val.team1.map(player => {
+                if (!player.confirmed) {
+                  absentPlayersString += `\n${player.name}`;
+                  channels.toAfkChannel(client, player.id);
+                }
+              });
 
-            match.val.team2.map(player => {
-              if (!player.confirmed) {
-                absentPlayersString += `\n${player.name}`;
-                channels.toAfkChannel(client, player.id);
-              }
-            });
+              match.val.team2.map(player => {
+                if (!player.confirmed) {
+                  absentPlayersString += `\n${player.name}`;
+                  channels.toAfkChannel(client, player.id);
+                }
+              });
 
-            client.channels.get(textChannels.queueChannelId.toString()).send({
-              embed: {
-                author: {
-                  name: client.user.username,
-                  icon_url: client.user.avatarURL
-                },
-                color: Number(config.colour),
-                description: `Match is canceled. The match wasn't accepted by: ${absentPlayersString}`
-              }
-            });
+              client.channels.get(textChannels.queueChannelId.toString()).send({
+                embed: {
+                  author: {
+                    name: client.user.username,
+                    icon_url: client.user.avatarURL
+                  },
+                  color: Number(config.colour),
+                  description: `Match is canceled. The match wasn't accepted by: ${absentPlayersString}`
+                }
+              });
 
-            cache.set(matchIn, undefined);
+              cache.set(matchIn, undefined);
 
-            setTimeout(() => {
-              matchmaker.reloadQueue(client);
-            }, 2000);
+              setTimeout(() => {
+                matchmaker.reloadQueue(client);
+              }, 2000);
+            }
           }
-        }
-      });
+        });
+      }
     }, ms);
   }
 };
