@@ -1,17 +1,20 @@
-let config = require('../../app/config.json');
-let queue = require('./queue.js');
-let channels = require('./channels');
-let voiceChannels = require('../../app/data/voice_channels.json');
+const config = require('../../app/config.json');
+const queue = require('./queue.js');
+const channels = require('./channels');
+const voiceChannels = require('../../app/data/voice_channels.json');
+const matchMaker = require('./matchmaker');
 const axiosHelper = require('./axios');
 const axios = axiosHelper.get();
 
 module.exports = {
-  setupQueueingChannel: client => {
+  setupQueueingChannels: client => {
     //SETUP TEXT CHANNEL & voice channel
     channels.checkChannels(client);
 
     //RESET QUEUE
     queue.reset();
+
+    matchMaker.reloadQueue(client);
   },
   channelUpdate: (oldMember, newMember, client) => {
     let newUserChannel = newMember.voiceChannel;
