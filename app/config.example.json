@@ -8,5 +8,5 @@
   "queuechannelvoice": "queue",
   "afkchannel": "afk",
   "playerInAMatch": 1,
-  "confirmmatchTimerMS": 5000
+  "matchConfirmationTimer": 5000
 }
