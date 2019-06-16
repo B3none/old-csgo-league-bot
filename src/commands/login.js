@@ -12,7 +12,7 @@ module.exports = {
 
     axios.get(`/discord/generate/${author.id}`)
       .then(response => {
-        let { code,error } = response.data;
+        const { code,error } = response.data;
 
         if (!!code) {
           message.channel.send({

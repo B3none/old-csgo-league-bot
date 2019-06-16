@@ -7,7 +7,7 @@ module.exports = {
   permissions: [],
   description: 'Displays the authors of the discord bot.',
   command: (client, message) => {
-    let fields = [];
+    const fields = [];
 
     authors.map(author => {
       fields.push({

@@ -1,12 +1,12 @@
 const axios = require('axios');
-const config = require('../../app/config');
+const { url,api_key } = require('../../app/config');
 
 module.exports = {
   get: () => {
     return axios.create({
-      baseURL: config.url,
+      baseURL: url,
       headers: {
-        'authentication': config.api_key
+        'authentication': api_key
       }
     });
   }

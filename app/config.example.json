@@ -4,8 +4,9 @@
   "prefix": "!",
   "url": "http://localhost:5000",
   "api_key": "",
-  "queuechanneltext":"queue",
-  "queuechannelvoice":"queue",
+  "queuechanneltext": "queue",
+  "queuechannelvoice": "queue",
+  "afkchannel": "afk",
   "playerInAMatch": 1,
   "confirmmatchTimerMS": 5000
 }

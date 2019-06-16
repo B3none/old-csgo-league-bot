@@ -14,7 +14,7 @@ module.exports = {
       discord_name: author.username
     })
       .then(response => {
-        let { success,error } = response.data;
+        const { success,error } = response.data;
 
         if (!success) {
           let message = {

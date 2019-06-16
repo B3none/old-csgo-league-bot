@@ -39,10 +39,10 @@ module.exports = {
             });
 
             queueHelper.setConfirmed(player.id, true);
-            game.changePlayerReadyStatus(player.id, true, client)
+            game.changePlayerReadyStatus(player.id, true, client);
 
             //ADD THEM INTO AN ARRAY WITH ALL THE CONFIRMED PLAYERS........................
-          } else if (message.author.id === player.id && player.confirmable === false) {
+          } else if (message.author.id === player.id && !player.confirmable) {
             message.channel.send({
               embed: {
                 author: {
