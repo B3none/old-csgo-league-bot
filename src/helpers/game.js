@@ -146,12 +146,12 @@ module.exports = {
 
       let team1Message = '';
       matchData.team1.map(player => {
-        team1Message += `<@${player.id}> with ${player.elo} elo\n`;
+        team1Message += `<@${player.id}> | \`${player.elo} elo\`\n`;
       });
 
       let team2Message = '';
       matchData.team2.map(player => {
-        team2Message += `<@${player.id}> with ${player.elo} elo\n`;
+        team2Message += `<@${player.id}> | \`${player.elo} elo\`\n`;
       });
 
       client.channels.get(textChannels.queueChannelId.toString()).send({
