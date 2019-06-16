@@ -12,7 +12,6 @@ module.exports = {
     queueData.push(player);
 
     cache.set('queue', queueData);
-    console.log(queueData);
 
     return queueData;
   },
@@ -59,7 +58,6 @@ module.exports = {
     });
 
     cache.set('queue', queueData);
-    console.log(queueData);
 
     return {
       queue: queueData,

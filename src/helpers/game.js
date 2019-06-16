@@ -26,6 +26,9 @@ const cache = require('node-file-cache').create({
 
 module.exports = {
   finalizeGameData: (client, teams) => {
+    console.log('Teams inside finalize');
+    console.log(teams);
+
     //RESET THE QUEUE
     queue.reset();
 
@@ -38,26 +41,28 @@ module.exports = {
           const [ip, port] = server.split(':');
 
           let players = [];
-          let team_one = [];
+          let team_one = {};
           teams.team1.map(player => {
             team_one[player.steam] = player.name;
             players.push(player.id);
           });
 
-          let team_two = [];
+          let team_two = {};
           teams.team2.map(player => {
             team_two[player.steam] = player.name;
             players.push(player.id);
           });
 
           axios.post(`/match/start`, {
-            ip,
-            port,
-            team_one,
-            team_two
+            ip: ip,
+            port: port,
+            team_one: team_one,
+            team_two: team_two
           })
             .then(response => {
               // const {match_id} = data;
+
+              console.log(response);
 
               players.map(playerId => {
                 client.fetchUser(playerId)

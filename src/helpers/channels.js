@@ -101,7 +101,6 @@ module.exports = {
       });
     }
 
-    console.log('call finalise game data');
     const game = require('./game');
     game.finalizeGameData(client, {
       team1: team1,

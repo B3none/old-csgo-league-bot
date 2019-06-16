@@ -15,15 +15,11 @@ const reloadQueue = client => {
     let queueMembers = queueChannel.members.filter(member => member.voiceChannelID == voiceChannels.queueChannelId);
 
     if (queueMembers) {
-      console.log(queueMembers);
-
       queueMembers.map(member => {
         axios.get(`/player/discord/${member.id}`)
           .then(response => {
             const { steam, elo, discord_name } = response.data;
 
-            console.log('checking user names');
-            console.log(`${discord_name} == ${member.user.username}`);
             if (discord_name !== member.user.username) {
               console.log('updating discord name of: ' + member.user.username);
               axios.post(`/discord/update/${member.id}`, {
@@ -43,7 +39,6 @@ const reloadQueue = client => {
             //CHECK IF THERE ARE 10 peoples inside a voice channel
             queue.get()
               .then(players => {
-                console.log(players);
                 if (players.length === config.players_per_match) {
                   console.log('Reached enough players to start a game, sending confirmation requests.');
                   const game = require('./game');
@@ -85,7 +80,6 @@ module.exports = {
           //CHECK IF THERE ARE 10 people inside a voice channel
           queue.get()
             .then(players => {
-              console.log(players);
               if (players.length === config.players_per_match) {
                 console.log('Reached enough players to start a game, sending confirmation requests.');
                 const game = require('./game');
