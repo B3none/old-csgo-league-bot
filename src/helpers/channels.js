@@ -35,14 +35,14 @@ module.exports = {
       }
 
       if (config.queue_voice_channel !== '') {
-        let queuingVoiceChannel = guild.channels.find(x => x.name === config.queue_voice_channel.toString().toLowerCase() && x.type === 'voice');
+        let queuingVoiceChannel = categoryChildren.find(x => x.name === config.queue_voice_channel.toString().toLowerCase() && x.type === 'voice');
         if (!queuingVoiceChannel) {
           guild.createChannel(config.queue_voice_channel, {
             type: 'voice',
             parent: category
           })
-            .then(channel => {
-              fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: channel.id}), error);
+            .then(newChannel => {
+              fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: newChannel.id}), error);
             })
             .catch(console.error); 
         } else {
@@ -51,22 +51,21 @@ module.exports = {
       }
 
       if (config.afk_channel !== '') {
-        let afkVoiceChannel = guild.channels.find(x => x.name === config.afk_channel.toString());
+        let afkVoiceChannel = categoryChildren.find(x => x.name === config.afk_channel.toString());
         if (!afkVoiceChannel) {
           guild.createChannel(config.afk_channel, {
             type: 'voice',
             parent: category
           })
-            .then(() => {
-              let channelId = client.channels.find(x => x.name === config.afk_channel.toString());
-              fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: channelId.id}), error);
+            .then(newChannel => {
+              fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: newChannel.id}), error);
             })
             .catch(console.error);
         }
       }
 
-      let team1 = guild.channels.find(x => x.name === 'Team 1');
-      let team2 = guild.channels.find(x => x.name === 'Team 2');
+      let team1 = categoryChildren.find(x => x.name === 'Team 1');
+      let team2 = categoryChildren.find(x => x.name === 'Team 2');
       if (!team1 && !team2) { 
         console.log('Creating and setting up channels for each team.');
 
@@ -75,13 +74,13 @@ module.exports = {
           parent: category
         })
           .then(() => {
-            team1 = client.channels.find(x => x.name === 'Team 1');
+            team1 = categoryChildren.find(x => x.name === 'Team 1');
             guild.createChannel('Team 2', {
               type: 'voice',
               parent: category
             })
               .then(() => {
-                team2 = client.channels.find(x => x.name === 'Team 2');
+                team2 = categoryChildren.find(x => x.name === 'Team 2');
 
                 fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
               })
