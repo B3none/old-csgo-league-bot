@@ -60,8 +60,6 @@ module.exports = {
 
       let team1 = categoryChildren.find(x => x.name === 'Team 1');
       if (!team1) {
-        console.log('Creating and setting up channels for each team.');
-
         team1 = await guild.createChannel('Team 1', {
           type: 'voice',
           parent: category,
@@ -71,8 +69,6 @@ module.exports = {
 
       let team2 = categoryChildren.find(x => x.name === 'Team 2');
       if (!team2) {
-        console.log('Creating and setting up channels for each team.');
-
         team2 = await guild.createChannel('Team 2', {
           type: 'voice',
           parent: category,
