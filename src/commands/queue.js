@@ -16,7 +16,7 @@ module.exports = {
               icon_url: client.user.avatarURL
             },
             color: Number(config.colour),
-            description: `There ${players.length === 1 ? 'is' : 'are'} currently ${players.length} player${players.length === 1 ? '' : 's'} in the queue. We've sent you more data in a private message.`
+            description: `There ${players.length === 1 ? 'is' : 'are'} currently ${players.length === 0 ? 'no' : players.length} player${players.length === 1 ? '' : 's'} in the queue. We've sent you more data in a private message.`
           }
         });
 
@@ -24,6 +24,7 @@ module.exports = {
 
         players.map((player, index) => {
           queueText += `<@${player.id}>`;
+
           if (index + 1 < players.length) {
             queueText += ', ';
           }
