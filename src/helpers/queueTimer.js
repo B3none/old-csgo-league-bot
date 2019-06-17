@@ -1,5 +1,6 @@
 const textChannels = require('../../app/data/text_channels.json');
 const config = require('../../app/config.json');
+const voiceChannels = require('../../app/data/voice_channels');
 const matchmaker = require('./matchmaker.js');
 const channels = require('./channels.js');
 
@@ -8,6 +9,15 @@ module.exports = {
     const cache = require('node-file-cache').create({
       file: `${process.cwd()}/app/data/matches.json`,
       life: 240,
+    });
+
+    let queueChannel = client.channels.find(channel => channel.id === voiceChannels.queueChannelId);
+    if (!queueChannel) {
+      return;
+    }
+
+    queueChannel.edit({
+      userLimit: 1
     });
 
     setTimeout(() => {
@@ -62,6 +72,10 @@ module.exports = {
               });
 
               cache.clear(matchIn);
+
+              queueChannel.edit({
+                userLimit: config.players_per_match
+              });
 
               matchmaker.reloadQueue(client);
             });
