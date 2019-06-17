@@ -123,13 +123,13 @@ module.exports = {
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
     // const matchId = generateMatchId(10);
-    cache.set(/*matchId*/"match0", json);
-    queueTimer.startReadyTimer(config.match_confirmation_timer, /*matchId*/"match0", client);
+    cache.set(/*matchId*/'match0', json);
+    queueTimer.startReadyTimer(config.match_confirmation_timer, /*matchId*/'match0', client);
 
     // return matchId;
   },
   changePlayerReadyStatus: (playerid, ready, client) => {
-    const matchData = cache.get("match0") || [];
+    const matchData = cache.get('match0') || [];
 
     let hasAllPlayerConfirmed = true;
     matchData.team1.map(item => {
@@ -155,9 +155,9 @@ module.exports = {
     }
 
     matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
-    cache.set("match0", matchData);
+    cache.set('match0', matchData);
     if (matchData.allPlayersConfirmed) {
-      console.log("All players have confirmed.");
+      console.log('All players have confirmed.');
 
       let team1Message = '';
       matchData.team1.map(player => {
