@@ -9,5 +9,5 @@
   "queue_voice_channel": "queue",
   "afk_channel": "afk",
   "players_per_match": 10,
-  "match_confirmation_timer": 30000
+  "match_confirmation_timer": 60000
 }
