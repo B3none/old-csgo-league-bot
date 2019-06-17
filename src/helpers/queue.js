@@ -64,6 +64,6 @@ module.exports = {
     };
   },
   reset: () =>  {
-    cache.clear();
+    cache.set('queue', undefined);
   },
 };
