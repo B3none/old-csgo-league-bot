@@ -19,34 +19,47 @@ module.exports = {
         if (!match.allPlayersConfirmed) {
           console.log('All players haven\'t accepted.');
           let absentPlayersString = ``;
-          match.team1.map(player => {
-            if (!player.confirmed) {
-              absentPlayersString += `\n${player.name}`;
-              channels.toAfkChannel(client, player.id);
-            }
+
+          const teamOne = match.team1.map(player => {
+            return new Promise(async resolve => {
+              if (!player.confirmed) {
+                absentPlayersString += `\n${player.name}`;
+                await channels.toAfkChannel(client, player.id);
+              }
+
+              resolve();
+            });
           });
 
-          match.team2.map(player => {
-            if (!player.confirmed) {
-              absentPlayersString += `\n${player.name}`;
-              channels.toAfkChannel(client, player.id);
-            }
+          const teamTwo = match.team2.map(player => {
+            return new Promise(async resolve => {
+              if (!player.confirmed) {
+                absentPlayersString += `\n${player.name}`;
+                await channels.toAfkChannel(client, player.id);
+              }
+
+              resolve();
+            });
           });
 
-          client.channels.get(textChannels.queueChannelId.toString()).send({
-            embed: {
-              author: {
-                name: client.user.username,
-                icon_url: client.user.avatarURL
-              },
-              color: Number(config.colour),
-              description: `Match is canceled. The match wasn't accepted by: ${absentPlayersString}`
-            }
+          Promise.all(teamOne).then(() => {
+            Promise.all(teamTwo).then(() => {
+              client.channels.get(textChannels.queueChannelId.toString()).send({
+                embed: {
+                  author: {
+                    name: client.user.username,
+                    icon_url: client.user.avatarURL
+                  },
+                  color: Number(config.colour),
+                  description: `Match is canceled. The match wasn't accepted by: ${absentPlayersString}`
+                }
+              });
+
+              cache.clear(matchIn);
+
+              matchmaker.reloadQueue(client);
+            });
           });
-
-          cache.clear(matchIn);
-
-          matchmaker.reloadQueue(client);
         }
       }
     }, ms);
