@@ -4,6 +4,7 @@
   "prefix": "!",
   "url": "http://localhost:5000",
   "api_key": "",
+  "category": "league",
   "queue_text_channel": "queue",
   "queue_voice_channel": "queue",
   "afk_channel": "afk",
