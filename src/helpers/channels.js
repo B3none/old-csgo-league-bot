@@ -108,14 +108,17 @@ module.exports = {
       team2: team2
     });
   }, 
-  toAfkChannel: (client, playerId) => {
-    console.log(playerId);
-    client.guilds.map(guild => {
-      guild.fetchMember(playerId)
-      .then((member) => {
-        member.setVoiceChannel(client.channels.get(afkChannel.afkChannelID))
-      })
-      .catch(console.error);
-    });
-  }
+  toAfkChannel: (client, playerId) =>
+    new Promise(resolve => {
+      console.log(playerId);
+      client.guilds.map(guild => {
+        guild.fetchMember(playerId)
+          .then((member) => {
+            member.setVoiceChannel(
+              client.channels.get(afkChannel.afkChannelID)
+            ).then(() => resolve());
+          })
+          .catch(console.error);
+      });
+    })
 };
