@@ -115,8 +115,7 @@ module.exports = {
         guild.fetchMember(playerId)
           .then((member) => {
             member.setVoiceChannel(
-              null
-              /*client.channels.get(afkChannel.afkChannelID)*/
+              client.channels.get(afkChannel.afkChannelID)
             ).then(() => resolve());
           })
           .catch(console.error);
