@@ -23,8 +23,6 @@ module.exports = {
     setTimeout(() => {
       let match = cache.get(matchIn) || [];
 
-      console.log('----------------- NEW MATCH -------------------');
-
       if (match) {
         if (!match.allPlayersConfirmed) {
           console.log('All players haven\'t accepted.');
@@ -57,9 +55,7 @@ module.exports = {
           });
 
           Promise.all(teamOne).then(() => {
-            console.log('team one should be moved');
             Promise.all(teamTwo).then(() => {
-              console.log('team two should be moved');
               client.channels.get(textChannels.queueChannelId.toString()).send({
                 embed: {
                   author: {

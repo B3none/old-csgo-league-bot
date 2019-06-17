@@ -10,7 +10,9 @@ module.exports = {
   add: player => {
     const queueData = cache.get('queue') || [];
     queueData.map((queuePlayer, index) => {
-      if(queuePlayer.id === player.id) queueData.splice(index, 1);
+      if (queuePlayer.id === player.id) {
+        queueData.splice(index, 1);
+      }
     });
     queueData.push(player);
 

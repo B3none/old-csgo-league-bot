@@ -6,8 +6,6 @@ const axiosHelper = require('./axios');
 const axios = axiosHelper.get();
 
 const reloadQueue = client => {
-  console.log('reload queue');
-
   //Loop through all players that are in the voice channel.
   queue.reset();
 
