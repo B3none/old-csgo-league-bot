@@ -6,11 +6,6 @@ const channels = require('./channels.js');
 
 module.exports = {
   startReadyTimer: (ms, matchIn, client) => {
-    let cache = require('node-file-cache').create({
-      file: `${process.cwd()}/app/data/matches.json`,
-      life: 240,
-    });
-
     let queueChannel = client.channels.find(channel => channel.id === voiceChannels.queueChannelId);
     if (!queueChannel) {
       return;
@@ -22,7 +17,7 @@ module.exports = {
 
     setTimeout(() => {
       // This is so we read the file again \o/
-      cache = require('node-file-cache').create({
+      const cache = require('node-file-cache').create({
         file: `${process.cwd()}/app/data/matches.json`,
         life: 240,
       });
