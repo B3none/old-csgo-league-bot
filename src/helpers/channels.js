@@ -20,75 +20,64 @@ module.exports = {
 
       if (config.queue_text_channel !== '') {
         let queuingTextChannel = categoryChildren.find(x => x.name === config.queue_text_channel.toString().toLowerCase() && x.type === 'text');
+
         if (!queuingTextChannel) {
-          guild.createChannel(config.queue_text_channel, {
+          queuingTextChannel = await guild.createChannel(config.queue_text_channel, {
             type: 'text',
             parent: category
-          })
-            .then(newChannel => {
-              fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: newChannel.id}), error);
-            })
-            .catch(error);
-        } else {
-          fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: queuingTextChannel.id}), error);
+          });
         }
+
+        fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: queuingTextChannel.id}), error);
       }
 
       if (config.queue_voice_channel !== '') {
         let queuingVoiceChannel = categoryChildren.find(x => x.name === config.queue_voice_channel.toString().toLowerCase() && x.type === 'voice');
+
         if (!queuingVoiceChannel) {
-          guild.createChannel(config.queue_voice_channel, {
+          queuingVoiceChannel = await guild.createChannel(config.queue_voice_channel, {
             type: 'voice',
             parent: category
-          })
-            .then(newChannel => {
-              fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: newChannel.id}), error);
-            })
-            .catch(console.error); 
-        } else {
-          fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
+          });
         }
+
+        fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
       }
 
       if (config.afk_channel !== '') {
         let afkVoiceChannel = categoryChildren.find(x => x.name === config.afk_channel.toString());
+
         if (!afkVoiceChannel) {
-          guild.createChannel(config.afk_channel, {
+          afkVoiceChannel = await guild.createChannel(config.afk_channel, {
             type: 'voice',
             parent: category
-          })
-            .then(newChannel => {
-              fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: newChannel.id}), error);
-            })
-            .catch(console.error);
+          });
         }
+
+        fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: afkVoiceChannel.id}), error);
       }
 
       let team1 = categoryChildren.find(x => x.name === 'Team 1');
-      let team2 = categoryChildren.find(x => x.name === 'Team 2');
-      if (!team1 && !team2) { 
+      if (!team1) {
         console.log('Creating and setting up channels for each team.');
 
-        guild.createChannel('Team 1', {
+        team1 = await guild.createChannel('Team 1', {
           type: 'voice',
           parent: category
-        })
-          .then(() => {
-            team1 = categoryChildren.find(x => x.name === 'Team 1');
-            guild.createChannel('Team 2', {
-              type: 'voice',
-              parent: category
-            })
-              .then(() => {
-                team2 = categoryChildren.find(x => x.name === 'Team 2');
-
-                fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
-              })
-          })
-          .catch(console.error);
-      } else if (team1 && team2) {
-        fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
+        });
       }
+
+      let team2 = categoryChildren.find(x => x.name === 'Team 2');
+      if (!team2) {
+        console.log('Creating and setting up channels for each team.');
+
+        team2 = await guild.createChannel('Team 2', {
+          type: 'voice',
+          parent: category
+        });
+      }
+
+      fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
     });
 
     console.log('All channels have been setup.');
