@@ -6,7 +6,7 @@ const channels = require('./channels.js');
 
 module.exports = {
   startReadyTimer: (ms, matchIn, client) => {
-    const cache = require('node-file-cache').create({
+    let cache = require('node-file-cache').create({
       file: `${process.cwd()}/app/data/matches.json`,
       life: 240,
     });
@@ -21,7 +21,15 @@ module.exports = {
     });
 
     setTimeout(() => {
+      // This is so we read the file again \o/
+      cache = require('node-file-cache').create({
+        file: `${process.cwd()}/app/data/matches.json`,
+        life: 240,
+      });
+
       let match = cache.get(matchIn) || [];
+
+      console.log(match);
 
       if (match) {
         if (!match.allPlayersConfirmed) {
