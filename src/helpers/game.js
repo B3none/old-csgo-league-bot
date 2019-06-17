@@ -96,7 +96,6 @@ module.exports = {
     let team2 = [];
 
     let json = {
-      matchId: Math.floor(Math.random() * 100),
       hasStarted: false,
       hasEnded: false,
       allPlayersConfirmed: false,
