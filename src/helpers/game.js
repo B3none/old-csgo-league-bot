@@ -12,18 +12,6 @@ const cache = require('node-file-cache').create({
   life: 240
 });
 
-// const generateMatchId = length => {
-//   let result = '';
-//   const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//   const charactersLength = characters.length;
-//
-//   for (let i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//   }
-//
-//   return result;
-// };
-
 module.exports = {
   finalizeGameData: (client, teams) => {
     //RESET THE QUEUE
@@ -74,21 +62,21 @@ module.exports = {
   },
   sendAwaitConfirmation: client => {
     queue.get()
-    .then(players => {
-      players.map(player => {
-        queue.setConfirmable(player.id, true);
-        client.users.find(x => x.id === player.id).send({
-          embed: {
-            author: {
-              name: client.user.username,
-              icon_url: client.user.avatarURL
-            },
-            color: Number(config.colour),
-            description: `Please confirm the match inside by typing \`${config.prefix}ready\` in #${config.queue_text_channel} text channel. You have ${(config.match_confirmation_timer / 1000)} seconds.`
-          }
-        })
+      .then(players => {
+        players.map(player => {
+          queue.setConfirmable(player.id, true);
+          client.users.find(x => x.id === player.id).send({
+            embed: {
+              author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL
+              },
+              color: Number(config.colour),
+              description: `Please confirm the match inside by typing \`${config.prefix}ready\` in #${config.queue_text_channel} text channel. You have ${(config.match_confirmation_timer / 1000)} seconds.`
+            }
+          })
+        });
       });
-    });
   },
   initialize: (players, client) => {
     //GET THE ELO. AND SETUP TEAMS.
