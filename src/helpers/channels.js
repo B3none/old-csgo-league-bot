@@ -8,12 +8,22 @@ module.exports = {
   checkChannels: client => {
     console.log('Checking if all required channels exist.');
 
-    client.guilds.map(guild => {
+    client.guilds.map(async guild => {
+      let category = guild.channels.find(x => x.type === 'category' && x.name === config.category);
+      if (!category) {
+        category = await guild.createChannel(config.category, {
+          type: 'category'
+        });
+      }
+
+      const categoryChildren = category.children;
+
       if (config.queue_text_channel !== '') {
-        let queuingTextChannel = guild.channels.find(x => x.name === config.queue_text_channel.toString().toLowerCase() && x.type === 'text');
+        let queuingTextChannel = categoryChildren.find(x => x.name === config.queue_text_channel.toString().toLowerCase() && x.type === 'text');
         if (!queuingTextChannel) {
           guild.createChannel(config.queue_text_channel, {
-            type: 'text'
+            type: 'text',
+            parent: category
           })
             .then(newChannel => {
               fs.writeFile(`${process.cwd()}/app/data/text_channels.json`, JSON.stringify({queueChannelId: newChannel.id}), error);
@@ -28,7 +38,8 @@ module.exports = {
         let queuingVoiceChannel = guild.channels.find(x => x.name === config.queue_voice_channel.toString().toLowerCase() && x.type === 'voice');
         if (!queuingVoiceChannel) {
           guild.createChannel(config.queue_voice_channel, {
-            type: 'voice'
+            type: 'voice',
+            parent: category
           })
             .then(channel => {
               fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: channel.id}), error);
@@ -43,7 +54,8 @@ module.exports = {
         let afkVoiceChannel = guild.channels.find(x => x.name === config.afk_channel.toString());
         if (!afkVoiceChannel) {
           guild.createChannel(config.afk_channel, {
-            type: 'voice'
+            type: 'voice',
+            parent: category
           })
             .then(() => {
               let channelId = client.channels.find(x => x.name === config.afk_channel.toString());
@@ -59,12 +71,14 @@ module.exports = {
         console.log('Creating and setting up channels for each team.');
 
         guild.createChannel('Team 1', {
-          type: 'voice'
+          type: 'voice',
+          parent: category
         })
           .then(() => {
             team1 = client.channels.find(x => x.name === 'Team 1');
             guild.createChannel('Team 2', {
-              type: 'voice'
+              type: 'voice',
+              parent: category
             })
               .then(() => {
                 team2 = client.channels.find(x => x.name === 'Team 2');
