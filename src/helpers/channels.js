@@ -37,7 +37,8 @@ module.exports = {
         if (!queuingVoiceChannel) {
           queuingVoiceChannel = await guild.createChannel(config.queue_voice_channel, {
             type: 'voice',
-            parent: category
+            parent: category,
+            userLimit: config.players_per_match
           });
         }
 
@@ -63,7 +64,8 @@ module.exports = {
 
         team1 = await guild.createChannel('Team 1', {
           type: 'voice',
-          parent: category
+          parent: category,
+          userLimit: Math.ceil(config.players_per_match / 2)
         });
       }
 
@@ -73,7 +75,8 @@ module.exports = {
 
         team2 = await guild.createChannel('Team 2', {
           type: 'voice',
-          parent: category
+          parent: category,
+          userLimit: Math.ceil(config.players_per_match / 2)
         });
       }
 
