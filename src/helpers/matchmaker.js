@@ -96,10 +96,8 @@ module.exports = {
         .catch(error => {
           console.log((error.response && error.response.data) || error);
         })
-    } else if (newUserChannel) {
-      if (newUserChannel.id !== voiceChannels.queueChannelId) {
-        queue.remove(oldMember.id);
-      }
+    } else if (newUserChannel && newUserChannel.id !== voiceChannels.queueChannelId) {
+      queue.remove(oldMember.id);
     } else if (newUserChannel === undefined) {
       queue.remove(oldMember.id);
     }

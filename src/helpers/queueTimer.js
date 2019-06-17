@@ -13,7 +13,7 @@ module.exports = {
     setTimeout(() => {
       let match = cache.get(matchIn) || [];
 
-      console.log(match);
+      console.log('----------------- NEW MATCH -------------------');
 
       if (match) {
         if (!match.allPlayersConfirmed) {
@@ -21,10 +21,13 @@ module.exports = {
           let absentPlayersString = ``;
 
           const teamOne = match.team1.map(player => {
-            return new Promise(async resolve => {
+            return new Promise(resolve => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;
-                await channels.toAfkChannel(client, player.id);
+                channels.toAfkChannel(client, player.id)
+                  .then(() => {
+                    resolve();
+                  });
               }
 
               resolve();
@@ -32,18 +35,21 @@ module.exports = {
           });
 
           const teamTwo = match.team2.map(player => {
-            return new Promise(async resolve => {
+            return new Promise(resolve => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;
-                await channels.toAfkChannel(client, player.id);
+                channels.toAfkChannel(client, player.id)
+                  .then(() => {
+                    resolve();
+                  });
               }
-
-              resolve();
             });
           });
 
           Promise.all(teamOne).then(() => {
+            console.log('team one should be moved');
             Promise.all(teamTwo).then(() => {
+              console.log('team two should be moved');
               client.channels.get(textChannels.queueChannelId.toString()).send({
                 embed: {
                   author: {
