@@ -11,7 +11,7 @@ const matchMaker = require('./helpers/matchmaker.js');
 client.on('ready', () => {
     console.log(`The League Discord Bot has been started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
     matchMaker.setupQueueingChannels(client);
-    client.user.setActivity(config.url);
+    client.user.setActivity(config.url.replace(/(^\w+:|^)\/\//, ''));
 });
 
 client.on('message', message => messageHelper.message(client, config.prefix, message));
