@@ -12,6 +12,10 @@ module.exports = {
       team2: []
     };
   },
+  set: async (matchId, match) => {
+    const cache = getMatchesCache();
+    return cache.set(matchId, match);
+  },
   getPlayers: matchId => {
     const cache = getMatchesCache();
     const matchData = cache.get(matchId) || {
@@ -35,12 +39,12 @@ module.exports = {
     };
 
     let matchId = false;
+    let foundPlayer = false;
     index.map(match => {
       if (matchId === -1 && match && match.val) {
         matchId = match.key;
         match = match.val;
 
-        let foundPlayer = false;
         match.team1.map(player => {
           if (!foundPlayer && player.id === playerId) {
             foundPlayer = true;

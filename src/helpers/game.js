@@ -122,7 +122,7 @@ module.exports = {
     console.log('should be setting ready status');
 
     const matchId = match.findMatchId(playerId);
-
+    console.log(matchId);
     match.get(matchId)
       .then(matchData => {
         let hasAllPlayerConfirmed = matchData.team1.length > 0 && matchData.team2.length > 0;
@@ -152,7 +152,7 @@ module.exports = {
 
         console.log('setting match data');
         console.log(matchData);
-        cache.set(matchId, matchData);
+        match.set(matchId, matchData);
 
         if (matchData.allPlayersConfirmed) {
           console.log('All players have confirmed.');

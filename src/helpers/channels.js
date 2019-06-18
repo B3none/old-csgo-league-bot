@@ -89,7 +89,6 @@ module.exports = {
         client.fetchUser(player.id).then(res => {
           res.lastMessage.member.setVoiceChannel(client.channels.get(team1channel));
         });
-        //client.fetchUser(player.id).lastMessage.member.setVoiceChannel("Team 1");
       });
     }
 
