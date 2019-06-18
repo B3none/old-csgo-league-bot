@@ -6,7 +6,6 @@ gulp.task('default', () =>
     exec: 'node-inspector & node --inspect',
     script: 'src/index.js',
     watch: ['src/*/**', 'src/*', 'app/config.json'],
-    // args: ['--inspect'],
     ext: 'js'
   })
 );
