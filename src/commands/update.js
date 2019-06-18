@@ -4,7 +4,7 @@ const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0]],
+  aliases: [path.basename(__filename).split('.')[0], 'chck', 'chcek', 'check'],
   permissions: [],
   description: 'Allows a user to update their Discord name on the league service.',
   command: (client, message) => {
@@ -31,7 +31,7 @@ module.exports = {
 
           if (error === 'link_discord') {
             message.embed.fields.push({
-              name: 'Please link your discord with our system first using the !login command.'
+              name: 'Please link your discord with our system first using the \`!login\` command.'
             });
           }
 
@@ -39,12 +39,16 @@ module.exports = {
           return;
         }
 
-        message.channel.send({
-          embed: {
-            color: Number(config.colour),
-            description: `<@${author.id}> You've successfully updated your name on our system.`
-          }
-        });
+        let user = client.users.find(user => user.id && message.author.id);
+        user.addRoles(client.roles.find(role => role.name === config.linked_role))
+          .then(() => {
+            message.channel.send({
+              embed: {
+                color: Number(config.colour),
+                description: `<@${author.id}> You've successfully updated your name on our system.`
+              }
+            });
+          });
       })
       .catch(o_O => {
         message.author.send({

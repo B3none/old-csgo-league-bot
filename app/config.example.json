@@ -7,6 +7,7 @@
   "category": "league",
   "queue_text_channel": "queue",
   "queue_voice_channel": "queue",
+  "linked_role": "linked",
   "afk_channel": "afk",
   "players_per_match": 10,
   "match_confirmation_timer": 60000
