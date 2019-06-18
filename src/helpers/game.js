@@ -60,25 +60,26 @@ module.exports = {
         }
       });
   },
-  sendAwaitConfirmation: client => {
-    queue.get()
-      .then(players => {
-        players.map(player => {
-          queue.setConfirmable(player.id, true);
-          client.users.find(x => x.id === player.id).send({
-            embed: {
-              author: {
-                name: client.user.username,
-                icon_url: client.user.avatarURL
-              },
-              color: Number(config.colour),
-              description: `Please confirm the match inside by typing \`${config.prefix}ready\` in #${config.queue_text_channel} text channel. You have ${(config.match_confirmation_timer / 1000)} seconds.`
-            }
-          })
-        });
-      });
+  sendAwaitConfirmation: (client, matchId) => {
+    const match = require('./match');
+    const players = match.getPlayers(matchId);
+
+    players.map(player => {
+      queue.setConfirmable(player.id, true);
+
+      client.users.find(x => x.id === player.id).send({
+        embed: {
+          author: {
+            name: client.user.username,
+            icon_url: client.user.avatarURL
+          },
+          color: Number(config.colour),
+          description: `Please confirm the match inside by typing \`${config.prefix}ready\` in the #${config.queue_text_channel} text channel. You have ${(config.match_confirmation_timer / 1000)} seconds.`
+        }
+      })
+    });
   },
-  initialize: (players, client) => {
+  initialize: (client, players) => {
     //GET THE ELO. AND SETUP TEAMS.
     let team1 = [];
     let team2 = [];
@@ -93,17 +94,17 @@ module.exports = {
 
     let playersEloSorted = [];
     for (let i = 0; i < players.length; i++) {
-      playersEloSorted.push(players[i].elo);
+      playersEloSorted.push(players[i].score);
     }
 
     playersEloSorted = playersEloSorted.sort();
 
     for (let i = 0; i < playersEloSorted.length; i += 2) {
-      team1.push(players.find(player => player.elo === playersEloSorted[i]));
+      team1.push(players.find(player => player.score === playersEloSorted[i]));
     }
 
     for (let i = 1; i < playersEloSorted.length; i += 2) {
-      team2.push(players.find(player => player.elo === playersEloSorted[i]));
+      team2.push(players.find(player => player.score === playersEloSorted[i]));
     }
 
     json.team1 = team1;
@@ -111,17 +112,21 @@ module.exports = {
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
     // const matchId = generateMatchId(10);
-    cache.set(/*matchId*/'match0', json);
-    queueTimer.startReadyTimer(config.match_confirmation_timer, /*matchId*/'match0', client);
+    const matchId = `match-${cache.size()}`;
+    cache.set(matchId, json);
+    queueTimer.startReadyTimer(config.match_confirmation_timer, matchId, client);
 
-    // return matchId;
+    return matchId;
   },
-  changePlayerReadyStatus: (playerid, ready, client) => {
-    const matchData = cache.get('match0') || [];
+  changePlayerReadyStatus: (playerId, ready, client) => {
+    const match = require('./match');
+    console.log('should be setting ready status');
+    const matchId = match.findMatchId(playerId);
+    const matchData = match.get(matchId);
 
     let hasAllPlayerConfirmed = true;
     matchData.team1.map(item => {
-      if (item.id === playerid) {
+      if (item.id === playerId) {
         item.confirmed = ready;
       }
 
@@ -132,7 +137,7 @@ module.exports = {
 
     if (hasAllPlayerConfirmed) {
       matchData.team2.map(item => {
-        if (item.id === playerid) {
+        if (item.id === playerId) {
           item.confirmed = ready;
         }
 
@@ -143,18 +148,19 @@ module.exports = {
     }
 
     matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
-    cache.set('match0', matchData);
+    cache.set(matchId, matchData);
+
     if (matchData.allPlayersConfirmed) {
       console.log('All players have confirmed.');
 
       let team1Message = '';
       matchData.team1.map(player => {
-        team1Message += `<@${player.id}> | \`${player.elo} elo\`\n`;
+        team1Message += `<@${player.id}> | \`${player.score} points\`\n`;
       });
 
       let team2Message = '';
       matchData.team2.map(player => {
-        team2Message += `<@${player.id}> | \`${player.elo} elo\`\n`;
+        team2Message += `<@${player.id}> | \`${player.score} points\`\n`;
       });
 
       client.channels.get(textChannels.queueChannelId.toString()).send({

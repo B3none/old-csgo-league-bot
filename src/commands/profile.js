@@ -105,7 +105,7 @@ module.exports = {
       if (usr) {
         axios.get(`/player/discord/${usr.id}`)
           .then(response => {
-            const { elo, steam } = response.data;
+            const { score, steam } = response.data;
 
             message.channel.send({
               embed: {
@@ -114,7 +114,7 @@ module.exports = {
                   url: ` https://league.voidrealitygaming.co.uk/profile/${steam}`,
                   name: `${usr.username}`,
                 },
-                description : `Elo: ${elo}`
+                description : `score: ${score}`
               }
             });
           })
@@ -127,7 +127,7 @@ module.exports = {
                   name: `${client.user.username}`
                 },
                 color: Number(config.colour),
-                description: `There was an error getting your elo`,
+                description: `There was an error getting your score`,
                 fields: []
               }
             });

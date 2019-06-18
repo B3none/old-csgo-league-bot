@@ -21,7 +21,7 @@ const reloadQueue = client => {
       queueMembers.map(member => {
         axios.get(`/player/discord/${member.id}`)
           .then(response => {
-            const { steam, elo, discord_name } = response.data;
+            const { steam, score, discord_name } = response.data;
 
             if (discord_name !== member.user.username) {
               axios.post(`/discord/update/${member.id}`, {
@@ -35,7 +35,7 @@ const reloadQueue = client => {
               confirmable: false,
               name: member.user.username,
               steam,
-              elo
+              score
             });
 
             //CHECK IF THERE ARE 10 peoples inside a voice channel
@@ -45,8 +45,8 @@ const reloadQueue = client => {
                   console.log('Reached enough players to start a game, sending confirmation requests.');
                   const game = require('./game');
 
-                  game.initialize(players, client);
-                  game.sendAwaitConfirmation(client, players);
+                  const matchId = game.initialize(client, players);
+                  game.sendAwaitConfirmation(client, matchId);
                 }
               });
           })
@@ -77,7 +77,14 @@ module.exports = {
       //GET THE PLAYERS ELO FROM THE API.
       axios.get(`/player/discord/${newMember.id}`)
         .then((response) => {
-          queue.add({id: newMember.id, confirmed: false, confirmable: false, name: newMember.user.username, steam: response.data.steam, elo: response.data.elo});
+          queue.add({
+            id: newMember.id,
+            confirmed: false,
+            confirmable: false,
+            name: newMember.user.username,
+            steam: response.data.steam,
+            score: response.data.score
+          });
 
           //CHECK IF THERE ARE 10 people inside a voice channel
           queue.get()
@@ -86,8 +93,8 @@ module.exports = {
                 console.log('Reached enough players to start a game, sending confirmation requests.');
                 const game = require('./game');
 
-                game.initialize(players, client);
-                game.sendAwaitConfirmation(client, players);
+                let matchId = game.initialize(client, players);
+                game.sendAwaitConfirmation(client, matchId);
               }
             });
         })
