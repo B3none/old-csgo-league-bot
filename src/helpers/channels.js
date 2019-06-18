@@ -2,7 +2,6 @@ const fs = require('fs');
 const error = require('./error');
 const config = require('../../app/config.json');
 const afkChannel = require('../../app/data/afk_channel.json');
-const teamChannels = require('../../app/data/team_channels');
 
 module.exports = {
   checkChannels: client => {
@@ -57,49 +56,26 @@ module.exports = {
 
         fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: afkVoiceChannel.id}), error);
       }
-
-      let team1 = categoryChildren.find(x => x.name === 'Team 1');
-      if (!team1) {
-        team1 = await guild.createChannel('Team 1', {
-          type: 'voice',
-          parent: category,
-          userLimit: Math.ceil(config.players_per_match / 2)
-        });
-      }
-
-      let team2 = categoryChildren.find(x => x.name === 'Team 2');
-      if (!team2) {
-        team2 = await guild.createChannel('Team 2', {
-          type: 'voice',
-          parent: category,
-          userLimit: Math.ceil(config.players_per_match / 2)
-        });
-      }
-
-      fs.writeFile(`${process.cwd()}/app/data/team_channels.json`, JSON.stringify({team1: team1.id, team2: team2.id}), error);
     });
 
     console.log('All channels have been setup.');
   },
-  switchToTeamChannels: (client, team1, team2) => {
-    //GET THE CHANNELS.
-    if (teamChannels.team1) {
-      let team1channel = teamChannels.team1;
-      team1.map(player => {
-        client.fetchUser(player.id).then(res => {
-          res.lastMessage.member.setVoiceChannel(client.channels.get(team1channel));
-        });
-      });
-    }
+  switchToTeamChannels: async (client, matchId, team1, team2) => {
+    const match = require('./match');
+    const matchData = await match.get(matchId);
 
-    if (teamChannels.team2) {
-      let team2channel = teamChannels.team2;
-      team2.map(player => {
-        client.fetchUser(player.id).then(res => {
-          res.lastMessage.member.setVoiceChannel(client.channels.get(team2channel));
-        });
+    // GET THE CHANNELS.
+    team1.map(player => {
+      client.fetchUser(player.id).then(res => {
+        res.lastMessage.member.setVoiceChannel(client.channels.get(matchData.team1Channel));
       });
-    }
+    });
+
+    team2.map(player => {
+      client.fetchUser(player.id).then(res => {
+        res.lastMessage.member.setVoiceChannel(client.channels.get(matchData.team2Channel));
+      });
+    });
 
     const game = require('./game');
     game.finalizeGameData(client, {

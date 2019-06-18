@@ -81,10 +81,12 @@ module.exports = {
   },
   initialize: (client, players) => {
     //GET THE ELO. AND SETUP TEAMS.
-
     let matchData = {
       waitingForServer: true,
       allPlayersConfirmed: false,
+      matchCategory: '',
+      team1Channel: '',
+      team2Channel: '',
       team1: [],
       team2: []
     };
@@ -115,7 +117,6 @@ module.exports = {
       matchData.team2.push(players.find(player => player.score === playersEloSorted[i]));
     }
 
-    //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
     const matchId = `match-${cache.size()}`;
     cache.set(matchId, matchData);
     queueTimer.startReadyTimer(config.match_confirmation_timer, matchId, client);
@@ -178,8 +179,35 @@ module.exports = {
             }
           });
 
-          //SEND THEM TO DIFFERENT CHANNELS.
-          channels.switchToTeamChannels(client, matchData.team1, matchData.team2);
+          const guild = client.guilds.first();
+          guild.createChannel(matchId, {
+            type: 'category'
+          })
+            .then(category => {
+              matchData.matchCategory = category.id;
+              guild.createChannel('Team 1', {
+                type: 'voice',
+                parent: category,
+                userLimit: Math.ceil(config.players_per_match / 2)
+              })
+                .then(team1 => {
+                  matchData.team1Channel = team1.id;
+                  guild.createChannel('Team 2', {
+                    type: 'voice',
+                    parent: category,
+                    userLimit: Math.ceil(config.players_per_match / 2)
+                  })
+                    .then(team2 => {
+                      matchData.team2Channel = team2.id;
+
+                      match.set(matchId, matchData)
+                        .then(() => {
+                          //SEND THEM TO DIFFERENT CHANNELS.
+                          channels.switchToTeamChannels(client, matchId, matchData.team1, matchData.team2);
+                        });
+                    });
+                });
+            });
         }
       });
   }

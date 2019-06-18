@@ -7,7 +7,6 @@ const dataFiles = [
   'afk_channel.json',
   'matches.json',
   'queue.json',
-  'team_channels.json',
   'text_channels.json',
   'voice_channels.json',
 ];

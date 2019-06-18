@@ -21,7 +21,6 @@ module.exports = {
     });
 
     setTimeout(() => {
-      let match = cache.get(matchId) || [];
       match.get(matchId)
         .then(matchData => {
           if (!matchData || matchData.allPlayersConfirmed) {
