@@ -1,9 +1,8 @@
 const getMatchesCache = () => require('node-file-cache').create({
-  file: `${process.cwd()}/app/data/matches.json`,
-  life: 240
+  file: `${process.cwd()}/app/data/matches.json`
 });
 
-const getRawMatches = () => require('/app/data/matches');
+const getRawMatches = () => require(`${process.cwd()}/app/data/matches`);
 
 module.exports = {
   get: async matchId => {
@@ -20,9 +19,6 @@ module.exports = {
       team2: []
     };
 
-    console.log(matchId);
-    console.log(matchData);
-
     let players = [];
     matchData.team1.map(player => {
       players.push(player);
@@ -34,10 +30,38 @@ module.exports = {
     return players;
   },
   findMatchId: playerId => {
-    console.log(playerId);
-    const rawMatches = getRawMatches() || {};
+    const { index } = getRawMatches() || {
+      index: []
+    };
 
-    console.log('all-matches');
-    console.log(rawMatches);
+    let matchId = -1;
+    index.map(match => {
+      if (matchId === -1 && match && match.val) {
+        matchId = match.key;
+        match = match.val;
+
+        let foundPlayer = false;
+        match.team1.map(player => {
+          if (!foundPlayer && player.id === playerId) {
+            foundPlayer = true;
+          }
+        });
+        match.team2.map(player => {
+          if (!foundPlayer && player.id === playerId) {
+            foundPlayer = true;
+          }
+        });
+
+        if (!foundPlayer) {
+          matchId = -1;
+        }
+      }
+    });
+
+    return matchId;
+  },
+  end: matchId => {
+    const cache = getMatchesCache();
+    cache.set(matchId, {});
   }
 };

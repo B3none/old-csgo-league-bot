@@ -3,12 +3,12 @@ const config = require('../../app/config.json');
 const voiceChannels = require('../../app/data/voice_channels');
 const matchmaker = require('./matchmaker.js');
 const channels = require('./channels.js');
+const match = require('./match');
 
 module.exports = {
-  startReadyTimer: (ms, matchIn, client) => {
+  startReadyTimer: (ms, matchId, client) => {
     const cache = require('node-file-cache').create({
-      file: `${process.cwd()}/app/data/matches.json`,
-      life: 240,
+      file: `${process.cwd()}/app/data/matches.json`
     });
 
     let queueChannel = client.channels.find(channel => channel.id === voiceChannels.queueChannelId);
@@ -21,14 +21,16 @@ module.exports = {
     });
 
     setTimeout(() => {
-      let match = cache.get(matchIn) || [];
+      match.get(matchId)
+        .then(matchData => {
+          if (!matchData || matchData.allPlayersConfirmed) {
+            return;
+          }
 
-      if (match) {
-        if (!match.allPlayersConfirmed) {
           console.log('All players haven\'t accepted.');
           let absentPlayersString = ``;
 
-          const teamOne = match.team1.map(player => {
+          const teamOne = matchData.team1.map(player => {
             return new Promise(resolve => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;
@@ -42,7 +44,7 @@ module.exports = {
             });
           });
 
-          const teamTwo = match.team2.map(player => {
+          const teamTwo = matchData.team2.map(player => {
             return new Promise(resolve => {
               if (!player.confirmed) {
                 absentPlayersString += `\n${player.name}`;
@@ -67,17 +69,17 @@ module.exports = {
                 }
               });
 
-              cache.clear(matchIn);
+              match.end(matchId)
+                .then(() => {
+                  queueChannel.edit({
+                    userLimit: config.players_per_match
+                  });
 
-              queueChannel.edit({
-                userLimit: config.players_per_match
-              });
-
-              matchmaker.reloadQueue(client);
+                  matchmaker.reloadQueue(client);
+                });
             });
           });
-        }
-      }
+        });
     }, ms);
   }
 };

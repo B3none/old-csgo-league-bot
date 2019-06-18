@@ -8,8 +8,7 @@ const error = require('./error');
 const axios = axiosHelper.get();
 
 const cache = require('node-file-cache').create({
-  file: `${process.cwd()}/app/data/matches.json`,
-  life: 240
+  file: `${process.cwd()}/app/data/matches.json`
 });
 
 module.exports = {
@@ -121,61 +120,67 @@ module.exports = {
   changePlayerReadyStatus: (playerId, ready, client) => {
     const match = require('./match');
     console.log('should be setting ready status');
+
     const matchId = match.findMatchId(playerId);
-    const matchData = match.get(matchId);
 
-    let hasAllPlayerConfirmed = true;
-    matchData.team1.map(item => {
-      if (item.id === playerId) {
-        item.confirmed = ready;
-      }
+    match.get(matchId)
+      .then(matchData => {
+        let hasAllPlayerConfirmed = true;
+        matchData.team1.map(item => {
+          if (item.id === playerId) {
+            item.confirmed = ready;
+          }
 
-      if (!item.confirmed) {
-        hasAllPlayerConfirmed = false;
-      }
-    });
+          if (!item.confirmed) {
+            hasAllPlayerConfirmed = false;
+          }
+        });
 
-    if (hasAllPlayerConfirmed) {
-      matchData.team2.map(item => {
-        if (item.id === playerId) {
-          item.confirmed = ready;
+        if (hasAllPlayerConfirmed) {
+          matchData.team2.map(item => {
+            if (item.id === playerId) {
+              item.confirmed = ready;
+            }
+
+            if (!item.confirmed) {
+              hasAllPlayerConfirmed = false;
+            }
+          });
         }
 
-        if (!item.confirmed) {
-          hasAllPlayerConfirmed = false;
+        matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
+
+        console.log('setting match data');
+        console.log(matchData);
+        cache.set(matchId, matchData);
+
+        if (matchData.allPlayersConfirmed) {
+          console.log('All players have confirmed.');
+
+          let team1Message = '';
+          matchData.team1.map(player => {
+            team1Message += `<@${player.id}> | \`${player.score} points\`\n`;
+          });
+
+          let team2Message = '';
+          matchData.team2.map(player => {
+            team2Message += `<@${player.id}> | \`${player.score} points\`\n`;
+          });
+
+          client.channels.get(textChannels.queueChannelId.toString()).send({
+            embed: {
+              author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL
+              },
+              color: Number(config.colour),
+              description: `\`All players have confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
+            }
+          });
+
+          //SEND THEM TO DIFFERENT CHANNELS.
+          channels.switchToTeamChannels(client, matchData.team1, matchData.team2);
         }
       });
-    }
-
-    matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
-    cache.set(matchId, matchData);
-
-    if (matchData.allPlayersConfirmed) {
-      console.log('All players have confirmed.');
-
-      let team1Message = '';
-      matchData.team1.map(player => {
-        team1Message += `<@${player.id}> | \`${player.score} points\`\n`;
-      });
-
-      let team2Message = '';
-      matchData.team2.map(player => {
-        team2Message += `<@${player.id}> | \`${player.score} points\`\n`;
-      });
-
-      client.channels.get(textChannels.queueChannelId.toString()).send({
-        embed: {
-          author: {
-            name: client.user.username,
-            icon_url: client.user.avatarURL
-          },
-          color: Number(config.colour),
-          description: `\`All players have confirmed. You will now be sent to the team channels!\`\n\nTeam 1: \n${team1Message} \n\nTeam 2: \n${team2Message}  `
-        }
-      });
-
-      //SEND THEM TO DIFFERENT CHANNELS.
-      channels.switchToTeamChannels(client, matchData.team1, matchData.team2);
-    }
   }
 };
