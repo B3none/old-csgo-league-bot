@@ -3,7 +3,7 @@
   "colour": "0xffffff",
   "prefix": "!",
   "url": "http://localhost:5000",
-  "api_key": "",
+  "api_key": "your_web_api_key (in the env.php)",
   "category": "league",
   "queue_text_channel": "queue",
   "queue_voice_channel": "queue",
