@@ -1,8 +1,10 @@
+const fs = require('fs');
+
 const getMatchesCache = () => require('node-file-cache').create({
   file: `${process.cwd()}/app/data/matches.json`
 });
 
-const getRawMatches = () => require(`${process.cwd()}/app/data/matches`);
+const getRawMatches = () => fs.readFileSync(`${process.cwd()}/app/data/matches.json`);
 
 module.exports = {
   get: async matchId => {
@@ -34,27 +36,37 @@ module.exports = {
     return players;
   },
   findMatchId: playerId => {
-    const { index } = getRawMatches() || {
+    const raw = getRawMatches();
+    const { index } = JSON.parse(raw) || {
       index: []
     };
+
+    if (!index || !index.length) {
+      return false;
+    }
 
     let matchId = false;
     let foundPlayer = false;
     index.map(match => {
-      if (matchId === -1 && match && match.val) {
+      if (match && match.val) {
         matchId = match.key;
         match = match.val;
 
-        match.team1.map(player => {
-          if (!foundPlayer && player.id === playerId) {
-            foundPlayer = true;
-          }
-        });
-        match.team2.map(player => {
-          if (!foundPlayer && player.id === playerId) {
-            foundPlayer = true;
-          }
-        });
+        if (match.team1) {
+          match.team1.map(player => {
+            if (!foundPlayer && player.id === playerId) {
+              foundPlayer = true;
+            }
+          });
+        }
+
+        if (match.team2) {
+          match.team2.map(player => {
+            if (!foundPlayer && player.id === playerId) {
+              foundPlayer = true;
+            }
+          });
+        }
 
         if (!foundPlayer) {
           matchId = false;
@@ -65,7 +77,19 @@ module.exports = {
     return matchId;
   },
   end: async matchId => {
-    const cache = getMatchesCache();
-    cache.set(matchId, {});
+    const file = getRawMatches();
+
+    if (!file.index || !file.index.length) {
+      return;
+    }
+
+    file.index.filter(match => {
+      if (match && match.key) {
+        return matchId !== match.key;
+      }
+    });
+
+    const contents = JSON.stringify(file);
+    fs.writeFile(`${process.cwd()}/app/data/matches.json`, contents, error);
   }
 };

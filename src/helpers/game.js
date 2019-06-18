@@ -4,6 +4,7 @@ const config = require('../../app/config');
 const textChannels = require('../../app/data/text_channels');
 const queueTimer = require('./queueTimer');
 const axiosHelper = require('./axios');
+const match = require('./match');
 const error = require('./error');
 const axios = axiosHelper.get();
 
@@ -91,6 +92,17 @@ module.exports = {
       team2: team2
     };
 
+    let alreadyInMatch = [];
+    players.map(player => {
+      if (match.findMatchId(player.id)) {
+        alreadyInMatch.push(player);
+      }
+    });
+
+    if (alreadyInMatch.length > 0) {
+      return;
+    }
+
     let playersEloSorted = [];
     for (let i = 0; i < players.length; i++) {
       playersEloSorted.push(players[i].score);
@@ -125,7 +137,7 @@ module.exports = {
     console.log(matchId);
     match.get(matchId)
       .then(matchData => {
-        let hasAllPlayerConfirmed = matchData.team1.length > 0 && matchData.team2.length > 0;
+        let hasAllPlayerConfirmed = matchData.team1.length > 0 || matchData.team2.length > 0;
         matchData.team1.map(item => {
           if (item.id === playerId) {
             item.confirmed = ready;
