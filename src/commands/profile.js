@@ -12,13 +12,20 @@ module.exports = {
     if ((message.content.length - config.prefix.length) === 3) {
       axios.get(`/player/discord/${author.id}`)
         .then(response => {
-          const { elo, steam } = response.data;
+          const {
+            score, steam, kills, deaths,
+            assists, rounds_tr, rounds_ct,
+            head, damage
+          } = response.data;
+
+          const totalRounds = parseInt(rounds_tr) + parseInt(rounds_ct);
+
           message.channel.send({
             embed:{
               color: Number(config.colour),
               author: {
                   url: `${config.url}/profile/${steam}`,
-                  name: `${author.username}'s Profile | Elo: ${elo}`,
+                  name: `${author.username}'s Profile | Points: ${score}`,
               },
               thumbnail: {
                 url: author.avatarURL
@@ -26,42 +33,42 @@ module.exports = {
               fields: [
                 {
                   name: `Kills:`,
-                  value: `kills`,
+                  value: kills,
                   inline: true,
                 },
                 {
                   name: `Assists:`,
-                  value: `assists`,
+                  value: assists,
                   inline: true,
                 },
                 {
                   name: `KDR:`,
-                  value: `kdr`,
+                  value: (kills / (deaths || 1)).toString(),
                   inline: true,
                 },
                 {
                   name: `Rounds Played:`,
-                  value: `rounds-played`,
+                  value: totalRounds,
                   inline: true,
                 },
                 {
                   name: `Deaths:`,
-                  value: `deaths`,
+                  value: deaths,
                   inline: true,
                 },
                 {
                   name: `Headshots:`,
-                  value: `hs`,
+                  value: head,
                   inline: true,
                 },
                 {
                   name: `HS Percentage:`,
-                  value: `hs-percentage`,
+                  value: ((head / kills) * 100).toString(),
                   inline: true,
                 },
                 {
                   name: `ADR:`,
-                  value: `adr`,
+                  value: (damage / totalRounds).toString(),
                   inline: true,
                 },
               ]
@@ -96,37 +103,35 @@ module.exports = {
       }
 
       if (usr) {
-        axios.post(`/player/discord/${usr.id}`, {
-            discord_name: undefined
-          })
-            .then(response => {
-              const { elo, steam } = response.data;
+        axios.get(`/player/discord/${usr.id}`)
+          .then(response => {
+            const { elo, steam } = response.data;
 
-              message.channel.send({
-                embed: {
-                  color: Number(config.colour),
-                  author: {
-                    url: ` https://league.voidrealitygaming.co.uk/profile/${steam}`,
-                    name: `${usr.username}`,
-                  },
-                  description : `Elo: ${elo}`
-                }
-              });
-            })
-            .catch(o_O => {
-              message.author.send({
-                embed: {
-                  author: {
-                    icon_url: client.user.avatarURL,
-                    url: ` https://league.voidrealitygaming.co.uk/profile/steamid `,
-                    name: `${client.user.username}`
-                  },
-                  color: Number(config.colour),
-                  description: `There was an error getting your elo`,
-                  fields: []
-                }
-              });
+            message.channel.send({
+              embed: {
+                color: Number(config.colour),
+                author: {
+                  url: ` https://league.voidrealitygaming.co.uk/profile/${steam}`,
+                  name: `${usr.username}`,
+                },
+                description : `Elo: ${elo}`
+              }
             });
+          })
+          .catch(o_O => {
+            message.author.send({
+              embed: {
+                author: {
+                  icon_url: client.user.avatarURL,
+                  url: ` https://league.voidrealitygaming.co.uk/profile/steamid `,
+                  name: `${client.user.username}`
+                },
+                color: Number(config.colour),
+                description: `There was an error getting your elo`,
+                fields: []
+              }
+            });
+          });
       }
     }
   }
