@@ -81,15 +81,12 @@ module.exports = {
   },
   initialize: (client, players) => {
     //GET THE ELO. AND SETUP TEAMS.
-    let team1 = [];
-    let team2 = [];
 
-    let json = {
-      hasStarted: false,
-      hasEnded: false,
+    let matchData = {
+      waitingForServer: true,
       allPlayersConfirmed: false,
-      team1: team1,
-      team2: team2
+      team1: [],
+      team2: []
     };
 
     let alreadyInMatch = [];
@@ -111,30 +108,26 @@ module.exports = {
     playersEloSorted = playersEloSorted.sort();
 
     for (let i = 0; i < playersEloSorted.length; i += 2) {
-      team1.push(players.find(player => player.score === playersEloSorted[i]));
+      matchData.team1.push(players.find(player => player.score === playersEloSorted[i]));
     }
 
     for (let i = 1; i < playersEloSorted.length; i += 2) {
-      team2.push(players.find(player => player.score === playersEloSorted[i]));
+      matchData.team2.push(players.find(player => player.score === playersEloSorted[i]));
     }
-
-    json.team1 = team1;
-    json.team2 = team2;
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
     // const matchId = generateMatchId(10);
     const matchId = `match-${cache.size()}`;
-    cache.set(matchId, json);
+    cache.set(matchId, matchData);
     queueTimer.startReadyTimer(config.match_confirmation_timer, matchId, client);
 
     return matchId;
   },
   changePlayerReadyStatus: (playerId, ready, client) => {
     const match = require('./match');
-    console.log('should be setting ready status');
 
     const matchId = match.findMatchId(playerId);
-    console.log(matchId);
+
     match.get(matchId)
       .then(matchData => {
         let hasAllPlayerConfirmed = matchData.team1.length > 0 || matchData.team2.length > 0;
