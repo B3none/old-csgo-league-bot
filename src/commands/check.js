@@ -4,7 +4,7 @@ const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'chck', 'chcek', 'check'],
+  aliases: [path.basename(__filename).split('.')[0], 'chck', 'chcek', 'update'],
   permissions: [],
   description: 'Allows a user to update their Discord name on the league service and also grant them the linked role.',
   command: (client, message) => {
