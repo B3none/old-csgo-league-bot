@@ -19,13 +19,19 @@ module.exports = {
             icon_url: client.user.avatarURL
           },
           color: Number(config.colour),
-          description: `Sorry! I don't respond to messages like this! Please go back into our Discord server and type \`!help\` to see the commands that I use!`
+          description: `Sorry! I don't respond to messages like this! Head back to our Discord server and type \`!help\` to see the commands that I use!`
         }
       });
     }
 
     if (message.author.bot || message.content.indexOf(prefix) !== 0) {
       return;
+    } else {
+      const { queueChannelId } = require('../../app/data/text_channels');
+
+      if (queueChannelId && message.channel.id !== queueChannelId) {
+        return;
+      }
     }
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
