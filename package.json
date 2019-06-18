@@ -6,6 +6,10 @@
     {
       "name": "B3none",
       "github": "https://github.com/b3none"
+    },
+    {
+      "name": "OlleThunburg",
+      "github": "https://github.com/ThunbergOlle"
     }
   ],
   "description": "League discord bot",

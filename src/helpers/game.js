@@ -116,7 +116,6 @@ module.exports = {
     }
 
     //I NEED TO ADD SUPPORT FOR MULTIPLE GAMES LATER DOWN THE ROAD YES I KNOW.
-    // const matchId = generateMatchId(10);
     const matchId = `match-${cache.size()}`;
     cache.set(matchId, matchData);
     queueTimer.startReadyTimer(config.match_confirmation_timer, matchId, client);
@@ -154,9 +153,6 @@ module.exports = {
         }
 
         matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
-
-        console.log('setting match data');
-        console.log(matchData);
         match.set(matchId, matchData);
 
         if (matchData.allPlayersConfirmed) {
