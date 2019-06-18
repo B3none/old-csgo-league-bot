@@ -18,11 +18,3 @@ client.on('message', message => messageHelper.message(client, config.prefix, mes
 client.on('voiceStateUpdate', (oldMember, newMember) => matchMaker.channelUpdate(oldMember, newMember, client));
 
 client.login(config.token);
-
-const cached = require('cached');
-
-let kittens = cached('kittens');
-
-kittens.set('my.ket', 'meow');
-
-kittens.get('test').then(console.log);
