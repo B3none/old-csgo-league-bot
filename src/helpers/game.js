@@ -153,11 +153,10 @@ module.exports = {
         }
 
         matchData.allPlayersConfirmed = hasAllPlayerConfirmed;
+
         match.set(matchId, matchData);
 
         if (matchData.allPlayersConfirmed) {
-          console.log('All players have confirmed.');
-
           let team1Message = '';
           matchData.team1.map(player => {
             team1Message += `<@${player.id}> | \`${player.score} points\`\n`;
