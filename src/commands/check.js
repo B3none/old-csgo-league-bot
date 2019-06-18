@@ -6,7 +6,7 @@ const axios = axiosHelper.get();
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'chck', 'chcek', 'check'],
   permissions: [],
-  description: 'Allows a user to update their Discord name on the league service.',
+  description: 'Allows a user to update their Discord name on the league service and also grant them the linked role.',
   command: (client, message) => {
     let author = message.author;
 
@@ -39,8 +39,9 @@ module.exports = {
           return;
         }
 
-        let user = client.users.find(user => user.id && message.author.id);
-        user.addRoles(client.roles.find(role => role.name === config.linked_role))
+        let linkedRole = message.guild.roles.find(role => role.name === config.linked_role);
+
+        message.member.addRole(linkedRole)
           .then(() => {
             message.channel.send({
               embed: {
