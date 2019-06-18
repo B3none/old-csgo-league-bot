@@ -125,7 +125,7 @@ module.exports = {
 
     match.get(matchId)
       .then(matchData => {
-        let hasAllPlayerConfirmed = true;
+        let hasAllPlayerConfirmed = matchData.team1.length > 0 && matchData.team2.length > 0;
         matchData.team1.map(item => {
           if (item.id === playerId) {
             item.confirmed = ready;

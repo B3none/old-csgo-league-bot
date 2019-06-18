@@ -29,7 +29,7 @@ const reloadQueue = client => {
               });
             }
 
-            queue.add({
+            const matchId = queue.add({
               id: member.id,
               confirmed: false,
               confirmable: false,
@@ -37,6 +37,12 @@ const reloadQueue = client => {
               steam,
               score
             });
+
+            if (matchId) {
+              // move to team channel
+              console.log('you are already in a game fam');
+              return;
+            }
 
             //CHECK IF THERE ARE 10 peoples inside a voice channel
             queue.get()
@@ -76,8 +82,8 @@ module.exports = {
     if (newUserChannel !== undefined && newMember.id !== client.user.id && newUserChannel.id === voiceChannels.queueChannelId) {
       //GET THE PLAYERS ELO FROM THE API.
       axios.get(`/player/discord/${newMember.id}`)
-        .then((response) => {
-          queue.add({
+        .then(response => {
+          const matchId = queue.add({
             id: newMember.id,
             confirmed: false,
             confirmable: false,
@@ -85,6 +91,12 @@ module.exports = {
             steam: response.data.steam,
             score: response.data.score
           });
+
+          if (matchId) {
+            // move to team channel
+            console.log('you are already in a game fam');
+            return;
+          }
 
           //CHECK IF THERE ARE 10 people inside a voice channel
           queue.get()

@@ -2,12 +2,21 @@ const cache = require('node-file-cache').create({
   file: `${process.cwd()}/app/data/queue.json`
 });
 
+const match = require('./match');
+
 module.exports = {
   get: async () => {
     return cache.get('queue') || [];
   },
   add: player => {
+    const matchId = match.findMatchId(player.id);
+    if (matchId) {
+      console.log(matchId);
+      return matchId;
+    }
+
     const queueData = cache.get('queue') || [];
+
     queueData.map((queuePlayer, index) => {
       if (queuePlayer.id === player.id) {
         queueData.splice(index, 1);
@@ -17,7 +26,7 @@ module.exports = {
 
     cache.set('queue', queueData);
 
-    return queueData;
+    return false;
   },
   remove: discordId => {
     const queueData = cache.get('queue') || [];

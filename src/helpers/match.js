@@ -34,7 +34,7 @@ module.exports = {
       index: []
     };
 
-    let matchId = -1;
+    let matchId = false;
     index.map(match => {
       if (matchId === -1 && match && match.val) {
         matchId = match.key;
@@ -53,14 +53,14 @@ module.exports = {
         });
 
         if (!foundPlayer) {
-          matchId = -1;
+          matchId = false;
         }
       }
     });
 
     return matchId;
   },
-  end: matchId => {
+  end: async matchId => {
     const cache = getMatchesCache();
     cache.set(matchId, {});
   }
