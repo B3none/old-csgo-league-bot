@@ -4,7 +4,7 @@ const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 
 
-const displayPlayer = (channel, author, playerData) => {
+const displayPlayer = (channel, user, playerData) => {
   const {
     score, steam, kills, deaths,
     assists, head, damage, totalRounds
@@ -15,10 +15,10 @@ const displayPlayer = (channel, author, playerData) => {
       color: Number(config.colour),
       author: {
         url: `${config.url}/profile/${steam}`,
-        name: `${author.username}'s Profile | Points: ${score}`,
+        name: `${user.username}'s Profile | Points: ${score}`,
       },
       thumbnail: {
-        url: author.avatarURL
+        url: user.avatarURL
       },
       fields: [
         {
@@ -67,7 +67,7 @@ const displayPlayer = (channel, author, playerData) => {
 };
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'elo', 'stats'],
+  aliases: [path.basename(__filename).split('.')[0], 'zlo', 'stats'],
   permissions: [],
   description: 'Displays your profile stats.',
   command: (client, message) => {
@@ -125,7 +125,7 @@ module.exports = {
 
             const totalRounds = parseInt(rounds_tr) + parseInt(rounds_ct);
 
-            displayPlayer(message.channel, message.author, {
+            displayPlayer(message.channel, usr, {
               score, steam, kills, deaths,
               assists, head, damage, totalRounds
             });
