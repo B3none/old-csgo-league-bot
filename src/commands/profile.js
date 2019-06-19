@@ -3,6 +3,69 @@ const path = require('path');
 const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 
+
+const displayPlayer = (channel, author, playerData) => {
+  const {
+    score, steam, kills, deaths,
+    assists, head, damage, totalRounds
+  } = playerData;
+
+  channel.send({
+    embed:{
+      color: Number(config.colour),
+      author: {
+        url: `${config.url}/profile/${steam}`,
+        name: `${author.username}'s Profile | Points: ${score}`,
+      },
+      thumbnail: {
+        url: author.avatarURL
+      },
+      fields: [
+        {
+          name: `Kills:`,
+          value: kills,
+          inline: true,
+        },
+        {
+          name: `Assists:`,
+          value: assists,
+          inline: true,
+        },
+        {
+          name: `KDR:`,
+          value: (Math.round((kills / (deaths || 1)) * 100) / 100).toString(),
+          inline: true,
+        },
+        {
+          name: `Rounds Played:`,
+          value: totalRounds,
+          inline: true,
+        },
+        {
+          name: `Deaths:`,
+          value: deaths,
+          inline: true,
+        },
+        {
+          name: `Headshots:`,
+          value: head,
+          inline: true,
+        },
+        {
+          name: `HS Percentage:`,
+          value: (Math.round(((head / kills) * 100) * 100) / 100).toString() + '%',
+          inline: true,
+        },
+        {
+          name: `ADR:`,
+          value: (Math.round((damage / totalRounds) * 100) / 100).toString(),
+          inline: true,
+        },
+      ]
+    },
+  });
+};
+
 module.exports = {
   aliases: [path.basename(__filename).split('.')[0], 'elo', 'stats'],
   permissions: [],
@@ -20,60 +83,9 @@ module.exports = {
 
           const totalRounds = parseInt(rounds_tr) + parseInt(rounds_ct);
 
-          message.channel.send({
-            embed:{
-              color: Number(config.colour),
-              author: {
-                  url: `${config.url}/profile/${steam}`,
-                  name: `${author.username}'s Profile | Points: ${score}`,
-              },
-              thumbnail: {
-                url: author.avatarURL
-              },
-              fields: [
-                {
-                  name: `Kills:`,
-                  value: kills,
-                  inline: true,
-                },
-                {
-                  name: `Assists:`,
-                  value: assists,
-                  inline: true,
-                },
-                {
-                  name: `KDR:`,
-                  value: (kills / (deaths || 1)).toString(),
-                  inline: true,
-                },
-                {
-                  name: `Rounds Played:`,
-                  value: totalRounds,
-                  inline: true,
-                },
-                {
-                  name: `Deaths:`,
-                  value: deaths,
-                  inline: true,
-                },
-                {
-                  name: `Headshots:`,
-                  value: head,
-                  inline: true,
-                },
-                {
-                  name: `HS Percentage:`,
-                  value: ((head / kills) * 100).toString(),
-                  inline: true,
-                },
-                {
-                  name: `ADR:`,
-                  value: (damage / totalRounds).toString(),
-                  inline: true,
-                },
-              ]
-            },
-
+          displayPlayer(message.channel, message.author, {
+            score, steam, kills, deaths,
+            assists, head, damage, totalRounds
           });
         })
         .catch(o_O => {
@@ -113,60 +125,9 @@ module.exports = {
 
             const totalRounds = parseInt(rounds_tr) + parseInt(rounds_ct);
 
-            message.channel.send({
-              embed: {
-                color: Number(config.colour),
-                author: {
-                  url: `${config.url}/profile/${steam}`,
-                  name: `${usr.username}'s Profile | Points: ${score}`,
-                },
-                thumbnail: {
-                  url: usr.avatarURL
-                },
-
-                fields: [
-                  {
-                    name: `Kills:`,
-                    value: kills,
-                    inline: true,
-                  },
-                  {
-                    name: `Assists:`,
-                    value: assists,
-                    inline: true,
-                  },
-                  {
-                    name: `KDR:`,
-                    value: (kills / (deaths || 1)).toString(),
-                    inline: true,
-                  },
-                  {
-                    name: `Rounds Played:`,
-                    value: totalRounds,
-                    inline: true,
-                  },
-                  {
-                    name: `Deaths:`,
-                    value: deaths,
-                    inline: true,
-                  },
-                  {
-                    name: `Headshots:`,
-                    value: head,
-                    inline: true,
-                  },
-                  {
-                    name: `HS Percentage:`,
-                    value: ((head / kills) * 100).toString(),
-                    inline: true,
-                  },
-                  {
-                    name: `ADR:`,
-                    value: (damage / totalRounds).toString(),
-                    inline: true,
-                  },
-                ]
-              }
+            displayPlayer(message.channel, message.author, {
+              score, steam, kills, deaths,
+              assists, head, damage, totalRounds
             });
           })
           .catch(o_O => {
