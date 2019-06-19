@@ -67,7 +67,7 @@ const displayPlayer = (channel, user, playerData) => {
 };
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'zlo', 'stats'],
+  aliases: [path.basename(__filename).split('.')[0], 'elo', 'stats'],
   permissions: [],
   description: 'Displays your profile stats.',
   command: (client, message) => {
@@ -102,20 +102,23 @@ module.exports = {
           });
       })
     } else if ((message.content.length - config.prefix.length) > 3) {
-      let arg = message.content.toString().substr((config.prefix.length + 4), message.content.length);
-      let usr;
-      client.users.map(user => {
-        if (user.username === arg) {
-          usr = user;
-        }
-      });
+      let nameLookup = message.content.toString().split(' ')[1];
+      let targetUser = false;
 
-      if (!usr && message.mentions.members.first()) {
-          usr = message.mentions.members.first().user;
+      if (message.mentions.members.first()) {
+        targetUser = message.mentions.members.first().user;
       }
 
-      if (usr) {
-        axios.get(`/player/discord/${usr.id}`)
+      if (!targetUser && nameLookup) {
+        client.users.map(user => {
+          if (user.username === nameLookup) {
+            targetUser = user;
+          }
+        });
+      }
+
+      if (targetUser) {
+        axios.get(`/player/discord/${targetUser.id}`)
           .then(response => {
             const {
               score, steam, kills, deaths,
@@ -125,7 +128,7 @@ module.exports = {
 
             const totalRounds = parseInt(rounds_tr) + parseInt(rounds_ct);
 
-            displayPlayer(message.channel, usr, {
+            displayPlayer(message.channel, targetUser, {
               score, steam, kills, deaths,
               assists, head, damage, totalRounds
             });
@@ -143,6 +146,13 @@ module.exports = {
               }
             });
           });
+      } else {
+        message.channel.send({
+          embed: {
+            color: Number(config.colour),
+            description: `No user found! :o`
+          }
+        });
       }
     }
   }
