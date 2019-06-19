@@ -103,18 +103,69 @@ module.exports = {
       }
 
       if (usr) {
-        axios.get(`/player/discord/${usr.id}`)
+        axios.get(`/player/discord/${author.id}`)
           .then(response => {
-            const { score, steam } = response.data;
+            const {
+              score, steam, kills, deaths,
+              assists, rounds_tr, rounds_ct,
+              head, damage
+            } = response.data;
+
+            const totalRounds = parseInt(rounds_tr) + parseInt(rounds_ct);
 
             message.channel.send({
               embed: {
                 color: Number(config.colour),
                 author: {
-                  url: ` https://league.voidrealitygaming.co.uk/profile/${steam}`,
-                  name: `${usr.username}`,
+                  url: `${config.url}/profile/${steam}`,
+                  name: `${usr.username}'s Profile | Points: ${score}`,
                 },
-                description : `score: ${score}`
+                thumbnail: {
+                  url: author.avatarURL
+                },
+
+                fields: [
+                  {
+                    name: `Kills:`,
+                    value: kills,
+                    inline: true,
+                  },
+                  {
+                    name: `Assists:`,
+                    value: assists,
+                    inline: true,
+                  },
+                  {
+                    name: `KDR:`,
+                    value: (kills / (deaths || 1)).toString(),
+                    inline: true,
+                  },
+                  {
+                    name: `Rounds Played:`,
+                    value: totalRounds,
+                    inline: true,
+                  },
+                  {
+                    name: `Deaths:`,
+                    value: deaths,
+                    inline: true,
+                  },
+                  {
+                    name: `Headshots:`,
+                    value: head,
+                    inline: true,
+                  },
+                  {
+                    name: `HS Percentage:`,
+                    value: ((head / kills) * 100).toString(),
+                    inline: true,
+                  },
+                  {
+                    name: `ADR:`,
+                    value: (damage / totalRounds).toString(),
+                    inline: true,
+                  },
+                ]
               }
             });
           })
@@ -123,11 +174,11 @@ module.exports = {
               embed: {
                 author: {
                   icon_url: client.user.avatarURL,
-                  url: ` https://league.voidrealitygaming.co.uk/profile/steamid `,
+                  url: `${config.url}/profile/${steam}`,
                   name: `${client.user.username}`
                 },
                 color: Number(config.colour),
-                description: `There was an error getting your score`,
+                description: `There was an error getting your profile data.`,
                 fields: []
               }
             });
