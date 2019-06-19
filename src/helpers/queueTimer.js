@@ -7,10 +7,6 @@ const match = require('./match');
 
 module.exports = {
   startReadyTimer: (ms, matchId, client) => {
-    const cache = require('node-file-cache').create({
-      file: `${process.cwd()}/app/data/matches.json`
-    });
-
     let queueChannel = client.channels.find(channel => channel.id === voiceChannels.queueChannelId);
     if (!queueChannel) {
       return;
