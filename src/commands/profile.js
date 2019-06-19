@@ -103,7 +103,7 @@ module.exports = {
       }
 
       if (usr) {
-        axios.get(`/player/discord/${author.id}`)
+        axios.get(`/player/discord/${usr.id}`)
           .then(response => {
             const {
               score, steam, kills, deaths,
@@ -121,7 +121,7 @@ module.exports = {
                   name: `${usr.username}'s Profile | Points: ${score}`,
                 },
                 thumbnail: {
-                  url: author.avatarURL
+                  url: usr.avatarURL
                 },
 
                 fields: [
@@ -174,7 +174,6 @@ module.exports = {
               embed: {
                 author: {
                   icon_url: client.user.avatarURL,
-                  url: `${config.url}/profile/${steam}`,
                   name: `${client.user.username}`
                 },
                 color: Number(config.colour),
