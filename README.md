@@ -7,6 +7,8 @@
 # League bot
 League discord bot
 
+We will post a release once this is ready.
+
 **THIS IS STILL A WORK IN PROGRESS -- IT IS NOT REQUIRED**
 
 # Author
