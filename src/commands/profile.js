@@ -71,7 +71,7 @@ module.exports = {
   description: 'Displays your profile stats.',
   command: (client, message) => {
     let author = message.author;
-    if ((message.content.length - config.prefix.length) === 3) {
+    if ((message.content.split(' ').length) === 1) {
       axios.get(`/player/discord/${author.id}`)
         .then(response => {
           const {
