@@ -3,7 +3,6 @@ const path = require('path');
 const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 
-
 const displayPlayer = (channel, user, playerData) => {
   const {
     score, steam, kills, deaths,
