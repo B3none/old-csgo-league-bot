@@ -118,7 +118,7 @@ module.exports = {
                 color: Number(config.colour),
                 author: {
                   url: `${config.url}/profile/${steam}`,
-                  name: `${usr.username}`,
+                  name: `${usr.username}'s Profile | Points: ${score}`,
                 },
                 thumbnail: {
                   url: author.avatarURL
