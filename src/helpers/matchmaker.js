@@ -160,7 +160,7 @@ class matchMaker {
         "discordUser": discordUser,
       };
 
-      this.gameQeue.addPlayerToQueue(addPlayerData).then((result) =>{
+      this.gameQueue.addPlayerToQueue(addPlayerData).then((result) =>{
         if (result.addedPlayer && this.gameQueue.getQueueSize() >= PLAYERS_PER_MATCH) {
           let gameGroup = this.gameQueue.getGameGroup();
           result.matchDetails = this.handleCurrentGame(gameGroup);
