@@ -71,9 +71,23 @@ module.exports = function() {
         console.log(`The League Discord Bot has been started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
     });
 
+    client.on('voiceStateUpdate', (oldMember, newMember) => matchMaker.channelUpdate(oldMember, newMember, client));
+
     client.login(token).then(function () {
         isBotConnect = true;
     });
 
-    client.on()
+    function logout() {
+        if (isBotConnected) {
+            console.log("[League] Shutting down bot.");
+            client.destroy().then(function (data){
+                isBotConnected = false;
+                process.exit(0);
+            });
+        }
+    }
+
+    process.on('exit', logout);
+    process.on('SIGINT', logout);
+    process.on('uncaughtException', logout);
 }
