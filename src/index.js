@@ -71,7 +71,7 @@ module.exports = function() {
         console.log(`The League Discord Bot has been started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
     });
 
-    client.on('voiceStateUpdate', (oldMember, newMember) => matchMaker.channelUpdate(oldMember, newMember, client));
+    client.on('voiceStateUpdate', (oldMember, newMember) => matchMakerInstance.join(newMember.user));
 
     client.login(token).then(function () {
         isBotConnect = true;

@@ -28,7 +28,7 @@ gulp.task('default', () => {
 
   nodemon({
     exec: 'node --inspect',
-    script: 'src/index.js',
+    script: 'app',
     watch: ['src/*/**', 'src/*', 'app/config.json'],
     ext: 'js'
   });

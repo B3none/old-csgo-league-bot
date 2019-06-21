@@ -124,6 +124,7 @@ const _ = require('lodash');
 const config = require('../../app/config.json');
 const PLAYERS_PER_MATCH = config.players_per_match;
 let queueManager = require('./queueManager.js');
+let queueManagerInstance = new queueManager();
 
 class matchMaker {
   

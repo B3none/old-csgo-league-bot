@@ -85,6 +85,8 @@ const config = require('../../app/config.json');
 const _ = require("lodash");
 const shuffle = require("shuffle-array");
 const PLAYERS_PER_MATCH = config.players_per_match;
+const axiosHelper = require('./axios');
+const axios = axiosHelper.get();
 
 class QueueManager {
   constructor() {
@@ -110,26 +112,23 @@ class QueueManager {
   }
 
   addPlayerToQueue(addPlayerData) {
-    return new Promise(resolve, reject => {
-      let addedPlayerResult = null;
+    return new Promise((resolve, reject) => {
+      let addedPlayerResult = false;
 
-      let playerExist = _.findIndex(this.waitingQueue, function (player) {
-        return player.discordTag == addPlayerData.discordTag;
-      });
+      let playerExist = _.findIndex(this.waitingQueue, addPlayerData);
 
       if (playerExist < 0) {
         addedPlayerResult = true;
-        axios.get(`/player/discord/${discordUser.id}`)
+        axios.get(`/player/discord/${addPlayerData.discordUser.id}`)
         .then(response => {
-          const { steam, score, discord_name } = response.data; 
+          const { steam, score } = response.data;
+          addPlayerData.steam = steam;
+          addPlayerData.score = score;
+          this.waitingQueue.push(addPlayerData);
+          resolve({"addedPlayer": addedPlayerResult}); 
         });
-        
-        addPlayerData.steam = response.data.steam;
-        addPlayerData.score = response.data.score;
-        this.waitingQueue.push(addPlayerData);
-        resolve({"addedPlayer": addedPlayerResult});
       } else {
-        resolve(addedPlayerResult);
+        resolve({"addedPlayer": addedPlayerResult}); 
       }
     });
   }
