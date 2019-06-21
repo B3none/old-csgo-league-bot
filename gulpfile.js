@@ -4,7 +4,6 @@ const fs = require('fs');
 
 const dataDirectory = './app/data/';
 const dataFiles = [
-  'afk_channel.json',
   'matches.json',
   'queue.json',
   'text_channels.json',

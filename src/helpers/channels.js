@@ -1,7 +1,6 @@
 const fs = require('fs');
 const error = require('./error');
 const config = require('../../app/config.json');
-const afkChannel = require('../../app/data/afk_channel.json');
 
 module.exports = {
   checkChannels: client => {
@@ -44,17 +43,15 @@ module.exports = {
         fs.writeFile(`${process.cwd()}/app/data/voice_channels.json`, JSON.stringify({queueChannelId: queuingVoiceChannel.id}), error);
       }
 
-      if (config.afk_channel !== '') {
-        let afkVoiceChannel = categoryChildren.find(x => x.name === config.afk_channel.toString());
+      if (guild.afkChannel !== '') {
+        let afkVoiceChannel = guild.afkChannel
 
-        if (!afkVoiceChannel) {
+        if (!guild.afkChannel) {
           afkVoiceChannel = await guild.createChannel(config.afk_channel, {
             type: 'voice',
             parent: category
           });
         }
-
-        fs.writeFile(`${process.cwd()}/app/data/afk_channel.json`, JSON.stringify({afkChannelID: afkVoiceChannel.id}), error);
       }
     });
 
@@ -90,7 +87,7 @@ module.exports = {
         guild.fetchMember(playerId)
           .then((member) => {
             member.setVoiceChannel(
-              client.channels.get(afkChannel.afkChannelID)
+              client.channels.get(guild.afkChannelID)
             ).then(() => resolve());
           })
           .catch(console.error);
