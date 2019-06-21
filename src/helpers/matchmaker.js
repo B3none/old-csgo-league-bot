@@ -125,7 +125,8 @@ const config = require('../../app/config.json');
 const PLAYERS_PER_MATCH = config.players_per_match;
 let queueManager = require('./queueManager.js');
 
-class Matchmaker {
+class matchMaker {
+  
   constructor() {
     this.currentGameState = null;
     this.gameQueue = new queueManager();
@@ -166,6 +167,7 @@ class Matchmaker {
         }
 
         resolve(result);
+        
       }).catch(reject)
     });
 
@@ -182,6 +184,5 @@ class Matchmaker {
       "waitingQueue": this.getFormaterCollection(this.gameQueue.getWaitingQueue()),
     };
   }
-
-  
 }
+module.exports = matchMaker;
