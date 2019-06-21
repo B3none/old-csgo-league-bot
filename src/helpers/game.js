@@ -1,4 +1,4 @@
-const queue = require('./queue.js');
+const queue = require('./queueManager.js');
 const channels = require('./channels');
 const config = require('../../app/config');
 const textChannels = require('../../app/data/text_channels');

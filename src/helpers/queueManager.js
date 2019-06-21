@@ -119,10 +119,19 @@ class QueueManager {
 
       if (playerExist < 0) {
         addedPlayerResult = true;
-
+        axios.get(`/player/discord/${discordUser.id}`)
+        .then(response => {
+          const { steam, score, discord_name } = response.data; 
+        });
         
+        addPlayerData.steam = response.data.steam;
+        addPlayerData.score = response.data.score;
+        this.waitingQueue.push(addPlayerData);
+        resolve({"addedPlayer": addedPlayerResult});
+      } else {
+        resolve(addedPlayerResult);
       }
-    })
+    });
   }
 
   removePlayerFromQueue(discordUser) {

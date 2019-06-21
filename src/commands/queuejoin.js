@@ -1,6 +1,6 @@
 const config = require('../../app/config');
 const path = require('path');
-const queueHelper = require('../helpers/queue');
+const queueHelper = require('../helpers/queueManager');
 const axiosHelper = require('../helpers/axios');
 const axios = axiosHelper.get();
 

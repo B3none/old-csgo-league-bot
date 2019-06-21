@@ -123,7 +123,7 @@
 const _ = require('lodash');
 const config = require('../../app/config.json');
 const PLAYERS_PER_MATCH = config.players_per_match;
-let queueManager = require('./queueManager');
+let queueManager = require('./queueManager.js');
 
 class Matchmaker {
   constructor() {
@@ -132,4 +132,56 @@ class Matchmaker {
     // Add later.
     this.currentClearCurrentGame = null;
   }
+
+  getFormaterCollection(collection) {
+    let displayGameCollection = [];
+    collection.forEach(player => {
+      displayGameCollection.push(player.discordUser + " " + player.score + "ELO");
+    });
+
+    return displayGameCollection;
+  }
+
+  // TODO: Write the Current Game Status based on Player Score from Rankme. Then I can handle the current game.
+  handleCurrentGame(gameGroup) {
+    return null;
+  }
+
+  join(discordUser) {
+    let promise = new Promise((resolve, reject) => {
+      let result = {
+        addedPlayer: false,
+        matchDetails: null,
+      };
+
+      var addPlayerData = {
+        "discordTag": discordUser.tag,
+        "discordUser": discordUser,
+      };
+
+      this.gameQeue.addPlayerToQueue(addPlayerData).then((result) =>{
+        if (result.addedPlayer && this.gameQueue.getQueueSize() >= PLAYERS_PER_MATCH) {
+          let gameGroup = this.gameQueue.getGameGroup();
+          result.matchDetails = this.handleCurrentGame(gameGroup);
+        }
+
+        resolve(result);
+      }).catch(reject)
+    });
+
+    return promise;
+  }
+
+  leave(discordAuthor) {
+    return this.gameQueue.removePlayerFromQueue(discordAuthor);
+  }
+
+  status() {
+    return {
+      "currentStatus": this.displayFormatGame(this.currentGameStatus),
+      "waitingQueue": this.getFormaterCollection(this.gameQueue.getWaitingQueue()),
+    };
+  }
+
+  
 }
