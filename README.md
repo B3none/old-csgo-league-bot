@@ -12,7 +12,7 @@ We will post a release once this is ready.
 **THIS IS STILL A WORK IN PROGRESS -- IT IS NOT REQUIRED**
 
 # Author
-[B3none](https://github.com/b3none/) - Developer / Maintainer
+[B3none](https://b3none.co.uk/) - Developer / Maintainer
 
 [ThunbergOlle](https://github.com/ThunbergOlle) - Developer / Maintainer
 
