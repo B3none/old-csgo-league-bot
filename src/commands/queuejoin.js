@@ -12,7 +12,7 @@ module.exports = {
   command: (client, message) => {
     axios.get('/discord/check/' + message.author.id)
       .then(response => {
-        const { linked } = response.data;
+        const {linked} = response.data;
 
         if (!linked) {
           message.channel.send({

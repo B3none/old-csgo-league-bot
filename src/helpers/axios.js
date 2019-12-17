@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { url,api_key } = require('../../app/config');
+const {url, api_key} = require('../../app/config');
 
 module.exports = {
   get: () => {

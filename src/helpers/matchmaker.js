@@ -21,7 +21,7 @@ const reloadQueue = client => {
       queueMembers.map(member => {
         axios.get(`/player/discord/${member.id}`)
           .then(response => {
-            const { steam, score, discord_name } = response.data;
+            const {steam, score, discord_name} = response.data;
 
             if (discord_name !== member.user.username) {
               axios.post(`/discord/update/${member.id}`, {

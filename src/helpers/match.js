@@ -37,7 +37,7 @@ module.exports = {
   },
   findMatchId: playerId => {
     const raw = getRawMatches();
-    const { index } = JSON.parse(raw) || {
+    const {index} = JSON.parse(raw) || {
       index: []
     };
 

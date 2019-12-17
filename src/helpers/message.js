@@ -27,7 +27,7 @@ module.exports = {
     if (message.author.bot || message.content.indexOf(prefix) !== 0) {
       return;
     } else {
-      const { queueChannelId } = require('../../app/data/text_channels');
+      const {queueChannelId} = require('../../app/data/text_channels');
 
       if (queueChannelId && message.channel.id !== queueChannelId) {
         return;
