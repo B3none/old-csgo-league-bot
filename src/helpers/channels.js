@@ -79,8 +79,8 @@ module.exports = {
 
     const game = require('./game');
     game.finalizeGameData(client, {
-      team1: team1,
-      team2: team2
+      team1,
+      team2,
     });
   }, 
   toAfkChannel: (client, playerId) =>

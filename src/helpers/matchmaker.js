@@ -44,7 +44,7 @@ const reloadQueue = client => {
               return;
             }
 
-            //CHECK IF THERE ARE 10 peoples inside a voice channel
+            //CHECK IF THERE ARE 10 people inside a voice channel
             queue.get()
               .then(players => {
                 if (players.length === config.players_per_match) {
