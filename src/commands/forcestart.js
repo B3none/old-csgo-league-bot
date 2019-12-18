@@ -10,19 +10,48 @@ module.exports = {
   command: (client, message, args) => {
     const [channelOneId, channelTwoId] = args;
 
-    const response = queueHelper.remove(message.author.id);
+    let channelOne = client.channels.get(channelOneId);
+    let channelTwo = client.channels.get(channelTwoId);
 
-    if (response.didRemove) {
-      message.channel.send({
+    if (!channelOne || !channelTwo) {
+      message.author.send({
         embed: {
           author: {
             name: client.user.username,
             icon_url: client.user.avatarURL
           },
           color: Number(config.colour),
-          description: `<@${message.author.id}> just started a match.`
+          description: `Looks like you haven't provided correct channel ids.`
         }
       });
+
+      return;
     }
+
+    if (channelOne.memberCount !== 5 || channelTwo.memberCount !== 5) {
+      message.author.send({
+        embed: {
+          author: {
+            name: client.user.username,
+            icon_url: client.user.avatarURL
+          },
+          color: Number(config.colour),
+          description: `Looks like these channels don't have the right number of people!`
+        }
+      });
+
+      return;
+    }
+
+    message.channel.send({
+      embed: {
+        author: {
+          name: client.user.username,
+          icon_url: client.user.avatarURL
+        },
+        color: Number(config.colour),
+        description: `<@${message.author.id}> just started a match.`
+      }
+    });
   }
 };
