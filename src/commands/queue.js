@@ -3,7 +3,7 @@ const path = require('path');
 const queueHelper = require('../helpers/queue');
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'q'],
+  aliases: [path.basename(__filename).split('.')[0], 'q', 'cue', 'que'],
   permissions: [],
   description: 'View who is in the queue',
   command: (client, message) => {

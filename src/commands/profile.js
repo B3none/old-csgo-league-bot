@@ -66,7 +66,7 @@ const displayPlayer = (channel, user, playerData) => {
 };
 
 module.exports = {
-  aliases: [path.basename(__filename).split('.')[0], 'elo', 'stats'],
+  aliases: [path.basename(__filename).split('.')[0], 'elo', 'stats', 'rank'],
   permissions: [],
   description: 'Displays your profile stats.',
   command: (client, message) => {
