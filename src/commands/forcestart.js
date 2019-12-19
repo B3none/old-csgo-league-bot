@@ -43,6 +43,35 @@ module.exports = {
       return;
     }
 
+    const players = [];
+
+    const getPlayers = async member => {
+      const response = await axios.get(`/player/discord/${member.id}`);
+
+      const player = {
+        id: member.id,
+        confirmed: false,
+        confirmable: false,
+        name: member.user.username,
+        steam: response.data.steam,
+        score: response.data.score
+      };
+
+      players.push(player);
+    };
+
+    channelOne.members.map(getPlayers);
+    channelTwo.members.map(getPlayers);
+
+    //CHECK IF THERE ARE 10 people inside a voice channel
+    if (players.length === config.players_per_match) {
+      console.log('Reached enough players to start a game, sending confirmation requests.');
+      const game = require('../helpers/game');
+
+      let matchId = game.initialize(client, players);
+      game.sendAwaitConfirmation(client, matchId);
+    }
+
     message.channel.send({
       embed: {
         author: {
