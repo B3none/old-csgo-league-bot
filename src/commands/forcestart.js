@@ -65,11 +65,24 @@ module.exports = {
 
     //CHECK IF THERE ARE 10 people inside a voice channel
     if (players.length === config.players_per_match) {
+      message.channel.send({
+        embed: {
+          author: {
+            name: client.user.username,
+            icon_url: client.user.avatarURL
+          },
+          color: Number(config.colour),
+          description: `<@${message.author.id}> just started a match.`
+        }
+      });
+
       console.log('Reached enough players to start a game, sending confirmation requests.');
       const game = require('../helpers/game');
 
       let matchId = game.initialize(client, players);
       game.sendAwaitConfirmation(client, matchId);
+
+      return;
     }
 
     message.channel.send({
@@ -79,7 +92,7 @@ module.exports = {
           icon_url: client.user.avatarURL
         },
         color: Number(config.colour),
-        description: `<@${message.author.id}> just started a match.`
+        description: `<@${message.author.id}> there were not enough players detected to start a match.`
       }
     });
   }
