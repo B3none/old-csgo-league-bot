@@ -46,16 +46,32 @@ module.exports = {
     const players = [];
 
     const getPlayers = async member => {
-      const response = await axios.get(`/player/discord/${member.id}`);
+      const {data} = await axios.get(`/player/discord/${member.id}`);
+      const {steam, score, in_match} = data;
 
       const player = {
         id: member.id,
         confirmed: false,
         confirmable: false,
         name: member.user.username,
-        steam: response.data.steam,
-        score: response.data.score
+        steam,
+        score,
       };
+
+      if (in_match) {
+        message.channel.send({
+          embed: {
+            author: {
+              name: client.user.username,
+              icon_url: client.user.avatarURL
+            },
+            color: Number(config.colour),
+            description: `<@${member.id}> is already in a match.`
+          }
+        });
+
+        return;
+      }
 
       players.push(player);
     };
@@ -92,7 +108,7 @@ module.exports = {
           icon_url: client.user.avatarURL
         },
         color: Number(config.colour),
-        description: `<@${message.author.id}> there were not enough players detected to start a match.`
+        description: `<@${message.author.id}> there were not enough valid players detected to start a match.`
       }
     });
   }
