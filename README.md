@@ -40,7 +40,7 @@ If you appreciate the project then please take the time to star our repository.
 ## Installation
 To be written.
 
-## Commands
+## Bot Commands
 `q!help`:<br>Display help menu<br><br>
 `q!about`:<br>Display basic info about this bot<br><br>
 `q!join`:<br>Join the queue<br><br>
