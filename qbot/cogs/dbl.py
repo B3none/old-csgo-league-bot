@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# dbl.py
-# cameronshinn
-
 import dbl
 import asyncio
 from discord.ext import commands, tasks

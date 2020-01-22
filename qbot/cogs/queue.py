@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# queue.py
-# cameronshinn
-
 import asyncio
 import discord
 from discord.ext import commands, tasks

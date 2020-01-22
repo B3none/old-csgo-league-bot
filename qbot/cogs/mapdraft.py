@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# mapdraft.py
-# cameronshinn
-
 import discord
 from discord.ext import commands
 
