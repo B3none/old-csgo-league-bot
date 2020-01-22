@@ -17,8 +17,8 @@ We will post a release once this is ready.
 **THIS IS STILL A WORK IN PROGRESS -- IT IS NOT REQUIRED**
 
 # Authors
-[B3none](https://b3none.co.uk/) - Developer / Maintainer
 [Cameron Shinn](https://github.com/cameronshinn) - Developer / Maintainer
+[B3none](https://b3none.co.uk/) - Developer
 [ThunbergOlle](https://github.com/ThunbergOlle) - Developer
 
 ## Watch for releases
