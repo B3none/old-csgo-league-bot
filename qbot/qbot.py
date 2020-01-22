@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# qbot.py
-# cameronshinn
-
 from cogs.console import ConsoleCog
 from cogs.dbl import DblCog
 from cogs.help import HelpCog
