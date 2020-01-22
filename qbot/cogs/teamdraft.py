@@ -13,10 +13,10 @@ EMOJI_LIST = [u'\u0031\u20E3',
               u'\U0001F51F']
 
 class TeamDraftCog(commands.Cog):
-    """ Handles the player drafter command """
+    # Handles the player drafter command
 
     def __init__(self, bot, color):
-        """ Set attributes and initialize empty draft teams """
+        # Set attributes and initialize empty draft teams
         self.bot = bot
         self.color = color
         self.guild_player_pool = {} # Players participating in the draft for each guild
@@ -25,26 +25,26 @@ class TeamDraftCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        """ Initialize an empty list for each giuld the bot is in """
+        # Initialize an empty list for each guild the bot is in
         for guild in self.bot.guilds:
             self.guild_player_pool[guild] = []
             self.guild_teams[guild] = [[], []]
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        """ Initialize an empty list for guilds that are added """
+        # Initialize an empty list for guilds that are added
         self.guild_player_pool[guild] = []
         self.guild_teams[guild] = [[], []]
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        """ Remove queue list when a guild is removed """
+        # Remove queue list when a guild is removed
         self.guild_player_pool.pop(guild, None)
         self.guild_teams.pop(guild, None)
         self.guild_msgs.pop(guild, None)
 
     def player_draft_embed(self, title, guild):
-        """ Return the player draft embed based on the guild attributes """
+        # Return the player draft embed based on the guild attributes
         team_1 = self.guild_teams[guild][0]
         team_2 = self.guild_teams[guild][1]
         embed = discord.Embed(title=title, color=self.color)
@@ -73,12 +73,12 @@ class TeamDraftCog(commands.Cog):
         return embed
 
     async def cog_before_invoke(self, ctx):
-        """ Trigger typing at the start of every command """
+        # Trigger typing at the start of every command
         await ctx.trigger_typing()
 
     @commands.command(brief='Start (or restart) a player draft from the last popped queue')
     async def tdraft(self, ctx):
-        """ Start a player draft by sending a player draft embed panel """
+        # Start a player draft by sending a player draft embed panel
         x_emoji = ':heavy_multiplication_x'
         queue_cog = self.bot.get_cog('QueueCog')
         players = queue_cog.popped_guild_queues.get(ctx.guild)

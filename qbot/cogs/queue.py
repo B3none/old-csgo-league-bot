@@ -3,10 +3,10 @@ import discord
 from discord.ext import commands, tasks
 
 class QueueCog(commands.Cog):
-    """ Cog to manage queues of players among multiple servers """
+    # Cog to manage queues of players among multiple servers #
 
     def __init__(self, bot, color):
-        """ Set attributes """
+        # Set attributes #
         self.bot = bot
         self.spots = 10
         self.guild_queues = {} # Maps guild -> list of players in the queue for that guild
@@ -15,25 +15,25 @@ class QueueCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        """ Initialize an empty list for each giuld the bot is in """
+        # Initialize an empty list for each guild the bot is in #
         for guild in self.bot.guilds:
             self.guild_queues[guild] = []
             self.popped_guild_queues[guild] = None
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        """ Initialize an empty list for guilds that are added """
+        # Initialize an empty list for guilds that are added #
         self.guild_queues[guild] = []
         self.popped_guild_queues[guild] = None
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        """ Remove queue list when a guild is removed """
+        # Remove queue list when a guild is removed #
         self.guild_queues.pop(guild, None)
         self.popped_guild_queues.pop(guild, None)
 
     async def cog_before_invoke(self, ctx):
-        """ Trigger typing at the start of every command """
+        # Trigger typing at the start of every command #
         await ctx.trigger_typing()
 
     def pop_queue(self, ctx):
@@ -57,7 +57,7 @@ class QueueCog(commands.Cog):
 
     @commands.command(brief='Join the queue')
     async def join(self, ctx):
-        """ Check if the member can be added to the guild queue and add them if so """
+        # Check if the member can be added to the guild queue and add them if so #
         queue = self.guild_queues[ctx.guild]
 
         if ctx.author in queue: # Author already in queue
@@ -79,7 +79,7 @@ class QueueCog(commands.Cog):
 
     @commands.command(brief='Leave the queue')
     async def leave(self, ctx):
-        """ Check if the member can be remobed from the guild and remove them if so """
+        # Check if the member can be remobed from the guild and remove them if so #
         queue = self.guild_queues[ctx.guild]
 
         if ctx.author in queue:
@@ -92,7 +92,7 @@ class QueueCog(commands.Cog):
 
     @commands.command(brief='Display who is currently in the queue')
     async def view(self, ctx):
-        """  Display the queue as an embed list of mentioned names """
+        #  Display the queue as an embed list of mentioned names #
         queue = self.guild_queues[ctx.guild]
 
         if queue != []: # If there are users in the queue
@@ -148,7 +148,7 @@ class QueueCog(commands.Cog):
     @commands.command(brief='Empty the queue (Must have server kick perms)')
     @commands.has_permissions(kick_members=True)
     async def empty(self, ctx):
-        """ Reset the guild queue list to empty """
+        # Reset the guild queue list to empty
         queue = self.guild_queues[ctx.guild]
         queue.clear()
         embed = discord.Embed(title=f'The queue has been emptied _({len(queue)}/{self.spots})_', color=self.color)

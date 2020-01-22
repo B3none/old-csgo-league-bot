@@ -12,7 +12,7 @@ from discord.ext import commands
 BOT_COLOR = 0x0D61B7
 
 def run(discord_token, dbl_token=None, donate_url=None):
-    """ Create the bot, add the cogs and run it """
+    # Create the bot, add the cogs and run it
     bot = commands.Bot(command_prefix=('q!', 'Q!'), case_insensitive=True)
     bot.add_cog(ConsoleCog(bot))
     bot.add_cog(HelpCog(bot, BOT_COLOR))

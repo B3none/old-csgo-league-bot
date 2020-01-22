@@ -41,10 +41,10 @@ map_pool = [
 ]
 
 class MapDraftCog(commands.Cog):
-    """ Handles the map drafer command """
+    # Handles the map drafer command
 
     def __init__(self, bot, color):
-        """ Set attributes """
+        # Set attributes
         self.bot = bot
         self.map_pool = map_pool
         self.color = color
@@ -53,18 +53,18 @@ class MapDraftCog(commands.Cog):
         self.footer = 'React to any of the map icons below to ban the corresponding map'
 
     async def cog_before_invoke(self, ctx):
-        """ Trigger typing at the start of every command """
+        # Trigger typing at the start of every command
         await ctx.trigger_typing()
 
     def maps_left_str(self, guild):
-        """ Get the maps left string representation for a given giuld """
+        # Get the maps left string representation for a given guild
         x_emoji = ':heavy_multiplication_x:'
         maps_left = self.guild_maps_left[guild] if guild in self.guild_maps_left.keys() else self.map_pool
         return ''.join(f'{m.emoji}  {m.name}\n' if m in maps_left else f'{x_emoji}  ~~{m.name}~~\n' for m in self.map_pool)
 
     @commands.command(brief='Start (or restart) a map draft')
     async def mdraft(self, ctx):
-        """ Start a map draft by sending a map draft embed panel """
+        # Start a map draft by sending a map draft embed panel
         self.guild_maps_left[ctx.guild] = self.map_pool.copy()  # Set or reset map pool
         embed = discord.Embed(title='Map draft has begun!', description=self.maps_left_str(ctx.guild), color=self.color)
         embed.set_footer(text=self.footer)
@@ -78,7 +78,7 @@ class MapDraftCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        """ Remove a map from the draft when a user reacts with the corresponding icon """
+        # Remove a map from the draft when a user reacts with the corresponding icon
         if user == self.bot.user:
             return
 
