@@ -33,8 +33,8 @@ If you appreciate the project then please take the time to star our repository.
 
 
 ## Prerequisites
-1. discord.py >= 1.2.5
-2. dblpy >= 0.3.3
+- discord.py >= 1.2.5
+- dblpy >= 0.3.3
 
 
 ## Installation
