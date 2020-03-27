@@ -13,7 +13,7 @@ module.exports = {
     }
 
     queueChannel.edit({
-      userLimit: 1
+      userLimit: config.players_per_match
     });
 
     setTimeout(() => {
