@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/csgo-league/csgo-league-bot#readme",
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "discord.js": "^11.5.1",
     "node-file-cache": "^1.0.2"
   },
